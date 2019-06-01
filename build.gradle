@@ -1,14 +1,17 @@
 buildscript {
+
 	repositories {
 		google()
 		jcenter()
 	}
+
 	dependencies {
-		classpath 'com.android.tools.build:gradle:3.4.0'
+		classpath 'com.android.tools.build:gradle:3.4.1'
 	}
 }
 
 allprojects {
+
 	repositories {
 		google()
 		jcenter()
@@ -19,20 +22,37 @@ apply plugin: 'com.android.application'
 
 android {
 	compileSdkVersion 28
+
 	compileOptions {
 		sourceCompatibility = '1.8'
 		targetCompatibility = '1.8'
 	}
+
 	defaultConfig {
-		applicationId "ilchev.stefan.callblocker"
+		applicationId 'ilchev.stefan.callblocker'
 		minSdkVersion 28
 		targetSdkVersion 28
 		versionCode 1
-		versionName "1.0"
+		versionName '1.0'
 	}
+
+	signingConfigs {
+
+		debug {
+			storeFile file('debug.keystore')
+			storePassword 'android'
+			keyAlias 'androiddebugkey'
+			keyPassword 'android'
+		}
+	}
+
 	buildTypes {
+
 		release {
+			minifyEnabled true
+			shrinkResources true
 			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+			signingConfig signingConfigs.debug
 		}
 	}
 }
