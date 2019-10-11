@@ -6,7 +6,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:3.4.1'
+		classpath 'com.android.tools.build:gradle:3.5.1'
 	}
 }
 
@@ -21,7 +21,8 @@ allprojects {
 apply plugin: 'com.android.application'
 
 android {
-	compileSdkVersion 28
+	compileSdkVersion 29
+	buildToolsVersion = '29.0.2'
 
 	compileOptions {
 		sourceCompatibility = '1.8'
@@ -31,7 +32,7 @@ android {
 	defaultConfig {
 		applicationId 'ilchev.stefan.callblocker'
 		minSdkVersion 28
-		targetSdkVersion 28
+		targetSdkVersion 29
 		versionCode 1
 		versionName '1.0'
 	}
