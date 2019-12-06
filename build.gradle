@@ -6,7 +6,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:3.5.1'
+		classpath 'com.android.tools.build:gradle:3.5.3'
 	}
 }
 
@@ -18,15 +18,17 @@ allprojects {
 	}
 }
 
-apply plugin: 'com.android.application'
+apply {
+	plugin 'com.android.application'
+}
 
 android {
 	compileSdkVersion 29
 	buildToolsVersion = '29.0.2'
 
 	compileOptions {
-		sourceCompatibility = '1.8'
-		targetCompatibility = '1.8'
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
 	}
 
 	defaultConfig {
