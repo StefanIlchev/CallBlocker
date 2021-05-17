@@ -2,11 +2,11 @@ buildscript {
 
 	repositories {
 		google()
-		jcenter()
+		mavenCentral()
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:4.1.2'
+		classpath 'com.android.tools.build:gradle:4.2.1'
 	}
 }
 
@@ -14,7 +14,7 @@ allprojects {
 
 	repositories {
 		google()
-		jcenter()
+		mavenCentral()
 	}
 }
 
@@ -23,7 +23,7 @@ apply {
 }
 
 android {
-	compileSdkVersion 29
+	compileSdkVersion 30
 	buildToolsVersion = '30.0.3'
 
 	compileOptions {
@@ -34,7 +34,7 @@ android {
 	defaultConfig {
 		applicationId 'ilchev.stefan.callblocker'
 		minSdkVersion 28
-		targetSdkVersion 29
+		targetSdkVersion 30
 		versionCode 1
 		versionName '1.0'
 	}
