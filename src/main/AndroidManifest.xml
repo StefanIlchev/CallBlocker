@@ -19,7 +19,9 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-		<activity android:name="ilchev.stefan.callblocker.MainActivity">
+		<activity
+			android:name="ilchev.stefan.callblocker.MainActivity"
+			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
@@ -27,11 +29,12 @@
 			</intent-filter>
 		</activity>
 
-		<receiver android:name="ilchev.stefan.callblocker.CallBlocker">
+		<receiver
+			android:name="ilchev.stefan.callblocker.CallBlocker"
+			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.PHONE_STATE" />
 			</intent-filter>
 		</receiver>
 	</application>
-
 </manifest>
