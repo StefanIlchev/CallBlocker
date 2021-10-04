@@ -31,11 +31,11 @@ android {
 	}
 
 	defaultConfig {
-		applicationId 'ilchev.stefan.callblocker'
 		minSdkVersion 28
 		targetSdkVersion 31
 		versionCode 1
-		versionName '1.0'
+		versionName "$versionCode"
+		applicationId 'ilchev.stefan.callblocker'
 	}
 
 	signingConfigs {
