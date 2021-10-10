@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
 		if (isEnabledButton == null) {
 			return;
 		}
-		boolean isEnabled = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
+		var isEnabled = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
 				.getBoolean(IS_ENABLED, IS_ENABLED_DEFAULT);
 		isEnabledButton.setChecked(isEnabled);
 		isEnabledButton.setOnCheckedChangeListener((buttonView, isChecked) ->
@@ -30,9 +30,9 @@ public class MainActivity extends Activity {
 	}
 
 	private void requestRequestedPermissions() {
+		var packageName = getPackageName();
 		try {
-			String packageName = getPackageName();
-			String[] requestedPermissions = getPackageManager()
+			var requestedPermissions = getPackageManager()
 					.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
 					.requestedPermissions;
 			if (requestedPermissions != null && requestedPermissions.length > 0) {

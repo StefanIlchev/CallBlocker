@@ -15,23 +15,24 @@ public class CallBlocker extends BroadcastReceiver {
 		return phoneNumber == null || phoneNumber.isEmpty();
 	}
 
+	@SuppressWarnings({"deprecation", "RedundantSuppression"})
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (context == null || intent == null) {
 			return;
 		}
-		String action = intent.getAction();
+		var action = intent.getAction();
 		if (!TelephonyManager.ACTION_PHONE_STATE_CHANGED.equals(action)) {
 			return;
 		}
-		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+		var state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		if (!TelephonyManager.EXTRA_STATE_RINGING.equals(state)) {
 			return;
 		}
 		if (!intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) {
 			return;
 		}
-		String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+		var phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
 		if (!isPrivateNumber(phoneNumber)) {
 			return;
 		}
@@ -43,7 +44,7 @@ public class CallBlocker extends BroadcastReceiver {
 			Toast.makeText(context, Manifest.permission.ANSWER_PHONE_CALLS, Toast.LENGTH_LONG)
 					.show();
 		}
-		TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+		var telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
 		if (telecomManager != null && telecomManager.endCall()) {
 			Toast.makeText(context, R.string.app_name, Toast.LENGTH_LONG)
 					.show();
