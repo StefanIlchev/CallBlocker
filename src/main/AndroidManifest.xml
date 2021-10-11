@@ -2,15 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="ilchev.stefan.callblocker">
 
-	<!-- receive phone state broadcasts -->
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-	<!-- receive a second phone state broadcast with the incoming number -->
-	<uses-permission android:name="android.permission.READ_CALL_LOG" />
-
-	<!-- end phone calls -->
-	<uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
-
 	<application
 		android:allowBackup="false"
 		android:icon="@mipmap/ic_launcher"
@@ -33,4 +24,13 @@
 			</intent-filter>
 		</receiver>
 	</application>
+
+	<!-- receive phone state broadcasts -->
+	<uses-permission-sdk-23 android:name="android.permission.READ_PHONE_STATE" />
+
+	<!-- receive a second phone state broadcast with the incoming number -->
+	<uses-permission-sdk-23 android:name="android.permission.READ_CALL_LOG" />
+
+	<!-- end phone calls -->
+	<uses-permission-sdk-23 android:name="android.permission.ANSWER_PHONE_CALLS" />
 </manifest>
