@@ -10,16 +10,16 @@ buildscript {
 	}
 }
 
+apply {
+	plugin 'com.android.application'
+}
+
 allprojects {
 
 	repositories {
 		google()
 		mavenCentral()
 	}
-}
-
-apply {
-	plugin 'com.android.application'
 }
 
 android {
