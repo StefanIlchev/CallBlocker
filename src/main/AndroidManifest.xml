@@ -7,7 +7,7 @@
 		android:icon="@mipmap/ic_launcher"
 		android:label="@string/app_name">
 		<activity
-			android:name="ilchev.stefan.callblocker.MainActivity"
+			android:name=".MainActivity"
 			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -17,7 +17,7 @@
 		</activity>
 
 		<receiver
-			android:name="ilchev.stefan.callblocker.CallBlocker"
+			android:name=".CallBlocker"
 			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.PHONE_STATE" />
