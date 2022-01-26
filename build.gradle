@@ -6,7 +6,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:7.0.4'
+		classpath 'com.android.tools.build:gradle:7.1.0'
 	}
 }
 
@@ -34,7 +34,7 @@ android {
 		minSdkVersion 28
 		targetSdkVersion 31
 		versionCode 1
-		versionName "0.1.$versionCode"
+		versionName "$versionCode"
 		applicationId 'ilchev.stefan.callblocker'
 	}
 
