@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/is_enabled"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:text="@string/app_name" />
+	android:layout_height="match_parent">
+
+	<RadioGroup
+		android:id="@+id/block"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<EditText
+			android:id="@+id/regex"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/regex"
+			android:importantForAutofill="no"
+			android:inputType="text"
+			android:padding="12dp" />
+
+		<RadioButton
+			android:id="@+id/block_none"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="12dp"
+			android:text="@string/block_none" />
+
+		<RadioButton
+			android:id="@+id/block_matches"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="12dp"
+			android:text="@string/block_matches" />
+
+		<RadioButton
+			android:id="@+id/block_others"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="12dp"
+			android:text="@string/block_others" />
+
+		<TextView
+			android:id="@+id/error"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="12dp"
+			android:textColor="#CC0000" />
+	</RadioGroup>
+</ScrollView>
