@@ -6,7 +6,8 @@
 	<RadioGroup
 		android:id="@+id/block"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:paddingHorizontal="14dp">
 
 		<EditText
 			android:id="@+id/regex"
@@ -15,34 +16,37 @@
 			android:hint="@string/regex"
 			android:importantForAutofill="no"
 			android:inputType="text"
-			android:padding="12dp" />
+			android:paddingVertical="14dp"
+			android:typeface="monospace" />
 
 		<RadioButton
 			android:id="@+id/block_none"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingVertical="12dp"
+			android:paddingVertical="14dp"
 			android:text="@string/block_none" />
 
 		<RadioButton
 			android:id="@+id/block_matches"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingVertical="12dp"
+			android:paddingVertical="14dp"
 			android:text="@string/block_matches" />
 
 		<RadioButton
 			android:id="@+id/block_others"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingVertical="12dp"
+			android:paddingVertical="14dp"
 			android:text="@string/block_others" />
 
 		<TextView
 			android:id="@+id/error"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:padding="12dp"
-			android:textColor="#CC0000" />
+			android:paddingVertical="14dp"
+			android:text="@string/app_name"
+			android:textColor="#CC0000"
+			android:typeface="monospace" />
 	</RadioGroup>
 </ScrollView>

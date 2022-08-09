@@ -6,80 +6,98 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class MainActivity extends Activity {
 
 	private static final String TAG = "MainActivity";
 
-	private void updateContent(Consumer<CallBlocker> consumer) {
+	private static int toBlockId(Boolean value) {
+		return value == null ? R.id.block_none
+				: value ? R.id.block_matches
+				: R.id.block_others;
+	}
+
+	private static Boolean toBoolean(int value) {
+		return value == R.id.block_matches ? Boolean.TRUE
+				: value == R.id.block_others ? Boolean.FALSE
+				: null;
+	}
+
+	private void updateContent(int sourceId, Function<CallBlocker, Boolean> function) {
 		var sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
-		var callBlocker = new CallBlocker(sharedPreferences);
-		if (consumer != null) {
-			try {
-				consumer.accept(callBlocker);
-				callBlocker.put(sharedPreferences.edit())
-						.apply();
-			} catch (Throwable t) {
-				TextView errorView = findViewById(R.id.error);
-				if (errorView != null) {
-					errorView.setText(t.getLocalizedMessage());
+		String error = null;
+		try {
+			var callBlocker = new CallBlocker(sharedPreferences);
+			var isLoop = function != null ? function.apply(callBlocker) : null;
+			if (isLoop != null) {
+				if (isLoop) {
+					return;
 				}
-				return;
+				callBlocker.put(sharedPreferences.edit()).apply();
+			}
+			EditText regexView = sourceId != R.id.regex ? findViewById(R.id.regex) : null;
+			if (regexView != null) {
+				regexView.setText(callBlocker.getRegex());
+			}
+			RadioGroup blockView = sourceId != R.id.block ? findViewById(R.id.block) : null;
+			if (blockView != null) {
+				blockView.check(toBlockId(callBlocker.isMatches()));
+			}
+		} catch (Throwable t) {
+			error = t.getLocalizedMessage();
+		} finally {
+			TextView errorView = findViewById(R.id.error);
+			if (errorView != null) {
+				errorView.setText(error);
 			}
 		}
-		var regex = callBlocker.getRegex();
-		var isMatches = callBlocker.isMatches();
-		EditText regexView = findViewById(R.id.regex);
-		if (regexView != null && !regex.equals("" + regexView.getText())) {
-			regexView.setText(regex);
-		}
-		RadioGroup blockView = findViewById(R.id.block);
-		if (blockView != null) {
-			blockView.check(isMatches == null ? R.id.block_none
-					: isMatches ? R.id.block_matches
-					: R.id.block_others);
-		}
-		TextView errorView = findViewById(R.id.error);
-		if (errorView != null) {
-			errorView.setText("");
-		}
 	}
+
+	private final TextWatcher regexListener = new TextWatcher() {
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			var regex = s + "";
+			updateContent(R.id.regex, callBlocker -> {
+				var result = regex.equals(callBlocker.getRegex());
+				callBlocker.setRegex(regex);
+				return result;
+			});
+		}
+	};
+
+	private final RadioGroup.OnCheckedChangeListener blockListener = (group, checkedId) -> {
+		var isMatches = toBoolean(checkedId);
+		updateContent(R.id.block, callBlocker -> {
+			var result = isMatches == callBlocker.isMatches();
+			callBlocker.setMatches(isMatches);
+			return result;
+		});
+	};
 
 	private void initContent() {
 		EditText regexView = findViewById(R.id.regex);
 		if (regexView != null) {
-			regexView.addTextChangedListener(new TextWatcher() {
-
-				@Override
-				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				}
-
-				@Override
-				public void onTextChanged(CharSequence s, int start, int before, int count) {
-				}
-
-				@Override
-				public void afterTextChanged(Editable s) {
-					var regex = "" + s;
-					updateContent(callBlocker ->
-							callBlocker.setRegex(regex));
-				}
-			});
+			regexView.removeTextChangedListener(regexListener);
+			regexView.addTextChangedListener(regexListener);
 		}
 		RadioGroup blockView = findViewById(R.id.block);
 		if (blockView != null) {
-			blockView.setOnCheckedChangeListener((group, checkedId) -> {
-				var isMatches = checkedId == R.id.block_matches ? Boolean.TRUE
-						: checkedId == R.id.block_others ? Boolean.FALSE
-						: null;
-				updateContent(callBlocker ->
-						callBlocker.setMatches(isMatches));
-			});
+			blockView.setOnCheckedChangeListener(blockListener);
 		}
 	}
 
@@ -98,7 +116,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		updateContent(null);
+		updateContent(View.NO_ID, null);
 		initContent();
 		requestRequestedPermissions();
 	}
