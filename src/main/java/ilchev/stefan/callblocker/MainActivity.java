@@ -1,7 +1,11 @@
 package ilchev.stefan.callblocker;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,11 +15,18 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.function.Function;
 
 public class MainActivity extends Activity {
 
 	private static final String TAG = "MainActivity";
+
+	@SuppressLint("InlinedApi")
+	private static final String POST_NOTIFICATIONS =
+			Manifest.permission.POST_NOTIFICATIONS;
 
 	private static int toBlockId(Boolean value) {
 		return value == null ? R.id.block_none
@@ -27,6 +38,15 @@ public class MainActivity extends Activity {
 		return value == R.id.block_matches ? Boolean.TRUE
 				: value == R.id.block_others ? Boolean.FALSE
 				: null;
+	}
+
+	@SuppressWarnings({"deprecation", "RedundantSuppression"})
+	private PackageInfo getPackageInfo(int flags) throws PackageManager.NameNotFoundException {
+		var packageManager = getPackageManager();
+		var packageName = getPackageName();
+		return Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+				? packageManager.getPackageInfo(packageName, flags)
+				: packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags));
 	}
 
 	private void updateContent(int sourceId, Function<CallBlocker, Boolean> function) {
@@ -103,9 +123,16 @@ public class MainActivity extends Activity {
 
 	private void requestRequestedPermissions() {
 		try {
-			var packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
-			if (packageInfo.requestedPermissions != null && packageInfo.requestedPermissions.length > 0) {
-				requestPermissions(packageInfo.requestedPermissions, 0);
+			var packageInfo = getPackageInfo(PackageManager.GET_PERMISSIONS);
+			var set = packageInfo.requestedPermissions != null
+					? new HashSet<>(Arrays.asList(packageInfo.requestedPermissions))
+					: Collections.<String>emptySet();
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+				set.remove(POST_NOTIFICATIONS);
+			}
+			if (!set.isEmpty()) {
+				var permissions = set.toArray(new String[]{});
+				requestPermissions(permissions, 0);
 			}
 		} catch (Throwable t) {
 			Log.w(TAG, t);

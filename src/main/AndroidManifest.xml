@@ -3,7 +3,8 @@
 
 	<application
 		android:icon="@mipmap/ic_launcher"
-		android:label="@string/app_name">
+		android:label="@string/app_name"
+		android:supportsRtl="true">
 
 		<activity
 			android:name=".MainActivity"
@@ -34,4 +35,7 @@
 
 	<!-- end phone calls -->
 	<uses-permission-sdk-23 android:name="android.permission.ANSWER_PHONE_CALLS" />
+
+	<!-- notify blocked calls -->
+	<uses-permission-sdk-23 android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>

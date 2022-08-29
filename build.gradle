@@ -24,6 +24,10 @@ allprojects {
 		mavenLocal()
 		maven { url 'https://jitpack.io' }
 	}
+
+	tasks.withType(JavaCompile) {
+		options.deprecation = true
+	}
 }
 
 android {
@@ -38,7 +42,7 @@ android {
 	defaultConfig {
 		minSdk 28
 		targetSdk compileSdk
-		versionCode 2
+		versionCode 3
 		versionName "$versionCode"
 	}
 
