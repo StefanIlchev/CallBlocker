@@ -146,5 +146,6 @@ public class MainActivity extends Activity {
 		updateContent(View.NO_ID, null);
 		initContent();
 		requestRequestedPermissions();
+		CallReceiver.notifyBlockedCall(this, null);
 	}
 }

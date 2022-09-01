@@ -42,7 +42,7 @@ android {
 	defaultConfig {
 		minSdk 28
 		targetSdk compileSdk
-		versionCode 3
+		versionCode 4
 		versionName "$versionCode"
 	}
 

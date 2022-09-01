@@ -34,7 +34,7 @@ public class CallReceiver extends BroadcastReceiver {
 		return telecomManager != null && telecomManager.endCall();
 	}
 
-	private static void notifyBlockedCall(Context context, String phoneNumber) {
+	public static void notifyBlockedCall(Context context, String phoneNumber) {
 		var manager = context.getSystemService(NotificationManager.class);
 		if (manager == null) {
 			return;
@@ -43,6 +43,16 @@ public class CallReceiver extends BroadcastReceiver {
 		var applicationInfo = context.getApplicationInfo();
 		var applicationIcon = applicationInfo.icon;
 		var applicationLabel = context.getPackageManager().getApplicationLabel(applicationInfo);
+		if (id == 1) {
+			var channel = new NotificationChannel(
+					BuildConfig.APPLICATION_ID,
+					applicationLabel,
+					NotificationManager.IMPORTANCE_MIN);
+			manager.createNotificationChannel(channel);
+		}
+		if (phoneNumber == null) {
+			return;
+		}
 		var text = context.getString(R.string.blocked_phone_number, phoneNumber);
 		var intent = PendingIntent.getActivity(
 				context,
@@ -55,13 +65,6 @@ public class CallReceiver extends BroadcastReceiver {
 				.setContentTitle(applicationLabel)
 				.setContentText(text)
 				.setContentIntent(intent);
-		if (id == 1) {
-			var channel = new NotificationChannel(
-					BuildConfig.APPLICATION_ID,
-					applicationLabel,
-					NotificationManager.IMPORTANCE_MIN);
-			manager.createNotificationChannel(channel);
-		}
 		manager.notify(id, builder.build());
 	}
 
