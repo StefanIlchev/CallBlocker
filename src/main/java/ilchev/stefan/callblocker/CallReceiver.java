@@ -29,6 +29,7 @@ public class CallReceiver extends BroadcastReceiver {
 	private static boolean endCall(Context context) {
 		if (context.checkSelfPermission(Manifest.permission.ANSWER_PHONE_CALLS) != PackageManager.PERMISSION_GRANTED) {
 			Toast.makeText(context, Manifest.permission.ANSWER_PHONE_CALLS, Toast.LENGTH_LONG).show();
+			return false;
 		}
 		var telecomManager = context.getSystemService(TelecomManager.class);
 		return telecomManager != null && telecomManager.endCall();

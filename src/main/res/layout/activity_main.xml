@@ -9,6 +9,13 @@
 		android:layout_height="wrap_content"
 		android:paddingHorizontal="14dp">
 
+		<CheckBox
+			android:id="@+id/screener"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/call_screener" />
+
 		<EditText
 			android:id="@+id/regex"
 			android:layout_width="match_parent"
