@@ -22,7 +22,7 @@ public class CallService extends CallScreeningService {
 			return;
 		}
 		var builder = new CallResponse.Builder();
-		try (AutoCloseable ignored = () -> respondToCall(callDetails, builder.build())) {
+		try {
 			var phoneNumber = callDetails.getHandle().getSchemeSpecificPart();
 			var sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
 			var callBlocker = new CallBlocker(sharedPreferences);
@@ -32,6 +32,8 @@ public class CallService extends CallScreeningService {
 			}
 		} catch (Throwable t) {
 			Log.w(TAG, t);
+		} finally {
+			respondToCall(callDetails, builder.build());
 		}
 	}
 }
