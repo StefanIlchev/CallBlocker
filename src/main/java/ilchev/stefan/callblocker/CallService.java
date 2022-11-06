@@ -25,8 +25,8 @@ public class CallService extends CallScreeningService {
 		try {
 			var phoneNumber = callDetails.getHandle().getSchemeSpecificPart();
 			var sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
-			var callBlocker = new CallBlocker(sharedPreferences);
-			if (callBlocker.isBlocked(phoneNumber)) {
+			var callPredicate = new CallPredicate(sharedPreferences);
+			if (callPredicate.test(phoneNumber)) {
 				endCall(builder);
 				CallReceiver.notifyBlockedCall(this, phoneNumber);
 			}

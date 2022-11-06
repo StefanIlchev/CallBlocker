@@ -43,14 +43,14 @@ android {
 	namespace 'ilchev.stefan.callblocker'
 
 	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_11
-		targetCompatibility JavaVersion.VERSION_11
+		sourceCompatibility JavaVersion.VERSION_17
+		targetCompatibility JavaVersion.VERSION_17
 	}
 
 	defaultConfig {
 		minSdk 28
 		targetSdk compileSdk
-		versionCode 6
+		versionCode 7
 		versionName "$versionCode"
 	}
 

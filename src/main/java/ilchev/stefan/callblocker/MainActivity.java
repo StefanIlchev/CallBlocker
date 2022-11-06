@@ -56,13 +56,13 @@ public class MainActivity extends Activity {
 		@Override
 		public void afterTextChanged(Editable s) {
 			var regex = s + "";
-			updateContent(R.id.regex, callBlocker -> callBlocker.setRegex(regex));
+			updateContent(R.id.regex, it -> it.setRegex(regex));
 		}
 	};
 
 	private final RadioGroup.OnCheckedChangeListener blockListener = (group, checkedId) -> {
 		var isMatches = toBoolean(checkedId);
-		updateContent(R.id.block, callBlocker -> callBlocker.setMatches(isMatches));
+		updateContent(R.id.block, it -> it.setMatches(isMatches));
 	};
 
 	private final CompoundButton.OnCheckedChangeListener screenerListener = (buttonView, isChecked) ->
@@ -85,25 +85,25 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private void updateContent(int sourceId, Consumer<CallBlocker> consumer) {
+	private void updateContent(int sourceId, Consumer<CallPredicate> consumer) {
 		var sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
 		String error = null;
 		try {
-			var callBlocker = new CallBlocker(sharedPreferences);
+			var callPredicate = new CallPredicate(sharedPreferences);
 			if (consumer != null) {
-				consumer.accept(callBlocker);
-				callBlocker.put(sharedPreferences.edit()).apply();
+				consumer.accept(callPredicate);
+				callPredicate.put(sharedPreferences.edit()).apply();
 			}
 			EditText regexView = sourceId != R.id.regex ? findViewById(R.id.regex) : null;
 			if (regexView != null) {
 				regexView.removeTextChangedListener(regexListener);
-				regexView.setText(callBlocker.getRegex());
+				regexView.setText(callPredicate.getRegex());
 				regexView.addTextChangedListener(regexListener);
 			}
 			RadioGroup blockView = sourceId != R.id.block ? findViewById(R.id.block) : null;
 			if (blockView != null) {
 				blockView.setOnCheckedChangeListener(null);
-				blockView.check(toBlockId(callBlocker.isMatches()));
+				blockView.check(toBlockId(callPredicate.isMatches()));
 				blockView.setOnCheckedChangeListener(blockListener);
 			}
 		} catch (Throwable t) {
