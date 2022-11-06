@@ -54,6 +54,14 @@ android {
 		versionName "$versionCode"
 	}
 
+	applicationVariants.all { variant ->
+		variant.outputs.each {
+			def fileName = it.outputFileName
+			def name = fileName - ~/\.[^.]+$/
+			it.outputFileName = "$name-$variant.versionName${fileName.substring name.length()}"
+		}
+	}
+
 	signingConfigs {
 
 		debug {
