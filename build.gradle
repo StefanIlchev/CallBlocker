@@ -1,5 +1,13 @@
 buildscript {
 
+	ext {
+		localProperties = new Properties()
+		def localPropertiesFile = file 'local.properties'
+		if (localPropertiesFile.isFile()) {
+			localPropertiesFile.withReader { localProperties.load it }
+		}
+	}
+
 	repositories {
 		google()
 		mavenCentral()
@@ -49,10 +57,10 @@ android {
 	signingConfigs {
 
 		debug {
-			storeFile file('debug.keystore')
-			storePassword 'android'
-			keyAlias 'androiddebugkey'
-			keyPassword 'android'
+			storeFile file(localProperties.getProperty('storeFile') ?: 'debug.keystore')
+			storePassword localProperties.getProperty('storePassword') ?: 'android'
+			keyAlias localProperties.getProperty('keyAlias') ?: 'androiddebugkey'
+			keyPassword localProperties.getProperty('keyPassword') ?: 'android'
 		}
 	}
 
