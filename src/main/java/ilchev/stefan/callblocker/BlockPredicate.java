@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 import java.util.function.Predicate;
 
-public class CallPredicate implements Predicate<String> {
+public class BlockPredicate implements Predicate<String> {
 
 	private static final String KEY_REGEX = "regex";
 
@@ -31,7 +31,7 @@ public class CallPredicate implements Predicate<String> {
 		isMatches = value;
 	}
 
-	public CallPredicate(SharedPreferences sharedPreferences) {
+	public BlockPredicate(SharedPreferences sharedPreferences) {
 		setRegex(sharedPreferences.getString(KEY_REGEX, ""));
 		setMatches(switch (sharedPreferences.getString(KEY_MATCHES, null + "")) {
 			case true + "" -> Boolean.TRUE;

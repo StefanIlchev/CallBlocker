@@ -79,8 +79,8 @@ public class CallReceiver extends BroadcastReceiver {
 		}
 		var sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
 		try {
-			var callPredicate = new CallPredicate(sharedPreferences);
-			if (callPredicate.test(phoneNumber) &&
+			var blockPredicate = new BlockPredicate(sharedPreferences);
+			if (blockPredicate.test(phoneNumber) &&
 					endCall(context)) {
 				notifyBlockedCall(context, phoneNumber);
 			}

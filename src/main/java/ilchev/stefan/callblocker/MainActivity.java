@@ -85,25 +85,25 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private void updateContent(int sourceId, Consumer<CallPredicate> consumer) {
+	private void updateContent(int sourceId, Consumer<BlockPredicate> consumer) {
 		var sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
 		String error = null;
 		try {
-			var callPredicate = new CallPredicate(sharedPreferences);
+			var blockPredicate = new BlockPredicate(sharedPreferences);
 			if (consumer != null) {
-				consumer.accept(callPredicate);
-				callPredicate.put(sharedPreferences.edit()).apply();
+				consumer.accept(blockPredicate);
+				blockPredicate.put(sharedPreferences.edit()).apply();
 			}
 			EditText regexView = sourceId != R.id.regex ? findViewById(R.id.regex) : null;
 			if (regexView != null) {
 				regexView.removeTextChangedListener(regexListener);
-				regexView.setText(callPredicate.getRegex());
+				regexView.setText(blockPredicate.getRegex());
 				regexView.addTextChangedListener(regexListener);
 			}
 			RadioGroup blockView = sourceId != R.id.block ? findViewById(R.id.block) : null;
 			if (blockView != null) {
 				blockView.setOnCheckedChangeListener(null);
-				blockView.check(toBlockId(callPredicate.isMatches()));
+				blockView.check(toBlockId(blockPredicate.isMatches()));
 				blockView.setOnCheckedChangeListener(blockListener);
 			}
 		} catch (Throwable t) {
