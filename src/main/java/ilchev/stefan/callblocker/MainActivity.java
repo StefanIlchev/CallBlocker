@@ -18,9 +18,8 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class MainActivity extends Activity {
@@ -148,9 +147,9 @@ public class MainActivity extends Activity {
 	private void requestRequestedPermissions() {
 		try {
 			var packageInfo = getPackageInfo(PackageManager.GET_PERMISSIONS);
-			var set = packageInfo.requestedPermissions != null
-					? new HashSet<>(Arrays.asList(packageInfo.requestedPermissions))
-					: Collections.<String>emptySet();
+			var set = new HashSet<>(packageInfo.requestedPermissions != null
+					? List.of(packageInfo.requestedPermissions)
+					: List.of());
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
 				set.remove(POST_NOTIFICATIONS);
 			}
