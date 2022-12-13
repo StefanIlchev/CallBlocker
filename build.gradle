@@ -34,7 +34,7 @@ allprojects {
 	}
 
 	tasks.withType(JavaCompile).configureEach {
-		options.deprecation = true
+		it.options.deprecation = true
 	}
 }
 
