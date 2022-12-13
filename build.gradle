@@ -33,7 +33,7 @@ allprojects {
 		maven { url 'https://jitpack.io' }
 	}
 
-	tasks.withType(JavaCompile) {
+	tasks.withType(JavaCompile).configureEach {
 		options.deprecation = true
 	}
 }
@@ -54,7 +54,7 @@ android {
 		versionName "$versionCode"
 	}
 
-	applicationVariants.all { variant ->
+	applicationVariants.configureEach { variant ->
 		variant.outputs.each {
 			def fileName = it.outputFileName
 			def name = fileName - ~/\.[^.]+$/
