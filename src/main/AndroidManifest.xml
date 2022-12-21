@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<!-- receive phone state broadcasts -->
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+	<!-- receive a second phone state broadcast with the incoming number -->
+	<uses-permission android:name="android.permission.READ_CALL_LOG" />
+
+	<!-- end phone calls -->
+	<uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+
+	<!-- notify blocked calls -->
+	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
 	<application
 		android:icon="@mipmap/ic_launcher"
 		android:label="@string/app_name"
@@ -13,6 +25,7 @@
 
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
+
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
@@ -36,16 +49,4 @@
 			</intent-filter>
 		</service>
 	</application>
-
-	<!-- receive phone state broadcasts -->
-	<uses-permission-sdk-23 android:name="android.permission.READ_PHONE_STATE" />
-
-	<!-- receive a second phone state broadcast with the incoming number -->
-	<uses-permission-sdk-23 android:name="android.permission.READ_CALL_LOG" />
-
-	<!-- end phone calls -->
-	<uses-permission-sdk-23 android:name="android.permission.ANSWER_PHONE_CALLS" />
-
-	<!-- notify blocked calls -->
-	<uses-permission-sdk-23 android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>
