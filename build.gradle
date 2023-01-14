@@ -16,7 +16,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:7.3.1'
+		classpath 'com.android.tools.build:gradle:7.4.0'
 	}
 }
 
@@ -39,6 +39,7 @@ allprojects {
 }
 
 android {
+	buildToolsVersion '33.0.1'
 	compileSdk 33
 	namespace 'ilchev.stefan.callblocker'
 
@@ -50,7 +51,7 @@ android {
 	defaultConfig {
 		minSdk 28
 		targetSdk compileSdk
-		versionCode 10
+		versionCode 11
 		versionName "$versionCode"
 	}
 
