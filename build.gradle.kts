@@ -61,6 +61,6 @@ android {
 	}
 }
 
-tasks.withType(JavaCompile::class).configureEach {
+tasks.withType<JavaCompile>().configureEach {
 	options.isDeprecation = true
 }
