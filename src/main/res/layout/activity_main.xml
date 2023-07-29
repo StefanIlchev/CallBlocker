@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
@@ -14,7 +15,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:paddingVertical="14dp"
-			android:text="@string/call_screener" />
+			android:text="@string/call_screener"
+			tools:ignore="VisualLintButtonSize" />
 
 		<EditText
 			android:id="@+id/regex"
@@ -24,28 +26,32 @@
 			android:importantForAutofill="no"
 			android:inputType="text"
 			android:paddingVertical="14dp"
-			android:typeface="monospace" />
+			android:typeface="monospace"
+			tools:ignore="VisualLintTextFieldSize" />
 
 		<RadioButton
 			android:id="@+id/block_none"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:paddingVertical="14dp"
-			android:text="@string/block_none" />
+			android:text="@string/block_none"
+			tools:ignore="VisualLintButtonSize" />
 
 		<RadioButton
 			android:id="@+id/block_matches"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:paddingVertical="14dp"
-			android:text="@string/block_matches" />
+			android:text="@string/block_matches"
+			tools:ignore="VisualLintButtonSize" />
 
 		<RadioButton
 			android:id="@+id/block_others"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:paddingVertical="14dp"
-			android:text="@string/block_others" />
+			android:text="@string/block_others"
+			tools:ignore="VisualLintButtonSize" />
 
 		<TextView
 			android:id="@+id/error"
