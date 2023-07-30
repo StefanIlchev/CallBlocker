@@ -14,7 +14,7 @@ repositories {
 }
 
 val localProperties = Properties()
-file("local.properties").takeIf { it.isFile }?.bufferedReader()?.use { localProperties.load(it) }
+file("local.properties").takeIf(File::isFile)?.bufferedReader()?.use(localProperties::load)
 
 android {
 	buildToolsVersion = "33.0.2"
