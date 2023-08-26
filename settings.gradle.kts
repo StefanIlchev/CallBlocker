@@ -17,3 +17,19 @@ pluginManagement {
 		kotlin("android") version "1.9.10"
 	}
 }
+
+dependencyResolutionManagement {
+
+	versionCatalogs {
+
+		create("libs") {
+
+			// https://developer.android.com/tools/releases/build-tools
+			version("buildToolsVersion", "33.0.2")
+
+			// https://developer.android.com/tools/releases/platforms
+			version("compileSdk", "33")
+			version("minSdk", "28")
+		}
+	}
+}

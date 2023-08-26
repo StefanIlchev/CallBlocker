@@ -14,11 +14,11 @@ repositories {
 }
 
 val localProperties = Properties()
-file("local.properties").takeIf(File::isFile)?.bufferedReader()?.use(localProperties::load)
+file("${rootDir.path}/local.properties").takeIf(File::isFile)?.bufferedReader()?.use(localProperties::load)
 
 android {
-	buildToolsVersion = "33.0.2"
-	compileSdk = 33
+	buildToolsVersion = libs.versions.buildToolsVersion.get()
+	compileSdk = libs.versions.compileSdk.get().toInt()
 	namespace = "ilchev.stefan.callblocker"
 
 	compileOptions {
@@ -27,7 +27,7 @@ android {
 	}
 
 	defaultConfig {
-		minSdk = 28
+		minSdk = libs.versions.minSdk.get().toInt()
 		targetSdk = compileSdk
 		versionCode = 12
 		versionName = "$versionCode"
@@ -43,10 +43,10 @@ android {
 	signingConfigs {
 
 		named("debug") {
-			storeFile = file(localProperties.getProperty("storeFile") ?: "debug.keystore")
-			storePassword = localProperties.getProperty("storePassword") ?: "android"
-			keyAlias = localProperties.getProperty("keyAlias") ?: "androiddebugkey"
-			keyPassword = localProperties.getProperty("keyPassword") ?: "android"
+			storeFile = file(localProperties.getProperty("store.file") ?: "${rootDir.path}/debug.keystore")
+			storePassword = localProperties.getProperty("store.password") ?: "android"
+			keyAlias = localProperties.getProperty("key.alias") ?: "androiddebugkey"
+			keyPassword = localProperties.getProperty("key.password") ?: "android"
 		}
 	}
 
