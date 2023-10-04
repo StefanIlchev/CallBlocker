@@ -25,10 +25,10 @@ dependencyResolutionManagement {
 		create("libs") {
 
 			// https://developer.android.com/tools/releases/build-tools
-			version("buildToolsVersion", "33.0.2")
+			version("buildToolsVersion", "34.0.0")
 
 			// https://developer.android.com/tools/releases/platforms
-			version("compileSdk", "33")
+			version("compileSdk", "34")
 			version("minSdk", "28")
 		}
 	}
