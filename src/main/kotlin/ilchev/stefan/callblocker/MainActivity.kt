@@ -40,7 +40,7 @@ class MainActivity : Activity() {
 		updateScreener(buttonView)
 	}
 
-	@Suppress("deprecation")
+	@Suppress("deprecation", "KotlinRedundantDiagnosticSuppress")
 	private fun getPackageInfo(
 		flags: Int
 	) = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
