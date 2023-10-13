@@ -13,8 +13,9 @@ repositories {
 	maven { url = uri("https://jitpack.io") }
 }
 
-val localProperties = Properties()
-file("${rootDir.path}/local.properties").takeIf(File::isFile)?.bufferedReader()?.use(localProperties::load)
+val localProperties by extra(Properties().also {
+	file("${rootDir.path}/local.properties").takeIf(File::isFile)?.bufferedReader()?.use(it::load)
+})
 
 android {
 	buildToolsVersion = libs.versions.buildToolsVersion.get()
