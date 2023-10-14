@@ -17,15 +17,14 @@ val localProperties by extra(Properties().also {
 	file("${rootDir.path}/local.properties").takeIf(File::isFile)?.bufferedReader()?.use(it::load)
 })
 
+kotlin {
+	jvmToolchain(libs.versions.jvmToolchain.get().toInt())
+}
+
 android {
 	buildToolsVersion = libs.versions.buildToolsVersion.get()
 	compileSdk = libs.versions.compileSdk.get().toInt()
 	namespace = "ilchev.stefan.callblocker"
-
-	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_17
-		targetCompatibility = JavaVersion.VERSION_17
-	}
 
 	defaultConfig {
 		minSdk = libs.versions.minSdk.get().toInt()
