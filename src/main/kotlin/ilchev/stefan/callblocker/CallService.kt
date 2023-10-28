@@ -16,7 +16,7 @@ class CallService : CallScreeningService() {
 			val phoneNumber = callDetails.handle.schemeSpecificPart
 			val sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
 			val blockPredicate = BlockPredicate(sharedPreferences)
-			if (blockPredicate(phoneNumber)) {
+			if (blockPredicate(this, phoneNumber)) {
 				endCall(builder)
 				CallReceiver.notifyBlockedCall(this, phoneNumber)
 			}

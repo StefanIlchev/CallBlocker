@@ -13,11 +13,18 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
 
 class MainActivity : Activity() {
+
+	private val blockNonContactsListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+		updateContent(R.id.block_non_contacts) { it.isBlockNonContacts = isChecked }
+	}
+
+	private val excludeContactsListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+		updateContent(R.id.exclude_contacts) { it.isExcludeContacts = isChecked }
+	}
 
 	private val regexListener = object : TextWatcher {
 
@@ -57,6 +64,11 @@ class MainActivity : Activity() {
 		}
 	}
 
+	private fun <T : View> findViewById(
+		sourceId: Int,
+		id: Int
+	) = if (sourceId != id) findViewById<T>(id) else null
+
 	private fun updateContent(sourceId: Int, consumer: ((BlockPredicate) -> Unit)?) {
 		val sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
 		var error: String? = null
@@ -66,13 +78,17 @@ class MainActivity : Activity() {
 				consumer(blockPredicate)
 				blockPredicate.put(sharedPreferences.edit()).apply()
 			}
-			val regexView = if (sourceId != R.id.regex) findViewById<EditText>(R.id.regex) else null
+			val blockNonContactsView = findViewById<CompoundButton>(sourceId, R.id.block_non_contacts)
+			blockNonContactsView?.setChecked(blockPredicate.isBlockNonContacts, blockNonContactsListener)
+			val excludeContactsView = findViewById<CompoundButton>(sourceId, R.id.exclude_contacts)
+			excludeContactsView?.setChecked(blockPredicate.isExcludeContacts, excludeContactsListener)
+			val regexView = findViewById<TextView>(sourceId, R.id.regex)
 			if (regexView != null) {
 				regexView.removeTextChangedListener(regexListener)
-				regexView.setText(blockPredicate.regex)
+				regexView.text = blockPredicate.regex
 				regexView.addTextChangedListener(regexListener)
 			}
-			val blockView = if (sourceId != R.id.block) findViewById<RadioGroup>(R.id.block) else null
+			val blockView = findViewById<RadioGroup>(sourceId, R.id.block)
 			if (blockView != null) {
 				blockView.setOnCheckedChangeListener(null)
 				blockView.check(blockPredicate.isMatches.toBlockId())
@@ -90,9 +106,7 @@ class MainActivity : Activity() {
 
 	private fun updateScreener(screener: CompoundButton, visibility: Int, isChecked: Boolean) {
 		screener.visibility = visibility
-		screener.setOnCheckedChangeListener(null)
-		screener.isChecked = isChecked
-		screener.setOnCheckedChangeListener(screenerListener)
+		screener.setChecked(isChecked, screenerListener)
 	}
 
 	private fun updateScreener(buttonView: CompoundButton?) {
@@ -160,6 +174,12 @@ class MainActivity : Activity() {
 			R.id.block_matches -> true
 			R.id.block_others -> false
 			else -> null
+		}
+
+		private fun CompoundButton.setChecked(value: Boolean, listener: CompoundButton.OnCheckedChangeListener) {
+			setOnCheckedChangeListener(null)
+			isChecked = value
+			setOnCheckedChangeListener(listener)
 		}
 	}
 }

@@ -1,8 +1,15 @@
 package ilchev.stefan.callblocker
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
+import android.provider.ContactsContract
 
-class BlockPredicate(sharedPreferences: SharedPreferences) : (String) -> Boolean {
+class BlockPredicate(sharedPreferences: SharedPreferences) : (Context, String) -> Boolean {
+
+	var isBlockNonContacts = sharedPreferences.getBoolean(KEY_BLOCK_NON_CONTACTS, false)
+
+	var isExcludeContacts = sharedPreferences.getBoolean(KEY_EXCLUDE_CONTACTS, false)
 
 	var regex = sharedPreferences.getString(KEY_REGEX, null) ?: ""
 		set(value) {
@@ -14,18 +21,41 @@ class BlockPredicate(sharedPreferences: SharedPreferences) : (String) -> Boolean
 
 	fun put(
 		editor: SharedPreferences.Editor
-	): SharedPreferences.Editor = editor.putString(KEY_REGEX, regex)
+	): SharedPreferences.Editor = editor.putBoolean(KEY_BLOCK_NON_CONTACTS, isBlockNonContacts)
+		.putBoolean(KEY_EXCLUDE_CONTACTS, isExcludeContacts)
+		.putString(KEY_REGEX, regex)
 		.putString(KEY_MATCHES, isMatches?.toString())
 
-	override fun invoke(phoneNumber: String): Boolean {
+	override fun invoke(context: Context, phoneNumber: String): Boolean {
+		val isContact by lazy { context.isContact(phoneNumber) }
+		if (isBlockNonContacts && isContact == false) return true
+		if (isExcludeContacts && isContact == true) return false
 		val isMatches = isMatches ?: return false
 		return isMatches == phoneNumber.matches(regex.toRegex())
 	}
 
 	companion object {
 
+		private const val KEY_BLOCK_NON_CONTACTS = "block_non_contacts"
+
+		private const val KEY_EXCLUDE_CONTACTS = "exclude_contacts"
+
 		private const val KEY_REGEX = "regex"
 
 		private const val KEY_MATCHES = "matches"
+
+		private fun Context.isContact(
+			phoneNumber: String
+		) = try {
+			contentResolver?.query(
+				Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)),
+				arrayOf(ContactsContract.PhoneLookup._ID),
+				null,
+				null,
+				null
+			)?.use { it.moveToFirst() }
+		} catch (ignored: Throwable) {
+			null
+		}
 	}
 }

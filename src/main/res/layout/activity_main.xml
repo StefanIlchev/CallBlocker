@@ -18,6 +18,22 @@
 			android:text="@string/call_screener"
 			tools:ignore="VisualLintButtonSize" />
 
+		<CheckBox
+			android:id="@+id/block_non_contacts"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/block_non_contacts"
+			tools:ignore="VisualLintButtonSize" />
+
+		<CheckBox
+			android:id="@+id/exclude_contacts"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/exclude_contacts"
+			tools:ignore="VisualLintButtonSize" />
+
 		<EditText
 			android:id="@+id/regex"
 			android:layout_width="match_parent"
