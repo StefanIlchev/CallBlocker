@@ -29,7 +29,7 @@ android {
 	defaultConfig {
 		minSdk = libs.versions.minSdk.get().toInt()
 		targetSdk = compileSdk
-		versionCode = 15
+		versionCode = 16
 		versionName = "$versionCode"
 	}
 
