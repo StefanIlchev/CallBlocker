@@ -25,7 +25,7 @@ class CallReceiver : BroadcastReceiver() {
 		val sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 		try {
 			val blockPredicate = BlockPredicate(sharedPreferences)
-			if (blockPredicate(context, phoneNumber) && endCall(context)) {
+			if (blockPredicate(phoneNumber, context.contentResolver) && endCall(context)) {
 				notifyBlockedCall(context, phoneNumber)
 			}
 		} catch (t: Throwable) {

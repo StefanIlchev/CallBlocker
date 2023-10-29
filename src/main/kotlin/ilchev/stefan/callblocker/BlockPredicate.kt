@@ -1,6 +1,6 @@
 package ilchev.stefan.callblocker
 
-import android.content.Context
+import android.content.ContentResolver
 import android.content.SharedPreferences
 import android.net.Uri
 import android.provider.ContactsContract
@@ -9,7 +9,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-class BlockPredicate(sharedPreferences: SharedPreferences) : (Context, String) -> Boolean {
+class BlockPredicate(sharedPreferences: SharedPreferences) : (String, ContentResolver?) -> Boolean {
 
 	var isBlockNonContacts = sharedPreferences.getBoolean(KEY_BLOCK_NON_CONTACTS, false)
 
@@ -30,8 +30,8 @@ class BlockPredicate(sharedPreferences: SharedPreferences) : (Context, String) -
 		.putString(KEY_REGEX, regex)
 		.putString(KEY_MATCHES, isMatches?.toString())
 
-	override fun invoke(context: Context, phoneNumber: String): Boolean {
-		val isContact by lazy { context.isContact(phoneNumber) }
+	override fun invoke(phoneNumber: String, contentResolver: ContentResolver?): Boolean {
+		val isContact by lazy { contentResolver?.isContact(phoneNumber) }
 		if (isBlockNonContacts && isContact == false) return true
 		if (isExcludeContacts && isContact == true) return false
 		val isMatches = isMatches ?: return false
@@ -48,11 +48,11 @@ class BlockPredicate(sharedPreferences: SharedPreferences) : (Context, String) -
 
 		private const val KEY_MATCHES = "matches"
 
-		private fun Context.isContact(
+		private fun ContentResolver.isContact(
 			phoneNumber: String
 		) = try {
 			val task = Callable {
-				contentResolver?.query(
+				query(
 					Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)),
 					arrayOf(ContactsContract.PhoneLookup._ID),
 					null,
