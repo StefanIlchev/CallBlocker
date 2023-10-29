@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.provider.ContactsContract
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 class BlockPredicate(sharedPreferences: SharedPreferences) : (Context, String) -> Boolean {
 
@@ -47,13 +51,34 @@ class BlockPredicate(sharedPreferences: SharedPreferences) : (Context, String) -
 		private fun Context.isContact(
 			phoneNumber: String
 		) = try {
-			contentResolver?.query(
-				Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)),
-				arrayOf(ContactsContract.PhoneLookup._ID),
-				null,
-				null,
+			val task = Callable {
+				contentResolver?.query(
+					Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)),
+					arrayOf(ContactsContract.PhoneLookup._ID),
+					null,
+					null,
+					null
+				)?.use { it.moveToFirst() }
+			}
+			val factory = Executors.defaultThreadFactory()
+			val executor = Executors.newSingleThreadExecutor {
+				factory.newThread(it).apply {
+					if (!isDaemon) {
+						isDaemon = true
+					}
+				}
+			}
+			val future = try {
+				executor.submit(task)
+			} finally {
+				executor.shutdown()
+			}
+			try {
+				future.get(3_000L, TimeUnit.MILLISECONDS)
+			} catch (ignored: TimeoutException) {
+				future.cancel(true)
 				null
-			)?.use { it.moveToFirst() }
+			}
 		} catch (ignored: Throwable) {
 			null
 		}
