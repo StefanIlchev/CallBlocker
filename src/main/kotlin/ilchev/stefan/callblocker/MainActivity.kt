@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -56,6 +57,16 @@ class MainActivity : Activity() {
 		packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
 	}
 
+	private fun isActivityFound(
+		intent: Intent
+	) = try {
+		val activityInfo = intent.resolveActivityInfo(packageManager, 0)
+		activityInfo?.isEnabled == true && activityInfo.exported
+	} catch (t: Throwable) {
+		Log.w(TAG, t)
+		false
+	}
+
 	private fun tryStartActivityForResult(intent: Intent, requestCode: Int, options: Bundle?) {
 		try {
 			startActivityForResult(intent, requestCode, options)
@@ -78,52 +89,55 @@ class MainActivity : Activity() {
 				consumer(blockPredicate)
 				blockPredicate.put(sharedPreferences.edit()).apply()
 			}
-			val blockNonContactsView = findViewById<CompoundButton>(sourceId, R.id.block_non_contacts)
-			blockNonContactsView?.setChecked(blockPredicate.isBlockNonContacts, blockNonContactsListener)
-			val excludeContactsView = findViewById<CompoundButton>(sourceId, R.id.exclude_contacts)
-			excludeContactsView?.setChecked(blockPredicate.isExcludeContacts, excludeContactsListener)
-			val regexView = findViewById<TextView>(sourceId, R.id.regex)
-			if (regexView != null) {
-				regexView.removeTextChangedListener(regexListener)
-				regexView.text = blockPredicate.regex
-				regexView.addTextChangedListener(regexListener)
+			findViewById<CompoundButton>(sourceId, R.id.block_non_contacts)?.apply {
+				setChecked(blockPredicate.isBlockNonContacts, blockNonContactsListener)
 			}
-			val blockView = findViewById<RadioGroup>(sourceId, R.id.block)
-			if (blockView != null) {
-				blockView.setOnCheckedChangeListener(null)
-				blockView.check(blockPredicate.isMatches.toBlockId())
-				blockView.setOnCheckedChangeListener(blockListener)
+			findViewById<CompoundButton>(sourceId, R.id.exclude_contacts)?.apply {
+				setChecked(blockPredicate.isExcludeContacts, excludeContactsListener)
+			}
+			findViewById<TextView>(sourceId, R.id.regex)?.apply {
+				removeTextChangedListener(regexListener)
+				text = blockPredicate.regex
+				addTextChangedListener(regexListener)
+			}
+			findViewById<RadioGroup>(sourceId, R.id.block)?.apply {
+				setOnCheckedChangeListener(null)
+				check(blockPredicate.isMatches.toBlockId())
+				setOnCheckedChangeListener(blockListener)
 			}
 		} catch (t: Throwable) {
 			error = t.localizedMessage
 		} finally {
-			val errorView = findViewById<TextView>(R.id.error)
-			if (errorView != null) {
-				errorView.text = error
-			}
+			findViewById<TextView>(R.id.error)?.text = error
 		}
 	}
 
-	private fun updateScreener(screener: CompoundButton, visibility: Int, isChecked: Boolean) {
-		screener.visibility = visibility
-		screener.setChecked(isChecked, screenerListener)
+	private fun updateScreener(buttonView: CompoundButton?, screenerVisibility: Int, isScreener: Boolean) {
+		(buttonView ?: findViewById(R.id.screener))?.apply {
+			visibility = screenerVisibility
+			setChecked(isScreener, screenerListener)
+		}
 	}
 
 	private fun updateScreener(buttonView: CompoundButton?) {
-		val screener = buttonView ?: findViewById(R.id.screener) ?: return
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-			updateScreener(screener, View.GONE, false)
+			updateScreener(buttonView, View.GONE, false)
 			return
 		}
 		val roleManager = getSystemService(RoleManager::class.java)
 		if (roleManager?.isRoleAvailable(RoleManager.ROLE_CALL_SCREENING) != true) {
-			updateScreener(screener, View.GONE, false)
+			updateScreener(buttonView, View.GONE, false)
 			return
 		}
-		val isRoleHeld = roleManager.isRoleHeld(RoleManager.ROLE_CALL_SCREENING)
-		updateScreener(screener, View.VISIBLE, isRoleHeld)
-		if (buttonView != null && !isRoleHeld) {
-			val intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING)
+		val isScreener = roleManager.isRoleHeld(RoleManager.ROLE_CALL_SCREENING)
+		updateScreener(buttonView, View.VISIBLE, isScreener)
+		buttonView ?: return
+		val intent = if (isScreener) {
+			Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
+		} else {
+			roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING)
+		}
+		if (isActivityFound(intent)) {
 			tryStartActivityForResult(intent, 0, null)
 		}
 	}
@@ -149,7 +163,7 @@ class MainActivity : Activity() {
 		setContentView(R.layout.activity_main)
 		updateContent(View.NO_ID, null)
 		requestRequestedPermissions()
-		CallReceiver.notifyBlockedCall(this, null)
+		notifyBlockedCall(null)
 	}
 
 	override fun onResume() {

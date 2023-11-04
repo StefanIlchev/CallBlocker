@@ -1,15 +1,11 @@
 package ilchev.stefan.callblocker
 
-import android.content.ContentResolver
 import android.content.SharedPreferences
-import android.net.Uri
-import android.provider.ContactsContract
-import java.util.concurrent.Callable
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
 
-class BlockPredicate(sharedPreferences: SharedPreferences) : (String, ContentResolver?) -> Boolean {
+class BlockPredicate(
+	sharedPreferences: SharedPreferences,
+	private val contactPredicate: (String) -> Boolean? = { null }
+) : (String) -> Boolean {
 
 	var isBlockNonContacts = sharedPreferences.getBoolean(KEY_BLOCK_NON_CONTACTS, false)
 
@@ -30,8 +26,8 @@ class BlockPredicate(sharedPreferences: SharedPreferences) : (String, ContentRes
 		.putString(KEY_REGEX, regex)
 		.putString(KEY_MATCHES, isMatches?.toString())
 
-	override fun invoke(phoneNumber: String, contentResolver: ContentResolver?): Boolean {
-		val isContact by lazy { contentResolver?.isContact(phoneNumber) }
+	override fun invoke(phoneNumber: String): Boolean {
+		val isContact by lazy { contactPredicate(phoneNumber) }
 		if (isBlockNonContacts && isContact == false) return true
 		if (isExcludeContacts && isContact == true) return false
 		val isMatches = isMatches ?: return false
@@ -47,40 +43,5 @@ class BlockPredicate(sharedPreferences: SharedPreferences) : (String, ContentRes
 		private const val KEY_REGEX = "regex"
 
 		private const val KEY_MATCHES = "matches"
-
-		private fun ContentResolver.isContact(
-			phoneNumber: String
-		) = try {
-			val task = Callable {
-				query(
-					Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)),
-					arrayOf(ContactsContract.PhoneLookup._ID),
-					null,
-					null,
-					null
-				)?.use { it.moveToFirst() }
-			}
-			val factory = Executors.defaultThreadFactory()
-			val executor = Executors.newSingleThreadExecutor {
-				factory.newThread(it).apply {
-					if (!isDaemon) {
-						isDaemon = true
-					}
-				}
-			}
-			val future = try {
-				executor.submit(task)
-			} finally {
-				executor.shutdown()
-			}
-			try {
-				future.get(3_000L, TimeUnit.MILLISECONDS)
-			} catch (ignored: TimeoutException) {
-				future.cancel(true)
-				null
-			}
-		} catch (ignored: Throwable) {
-			null
-		}
 	}
 }

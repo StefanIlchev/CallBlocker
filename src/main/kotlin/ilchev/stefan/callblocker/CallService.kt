@@ -14,11 +14,12 @@ class CallService : CallScreeningService() {
 		val builder = CallResponse.Builder()
 		try {
 			val phoneNumber = callDetails.handle.schemeSpecificPart
+			val isContact = callDetails.isContact
 			val sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
-			val blockPredicate = BlockPredicate(sharedPreferences)
-			if (blockPredicate(phoneNumber, contentResolver)) {
+			val blockPredicate = BlockPredicate(sharedPreferences) { isContact ?: isContact(it) }
+			if (blockPredicate(phoneNumber)) {
 				endCall(builder)
-				CallReceiver.notifyBlockedCall(this, phoneNumber)
+				notifyBlockedCall(phoneNumber)
 			}
 		} catch (t: Throwable) {
 			Log.w(TAG, t)
@@ -30,11 +31,5 @@ class CallService : CallScreeningService() {
 	companion object {
 
 		private const val TAG = "CallService"
-
-		private fun endCall(
-			builder: CallResponse.Builder
-		) = builder.setDisallowCall(true)
-			.setRejectCall(true)
-			.setSkipNotification(true)
 	}
 }

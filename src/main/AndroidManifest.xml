@@ -16,6 +16,13 @@
 	<!-- needed for contact checks -->
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
 
+	<queries>
+
+		<intent>
+			<action android:name="android.settings.MANAGE_DEFAULT_APPS_SETTINGS" />
+		</intent>
+	</queries>
+
 	<application
 		android:icon="@mipmap/ic_launcher"
 		android:label="@string/app_name"
