@@ -11,10 +11,10 @@ pluginManagement {
 	plugins {
 
 		// https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
-		id("com.android.application") version "8.1.3"
+		id("com.android.application") version "8.1.4"
 
 		// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-		kotlin("android") version "1.9.20"
+		kotlin("android") version "1.9.21"
 	}
 }
 
