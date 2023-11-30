@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<RadioGroup
+		android:id="@+id/block"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingHorizontal="14dp">
+
+		<CheckBox
+			android:id="@+id/screener"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/call_screener"
+			tools:ignore="VisualLintButtonSize" />
+
+		<CheckBox
+			android:id="@+id/block_non_contacts"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/block_non_contacts"
+			tools:ignore="VisualLintButtonSize" />
+
+		<CheckBox
+			android:id="@+id/exclude_contacts"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/exclude_contacts"
+			tools:ignore="VisualLintButtonSize" />
+
+		<EditText
+			android:id="@+id/regex"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/regex"
+			android:importantForAutofill="no"
+			android:inputType="text"
+			android:paddingVertical="14dp"
+			android:typeface="monospace"
+			tools:ignore="VisualLintTextFieldSize" />
+
+		<RadioButton
+			android:id="@+id/block_none"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/block_none"
+			tools:ignore="VisualLintButtonSize" />
+
+		<RadioButton
+			android:id="@+id/block_matches"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/block_matches"
+			tools:ignore="VisualLintButtonSize" />
+
+		<RadioButton
+			android:id="@+id/block_others"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/block_others"
+			tools:ignore="VisualLintButtonSize" />
+
+		<TextView
+			android:id="@+id/error"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingVertical="14dp"
+			android:text="@string/app_name"
+			android:textColor="#CC0000"
+			android:typeface="monospace" />
+	</RadioGroup>
+</ScrollView>
