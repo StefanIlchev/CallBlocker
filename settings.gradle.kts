@@ -14,7 +14,7 @@ pluginManagement {
 		id("com.android.application") version "8.2.0"
 
 		// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-		kotlin("android") version "1.9.21"
+		kotlin("android") version "1.9.22"
 	}
 }
 
