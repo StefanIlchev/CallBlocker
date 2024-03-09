@@ -25,7 +25,7 @@ dependencyResolutionManagement {
 		create("libs") {
 
 			// https://developer.android.com/build/jdks
-			version("jvmToolchain", "17")
+			version("jvmToolchain", "21")
 
 			// https://developer.android.com/tools/releases/build-tools
 			version("buildToolsVersion", "34.0.0")

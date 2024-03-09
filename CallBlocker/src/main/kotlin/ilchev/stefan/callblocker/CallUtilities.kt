@@ -97,7 +97,7 @@ private var blockedCallNotificationId = 0
 
 fun Context.notifyBlockedCall(phoneNumber: String?) {
 	val manager = getSystemService(NotificationManager::class.java) ?: return
-	blockedCallNotificationId = blockedCallNotificationId % Int.MAX_VALUE + 1
+	blockedCallNotificationId = blockedCallNotificationId % (UpdateService.NOTIFICATION_ID - 1) + 1
 	val id = blockedCallNotificationId
 	val applicationInfo = applicationInfo
 	val applicationIcon = applicationInfo.icon

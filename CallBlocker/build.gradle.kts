@@ -26,8 +26,18 @@ android {
 	defaultConfig {
 		minSdk = libs.versions.minSdk.get().toInt()
 		targetSdk = compileSdk
-		versionCode = 17
+		versionCode = 18
 		versionName = "$versionCode"
+		buildConfigField(
+			"String",
+			"LATEST_RELEASE_URL",
+			"\"https://api.github.com/repos/StefanIlchev/${rootProject.name}/releases/latest\""
+		)
+		buildConfigField(
+			"String",
+			"PROJECT_NAME",
+			"\"${project.name}\""
+		)
 	}
 
 	applicationVariants.configureEach {

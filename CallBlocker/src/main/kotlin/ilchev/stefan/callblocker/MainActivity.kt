@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.role.RoleManager
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -48,6 +49,18 @@ class MainActivity : Activity() {
 		updateScreener(buttonView)
 	}
 
+	private val isStopIntent
+		get() = intent?.action == null
+
+	private var isInstallPackagesRequester
+		get() = packageManager.canRequestPackageInstalls() ||
+				getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
+					.getBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, false)
+		set(value) = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
+			.edit()
+			.putBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, value)
+			.apply()
+
 	@Suppress("deprecation", "KotlinRedundantDiagnosticSuppress")
 	private fun getPackageInfo(
 		flags: Int
@@ -73,6 +86,15 @@ class MainActivity : Activity() {
 		} catch (t: Throwable) {
 			Log.w(TAG, t)
 		}
+	}
+
+	private fun tryStopService(
+		intent: Intent
+	) = try {
+		stopService(intent)
+	} catch (t: Throwable) {
+		Log.w(TAG, t)
+		false
 	}
 
 	private fun <T : View> findViewById(
@@ -142,16 +164,56 @@ class MainActivity : Activity() {
 		}
 	}
 
-	private fun requestRequestedPermissions() {
+	private fun request(action: String, requestCode: RequestCode): Boolean {
+		val intent = Intent(action, Uri.fromParts("package", packageName, null))
+		if (isActivityFound(intent) ||
+			isActivityFound(intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS))
+		) {
+			tryStartActivityForResult(intent, requestCode.ordinal, null)
+			return true
+		}
+		return false
+	}
+
+	private fun requestRequestedPermissions(): Array<String>? {
 		try {
 			val packageInfo = getPackageInfo(PackageManager.GET_PERMISSIONS)
 			val set = mutableSetOf(*packageInfo.requestedPermissions ?: emptyArray())
+			if (set.remove(Manifest.permission.REQUEST_INSTALL_PACKAGES) &&
+				!isInstallPackagesRequester &&
+				request(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, RequestCode.REQUEST_INSTALL_PACKAGES)
+			) {
+				tryStopService(Intent(this, UpdateService::class.java))
+				return arrayOf(Manifest.permission.REQUEST_INSTALL_PACKAGES)
+			}
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+				set.remove(UPDATE_PACKAGES_WITHOUT_USER_ACTION)
+			}
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
 				set.remove(POST_NOTIFICATIONS)
 			}
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+				set.remove(FOREGROUND_SERVICE_DATA_SYNC)
+			}
 			if (set.isNotEmpty()) {
 				val permissions = set.toTypedArray()
-				requestPermissions(permissions, 0)
+				requestPermissions(permissions, RequestCode.REQUESTED_PERMISSIONS.ordinal)
+				return permissions
+			}
+		} catch (t: Throwable) {
+			Log.w(TAG, t)
+		}
+		return null
+	}
+
+	private fun callUpdateService() {
+		try {
+			val service = (intent?.let(::Intent) ?: Intent()).setClass(this, UpdateService::class.java)
+			if (isStopIntent) {
+				tryStopService(service)
+				finish()
+			} else if (packageManager.canRequestPackageInstalls()) {
+				startForegroundService(service)
 			}
 		} catch (t: Throwable) {
 			Log.w(TAG, t)
@@ -162,13 +224,52 @@ class MainActivity : Activity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 		updateContent(View.NO_ID, null)
-		requestRequestedPermissions()
+		if (requestRequestedPermissions() == null) {
+			callUpdateService()
+		}
 		notifyBlockedCall(null)
 	}
 
 	override fun onResume() {
 		super.onResume()
 		updateScreener(null)
+		if (isStopIntent) {
+			callUpdateService()
+		}
+	}
+
+	override fun onRequestPermissionsResult(
+		requestCode: Int,
+		permissions: Array<String>,
+		grantResults: IntArray
+	) = when (requestCode) {
+		RequestCode.REQUESTED_PERMISSIONS.ordinal -> callUpdateService()
+		else -> Unit
+	}
+
+	override fun onActivityResult(
+		requestCode: Int,
+		resultCode: Int,
+		data: Intent?
+	) = when (requestCode) {
+		RequestCode.REQUEST_INSTALL_PACKAGES.ordinal -> {
+			isInstallPackagesRequester = !isInstallPackagesRequester
+			if (requestRequestedPermissions() == null) {
+				callUpdateService()
+			}
+			Unit
+		}
+
+		else -> Unit
+	}
+
+	override fun onNewIntent(intent: Intent) {
+		this.intent = intent
+	}
+
+	private enum class RequestCode {
+		REQUESTED_PERMISSIONS,
+		REQUEST_INSTALL_PACKAGES
 	}
 
 	companion object {
@@ -176,7 +277,13 @@ class MainActivity : Activity() {
 		private const val TAG = "MainActivity"
 
 		@SuppressLint("InlinedApi")
+		private const val UPDATE_PACKAGES_WITHOUT_USER_ACTION = Manifest.permission.UPDATE_PACKAGES_WITHOUT_USER_ACTION
+
+		@SuppressLint("InlinedApi")
 		private const val POST_NOTIFICATIONS = Manifest.permission.POST_NOTIFICATIONS
+
+		@SuppressLint("InlinedApi")
+		private const val FOREGROUND_SERVICE_DATA_SYNC = Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC
 
 		private fun Boolean?.toBlockId() = when (this) {
 			null -> R.id.block_none
