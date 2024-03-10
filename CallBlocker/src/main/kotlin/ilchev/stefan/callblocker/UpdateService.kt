@@ -336,8 +336,7 @@ class UpdateService : Service() {
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 		updateVersionName ?: try {
 			val currentVersionName = getPackageInfo(0).versionName
-			val workHandler = workHandler!!
-			workHandler.post {
+			workHandler!!.post {
 				try {
 					val latestRelease = JSONObject(URI.create(BuildConfig.LATEST_RELEASE_URL).toURL().readText())
 					val versionName = latestRelease.getString("name").takeIf { currentVersionName != it }
@@ -352,7 +351,8 @@ class UpdateService : Service() {
 						val asset = assets.getJSONObject(i)
 						if (asset.getString("name") != fileName) continue
 						val downloadUri = Uri.parse(asset.getString("browser_download_url"))
-						mainHandler.post {
+						mainHandler.post main@{
+							val workHandler = workHandler ?: return@main
 							try {
 								if (versionName != updateVersionName) {
 									startUpdate(versionName, fileName, downloadUri, workHandler)
