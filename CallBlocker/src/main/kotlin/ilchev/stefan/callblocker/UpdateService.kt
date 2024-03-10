@@ -362,7 +362,7 @@ class UpdateService : Service() {
 				}
 				Log.v(TAG, "\"$KEY_ASSETS\": $assets")
 			} catch (t: Throwable) {
-				t.message?.also { Log.v(TAG, it) }
+				Log.v(TAG, "${t.message}")
 			}
 			postUpdateStop(null)
 		}
