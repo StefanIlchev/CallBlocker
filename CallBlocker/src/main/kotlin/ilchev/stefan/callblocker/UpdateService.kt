@@ -340,29 +340,26 @@ class UpdateService : Service() {
 				try {
 					val latestRelease = JSONObject(URI.create(BuildConfig.LATEST_RELEASE_URL).toURL().readText())
 					val versionName = latestRelease.getString("name").takeIf { currentVersionName != it }
-					if (versionName == null) {
-						postUpdateStop(null)
-						return@post
-					}
-					if (versionName == updateVersionName) return@post
-					val fileName = "${BuildConfig.PROJECT_NAME}-${BuildConfig.BUILD_TYPE}-$versionName.apk"
-					val assets = latestRelease.getJSONArray("assets")
-					for (i in 0 until assets.length()) {
-						val asset = assets.getJSONObject(i)
-						if (asset.getString("name") != fileName) continue
-						val downloadUri = Uri.parse(asset.getString("browser_download_url"))
-						mainHandler.post main@{
-							val workHandler = workHandler ?: return@main
-							try {
-								if (versionName != updateVersionName) {
-									startUpdate(versionName, fileName, downloadUri, workHandler)
+					if (versionName != null) {
+						val fileName = "${BuildConfig.PROJECT_NAME}-${BuildConfig.BUILD_TYPE}-$versionName.apk"
+						val assets = latestRelease.getJSONArray("assets")
+						for (i in 0 until assets.length()) {
+							val asset = assets.getJSONObject(i)
+							if (asset.getString("name") != fileName) continue
+							val downloadUri = Uri.parse(asset.getString("browser_download_url"))
+							mainHandler.post main@{
+								val workHandler = workHandler ?: return@main
+								try {
+									if (versionName != updateVersionName) {
+										startUpdate(versionName, fileName, downloadUri, workHandler)
+									}
+								} catch (t: Throwable) {
+									Log.w(TAG, t)
+									stopForeground()
 								}
-							} catch (t: Throwable) {
-								Log.w(TAG, t)
-								stopForeground()
 							}
+							return@post
 						}
-						return@post
 					}
 				} catch (ignored: Throwable) {
 				}
