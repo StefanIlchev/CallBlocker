@@ -337,13 +337,13 @@ class UpdateService : Service() {
 		workHandler?.post {
 			try {
 				val latestRelease = JSONObject(URI.create(BuildConfig.LATEST_RELEASE_URL).toURL().readText())
-				val latestVersion = latestRelease.getString("name")
+				val latestVersion = latestRelease.getString(KEY_NAME)
 				val fileName = "${BuildConfig.PROJECT_NAME}-${BuildConfig.BUILD_TYPE}-$latestVersion.apk"
-				val assets = latestRelease.getJSONArray("assets")
+				val assets = latestRelease.getJSONArray(KEY_ASSETS)
 				for (i in 0 until assets.length()) {
 					val asset = assets.getJSONObject(i)
-					if (asset.getString("name") != fileName) continue
-					val downloadUri = Uri.parse(asset.getString("browser_download_url"))
+					if (asset.getString(KEY_NAME) != fileName) continue
+					val downloadUri = Uri.parse(asset.getString(KEY_DOWNLOAD_URI))
 					mainHandler.post main@{
 						val workHandler = workHandler ?: return@main
 						try {
@@ -360,7 +360,9 @@ class UpdateService : Service() {
 					}
 					return@post
 				}
-			} catch (ignored: Throwable) {
+				Log.v(TAG, "\"$KEY_ASSETS\": $assets")
+			} catch (t: Throwable) {
+				t.message?.also { Log.v(TAG, it) }
 			}
 			postUpdateStop(null)
 		}
@@ -383,6 +385,12 @@ class UpdateService : Service() {
 		private const val TAG = "UpdateService"
 
 		const val NOTIFICATION_ID = Int.MAX_VALUE
+
+		private const val KEY_NAME = "name"
+
+		private const val KEY_ASSETS = "assets"
+
+		private const val KEY_DOWNLOAD_URI = "browser_download_url"
 
 		private val mainHandler = Handler(Looper.getMainLooper())
 
