@@ -334,40 +334,35 @@ class UpdateService : Service() {
 	}
 
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-		try {
-			val currentVersionName = getPackageInfo(0).versionName
-			workHandler!!.post {
-				try {
-					val latestRelease = JSONObject(URI.create(BuildConfig.LATEST_RELEASE_URL).toURL().readText())
-					val versionName = latestRelease.getString("name").takeIf { currentVersionName != it }
-					if (versionName != null) {
-						val fileName = "${BuildConfig.PROJECT_NAME}-${BuildConfig.BUILD_TYPE}-$versionName.apk"
-						val assets = latestRelease.getJSONArray("assets")
-						for (i in 0 until assets.length()) {
-							val asset = assets.getJSONObject(i)
-							if (asset.getString("name") != fileName) continue
-							val downloadUri = Uri.parse(asset.getString("browser_download_url"))
-							mainHandler.post main@{
-								val workHandler = workHandler ?: return@main
-								try {
-									if (versionName != updateVersionName) {
-										startUpdate(versionName, fileName, downloadUri, workHandler)
-									}
-								} catch (t: Throwable) {
-									Log.w(TAG, t)
-									stopForeground()
-								}
+		workHandler?.post {
+			try {
+				val latestRelease = JSONObject(URI.create(BuildConfig.LATEST_RELEASE_URL).toURL().readText())
+				val latestVersion = latestRelease.getString("name")
+				val fileName = "${BuildConfig.PROJECT_NAME}-${BuildConfig.BUILD_TYPE}-$latestVersion.apk"
+				val assets = latestRelease.getJSONArray("assets")
+				for (i in 0 until assets.length()) {
+					val asset = assets.getJSONObject(i)
+					if (asset.getString("name") != fileName) continue
+					val downloadUri = Uri.parse(asset.getString("browser_download_url"))
+					mainHandler.post main@{
+						val workHandler = workHandler ?: return@main
+						try {
+							val versionName = latestVersion.takeIf { getPackageInfo(0).versionName != it }
+							if (versionName == null) {
+								stopForeground()
+							} else if (versionName != updateVersionName) {
+								startUpdate(versionName, fileName, downloadUri, workHandler)
 							}
-							return@post
+						} catch (t: Throwable) {
+							Log.w(TAG, t)
+							stopForeground()
 						}
 					}
-				} catch (ignored: Throwable) {
+					return@post
 				}
-				postUpdateStop(null)
+			} catch (ignored: Throwable) {
 			}
-		} catch (t: Throwable) {
-			Log.w(TAG, t)
-			stopForeground()
+			postUpdateStop(null)
 		}
 		return START_STICKY
 	}
