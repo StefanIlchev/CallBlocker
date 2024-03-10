@@ -334,7 +334,7 @@ class UpdateService : Service() {
 	}
 
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-		updateVersionName ?: try {
+		try {
 			val currentVersionName = getPackageInfo(0).versionName
 			workHandler!!.post {
 				try {
