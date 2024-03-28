@@ -9,6 +9,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.provider.ContactsContract
@@ -42,7 +43,7 @@ private fun ContentResolver.isContact(
 			null,
 			null,
 			null
-		)?.use { it.moveToFirst() }
+		)?.use(Cursor::moveToFirst)
 	}
 	val factory = Executors.defaultThreadFactory()
 	val executor = Executors.newSingleThreadExecutor {

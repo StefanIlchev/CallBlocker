@@ -180,6 +180,7 @@ class MainActivity : Activity() {
 			val packageInfo = getPackageInfo(PackageManager.GET_PERMISSIONS)
 			val set = mutableSetOf(*packageInfo.requestedPermissions ?: emptyArray())
 			if (set.remove(Manifest.permission.REQUEST_INSTALL_PACKAGES) &&
+				BuildConfig.LATEST_RELEASE_URL.isNotEmpty() &&
 				!isInstallPackagesRequester &&
 				request(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, RequestCode.REQUEST_INSTALL_PACKAGES)
 			) {
@@ -212,7 +213,7 @@ class MainActivity : Activity() {
 			if (isStopIntent) {
 				tryStopService(service)
 				finish()
-			} else if (packageManager.canRequestPackageInstalls()) {
+			} else if (BuildConfig.LATEST_RELEASE_URL.isNotEmpty() && packageManager.canRequestPackageInstalls()) {
 				startForegroundService(service)
 			}
 		} catch (t: Throwable) {

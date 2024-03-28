@@ -31,7 +31,7 @@ android {
 		buildConfigField(
 			"String",
 			"LATEST_RELEASE_URL",
-			"\"https://api.github.com/repos/StefanIlchev/${rootProject.name}/releases/latest\""
+			"\"${localProperties.getProperty("latest.release.url") ?: ""}\""
 		)
 		buildConfigField(
 			"String",
