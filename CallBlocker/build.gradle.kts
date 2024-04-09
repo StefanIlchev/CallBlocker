@@ -18,6 +18,8 @@ android {
 	buildToolsVersion = libs.versions.buildToolsVersion.get()
 	compileSdk = libs.versions.compileSdk.get().toInt()
 	namespace = "ilchev.stefan.callblocker"
+	testNamespace = "$namespace.test"
+	testBuildType = System.getProperty("test.build.type") ?: "debug"
 
 	buildFeatures {
 		buildConfig = true
@@ -26,8 +28,9 @@ android {
 	defaultConfig {
 		minSdk = libs.versions.minSdk.get().toInt()
 		targetSdk = compileSdk
-		versionCode = 25
-		versionName = "$versionCode"
+		versionCode = System.getProperty("version.code")?.toInt() ?: 25
+		versionName = System.getProperty("version.name") ?: "$versionCode"
+		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		buildConfigField(
 			"String",
 			"LATEST_RELEASE_URL",
@@ -60,10 +63,36 @@ android {
 	buildTypes {
 
 		named("release") {
-			isMinifyEnabled = true
-			isShrinkResources = true
-			proguardFiles += getDefaultProguardFile("proguard-android-optimize.txt")
+			val isNotTestBuildType = testBuildType != name
+			isMinifyEnabled = isNotTestBuildType
+			isShrinkResources = isNotTestBuildType
+			if (isNotTestBuildType) {
+				proguardFiles += getDefaultProguardFile("proguard-android-optimize.txt")
+			}
 			signingConfig = signingConfigs["debug"]
 		}
+	}
+}
+
+dependencies {
+	androidTestImplementation(libs.androidTest.runner)
+	androidTestImplementation(libs.androidTest.junit)
+	androidTestImplementation(libs.androidTest.uiautomator)
+	testImplementation(libs.test.junit)
+}
+
+System.getProperty("adb.args")?.let { adbArgs ->
+	tasks.register<Exec>("adb") {
+		group = project.name
+		executable = android.adbExecutable.path
+		args(adbArgs.split(" "))
+	}
+}
+
+System.getProperty("adb.shell.args")?.let { adbShellArgs ->
+	tasks.register<Exec>("adbShell") {
+		group = project.name
+		executable = android.adbExecutable.path
+		args("shell", adbShellArgs)
 	}
 }

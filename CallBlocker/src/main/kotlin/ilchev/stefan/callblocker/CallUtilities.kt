@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -126,4 +127,13 @@ fun Context.notifyBlockedCall(phoneNumber: String?) {
 		.setContentText(text)
 		.setContentIntent(intent)
 	manager.notify(id, builder.build())
+}
+
+@Suppress("deprecation", "KotlinRedundantDiagnosticSuppress")
+fun Context.getPackageInfo(
+	flags: Int
+): PackageInfo = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+	packageManager.getPackageInfo(packageName, flags)
+} else {
+	packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
 }

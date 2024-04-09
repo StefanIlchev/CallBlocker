@@ -1,0 +1,54 @@
+package ilchev.stefan.callblocker.test
+
+import ilchev.stefan.callblocker.BuildConfig
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
+import java.time.Duration
+import java.time.Instant
+
+class UpdateTest {
+
+	@Before
+	fun before() {
+		val fileName = "${BuildConfig.PROJECT_NAME}-$BUILD_TYPE-$VERSION_NAME.apk"
+		val filePath = "build/outputs/apk/$BUILD_TYPE/$fileName"
+		val build = "assembleRelease -p ${BuildConfig.PROJECT_NAME} -Dversion.name=\"$VERSION_NAME\""
+		val install = "install -g $filePath"
+		Assert.assertTrue(executeGradle(build))
+		Assert.assertTrue(executeAdb(install))
+	}
+
+	@After
+	fun after() {
+		val uninstall = "uninstall ${BuildConfig.APPLICATION_ID}"
+		Assert.assertTrue(executeAdb(uninstall))
+	}
+
+	@Test
+	fun test() {
+		val start = listOf(
+			"appops set --uid ${BuildConfig.APPLICATION_ID} REQUEST_INSTALL_PACKAGES allow",
+			"am start -W -S ${BuildConfig.APPLICATION_ID}/.MainActivity"
+		).joinToString("; ")
+		Assert.assertTrue(executeAdbShell(start))
+		assertUpdate()
+	}
+
+	companion object {
+
+		private const val BUILD_TYPE = "release"
+
+		private const val VERSION_NAME = "update.test"
+
+		private fun assertUpdate() {
+			val check = "dumpsys package ${BuildConfig.APPLICATION_ID} | grep 'versionName=$VERSION_NAME'"
+			val range = Instant.now().let { it..it + Duration.ofMinutes(10L) }
+			while (executeAdbShell(check)) {
+				Assert.assertTrue(Instant.now() in range)
+				Thread.sleep(1_000L)
+			}
+		}
+	}
+}

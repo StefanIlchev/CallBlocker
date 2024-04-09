@@ -61,15 +61,6 @@ class MainActivity : Activity() {
 			.putBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, value)
 			.apply()
 
-	@Suppress("deprecation", "KotlinRedundantDiagnosticSuppress")
-	private fun getPackageInfo(
-		flags: Int
-	) = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-		packageManager.getPackageInfo(packageName, flags)
-	} else {
-		packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
-	}
-
 	private fun isActivityFound(
 		intent: Intent
 	) = try {

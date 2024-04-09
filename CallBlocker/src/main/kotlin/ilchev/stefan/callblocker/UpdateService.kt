@@ -12,7 +12,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageInstaller
-import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
@@ -41,15 +40,6 @@ class UpdateService : Service() {
 	private var updateDownloadReceiver: BroadcastReceiver? = null
 
 	private var updateDownloadId = 0L
-
-	@Suppress("deprecation", "KotlinRedundantDiagnosticSuppress")
-	private fun getPackageInfo(
-		flags: Int
-	) = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-		packageManager.getPackageInfo(packageName, flags)
-	} else {
-		packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
-	}
 
 	private fun tryStartActivity(intent: Intent, options: Bundle?) {
 		try {
