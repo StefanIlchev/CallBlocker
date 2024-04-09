@@ -28,7 +28,7 @@ android {
 	defaultConfig {
 		minSdk = libs.versions.minSdk.get().toInt()
 		targetSdk = compileSdk
-		versionCode = System.getProperty("version.code")?.toInt() ?: 25
+		versionCode = System.getProperty("version.code")?.toInt() ?: 26
 		versionName = System.getProperty("version.name") ?: "$versionCode"
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		buildConfigField(
