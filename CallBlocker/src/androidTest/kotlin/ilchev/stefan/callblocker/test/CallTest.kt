@@ -47,25 +47,30 @@ class CallTest(
 	fun test() {
 		val instrumentation = InstrumentationRegistry.getInstrumentation()
 		val device = UiDevice.getInstance(instrumentation)
-		val block = device.wait(Until.findObject("block".toBy()), 1_000L)
+		val block = device.wait(Until.findObject("block".toBy()), TIMEOUT)
 		block.scrollUntil(Direction.DOWN, Until.findObject("block_non_contacts".toBy())).takeUnless {
 			it.isChecked == isBlockNonContacts
-		}?.run {
-			click()
-			device.wait({ isChecked == isBlockNonContacts }, 1_000L)
+		}?.also {
+			it.click()
+			Assert.assertEquals(true, it.wait(Until.checked(isBlockNonContacts), TIMEOUT))
 		}
 		block.scrollUntil(Direction.DOWN, Until.findObject("exclude_contacts".toBy())).takeUnless {
 			it.isChecked == isExcludeContacts
-		}?.run {
-			click()
-			device.wait({ isChecked == isExcludeContacts }, 1_000L)
+		}?.also {
+			it.click()
+			Assert.assertEquals(true, it.wait(Until.checked(isExcludeContacts), TIMEOUT))
 		}
-		block.scrollUntil(Direction.DOWN, Until.findObject("regex".toBy())).text = regex
+		block.scrollUntil(Direction.DOWN, Until.findObject("regex".toBy())).takeUnless {
+			it.text == regex
+		}?.also {
+			it.text = regex
+			Assert.assertEquals(true, it.wait(Until.textEquals(regex), TIMEOUT))
+		}
 		block.scrollUntil(Direction.DOWN, Until.findObject(isMatches.toBy())).takeUnless {
 			it.isChecked
-		}?.run {
-			click()
-			device.wait({ isChecked }, 1_000L)
+		}?.also {
+			it.click()
+			Assert.assertEquals(true, it.wait(Until.checked(true), TIMEOUT))
 		}
 		assertBlocked(instrumentation.targetContext)
 	}

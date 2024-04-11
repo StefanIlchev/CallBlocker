@@ -6,6 +6,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import ilchev.stefan.callblocker.getPackageInfo
 
+const val TIMEOUT = 5_000L
+
 private fun Instrumentation.executeAllowCmd(
 	permission: String
 ) = uiAutomation.executeShellCommand("appops set --uid ${targetContext.packageName} $permission allow").close()
