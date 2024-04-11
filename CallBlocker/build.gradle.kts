@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+import org.apache.tools.ant.types.Commandline
 import java.util.Properties
 
 plugins {
@@ -85,14 +86,6 @@ System.getProperty("adb.args")?.let { adbArgs ->
 	tasks.register<Exec>("adb") {
 		group = project.name
 		executable = android.adbExecutable.path
-		args(adbArgs.split(" "))
-	}
-}
-
-System.getProperty("adb.shell.args")?.let { adbShellArgs ->
-	tasks.register<Exec>("adbShell") {
-		group = project.name
-		executable = android.adbExecutable.path
-		args("shell", adbShellArgs)
+		args(*Commandline.translateCommandline(adbArgs))
 	}
 }

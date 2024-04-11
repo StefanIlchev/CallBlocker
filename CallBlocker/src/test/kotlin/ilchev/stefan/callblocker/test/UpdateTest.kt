@@ -33,8 +33,8 @@ class UpdateTest {
 		val start = listOf(
 			"appops set --uid ${BuildConfig.APPLICATION_ID} REQUEST_INSTALL_PACKAGES allow",
 			"am start -W -S ${BuildConfig.APPLICATION_ID}/.MainActivity"
-		).joinToString("; ")
-		Assert.assertTrue(executeAdbShell(start))
+		).joinToString("; ", "shell ")
+		Assert.assertTrue(executeAdb(start))
 		assertUpdate()
 	}
 
@@ -42,13 +42,21 @@ class UpdateTest {
 
 		private const val VERSION_NAME = "update.test"
 
+		private fun toCheck(
+			versionName: String
+		) = listOf(
+			"dumpsys package ${BuildConfig.APPLICATION_ID}",
+			"grep 'versionName=$versionName'"
+		).joinToString(" | ", "shell ")
+
 		private fun assertUpdate() {
-			val check = "dumpsys package ${BuildConfig.APPLICATION_ID} | grep 'versionName=$VERSION_NAME'"
+			val check = toCheck(VERSION_NAME)
 			val range = Instant.now().let { it..it + Duration.ofMinutes(10L) }
-			while (executeAdbShell(check)) {
+			while (executeAdb(check)) {
 				Assert.assertTrue(Instant.now() in range)
 				Thread.sleep(1_000L)
 			}
+			Assert.assertTrue(executeAdb(toCheck(BuildConfig.VERSION_NAME)))
 		}
 	}
 }
