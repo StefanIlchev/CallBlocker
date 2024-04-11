@@ -21,6 +21,6 @@ fun Instrumentation.grantRequestedPermissions() {
 	}
 }
 
-fun String.toBy() = By.res(InstrumentationRegistry.getInstrumentation().targetContext.packageName, this)
+private fun String.toBy() = By.res(InstrumentationRegistry.getInstrumentation().targetContext.packageName, this)
 
 fun String.toUntil() = Until.findObject(toBy())
