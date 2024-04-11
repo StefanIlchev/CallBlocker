@@ -5,6 +5,7 @@ import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.Direction
 import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import ilchev.stefan.callblocker.BlockPredicate
 import ilchev.stefan.callblocker.BuildConfig
 import ilchev.stefan.callblocker.MainActivity
@@ -46,27 +47,36 @@ class CallTest(
 	fun test() {
 		val instrumentation = InstrumentationRegistry.getInstrumentation()
 		val device = UiDevice.getInstance(instrumentation)
-		val block = device.wait("block".toUntil(), 1_000L)
-		block.scrollUntil(Direction.DOWN, "block_non_contacts".toUntil()).takeUnless {
+		val block = device.wait(Until.findObject("block".toBy()), 1_000L)
+		block.scrollUntil(Direction.DOWN, Until.findObject("block_non_contacts".toBy())).takeUnless {
 			it.isChecked == isBlockNonContacts
-		}?.click()
-		block.scrollUntil(Direction.DOWN, "exclude_contacts".toUntil()).takeUnless {
+		}?.run {
+			click()
+			device.wait({ isChecked == isBlockNonContacts }, 1_000L)
+		}
+		block.scrollUntil(Direction.DOWN, Until.findObject("exclude_contacts".toBy())).takeUnless {
 			it.isChecked == isExcludeContacts
-		}?.click()
-		block.scrollUntil(Direction.DOWN, "regex".toUntil()).text = regex
-		block.scrollUntil(Direction.DOWN, isMatches.toResourceId().toUntil()).takeUnless {
+		}?.run {
+			click()
+			device.wait({ isChecked == isExcludeContacts }, 1_000L)
+		}
+		block.scrollUntil(Direction.DOWN, Until.findObject("regex".toBy())).text = regex
+		block.scrollUntil(Direction.DOWN, Until.findObject(isMatches.toBy())).takeUnless {
 			it.isChecked
-		}?.click()
+		}?.run {
+			click()
+			device.wait({ isChecked }, 1_000L)
+		}
 		assertBlocked(instrumentation.targetContext)
 	}
 
 	companion object {
 
-		private fun Boolean?.toResourceId() = when (this) {
+		private fun Boolean?.toBy() = when (this) {
 			null -> "block_none"
 			true -> "block_matches"
 			else -> "block_others"
-		}
+		}.toBy()
 
 		@Parameterized.Parameters
 		@JvmStatic

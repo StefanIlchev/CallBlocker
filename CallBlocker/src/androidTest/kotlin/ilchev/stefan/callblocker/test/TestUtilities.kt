@@ -4,7 +4,6 @@ import android.app.Instrumentation
 import android.content.pm.PackageManager
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
-import androidx.test.uiautomator.Until
 import ilchev.stefan.callblocker.getPackageInfo
 
 private fun Instrumentation.executeAllowCmd(
@@ -21,6 +20,4 @@ fun Instrumentation.grantRequestedPermissions() {
 	}
 }
 
-private fun String.toBy() = By.res(InstrumentationRegistry.getInstrumentation().targetContext.packageName, this)
-
-fun String.toUntil() = Until.findObject(toBy())
+fun String.toBy() = By.res(InstrumentationRegistry.getInstrumentation().targetContext.packageName, this)
