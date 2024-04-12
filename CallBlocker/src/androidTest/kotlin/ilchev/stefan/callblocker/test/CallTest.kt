@@ -52,25 +52,25 @@ class CallTest(
 			it.isChecked == isBlockNonContacts
 		}?.also {
 			it.click()
-			Assert.assertEquals(true, it.wait(Until.checked(isBlockNonContacts), TIMEOUT))
+			Assert.assertTrue(it.wait(Until.checked(isBlockNonContacts), TIMEOUT))
 		}
 		block.scrollUntil(Direction.DOWN, Until.findObject("exclude_contacts".toBy())).takeUnless {
 			it.isChecked == isExcludeContacts
 		}?.also {
 			it.click()
-			Assert.assertEquals(true, it.wait(Until.checked(isExcludeContacts), TIMEOUT))
+			Assert.assertTrue(it.wait(Until.checked(isExcludeContacts), TIMEOUT))
 		}
 		block.scrollUntil(Direction.DOWN, Until.findObject("regex".toBy())).takeUnless {
 			it.text == regex
 		}?.also {
 			it.text = regex
-			Assert.assertEquals(true, it.wait(Until.textEquals(regex), TIMEOUT))
+			Assert.assertTrue(it.wait(Until.textEquals(regex), TIMEOUT))
 		}
 		block.scrollUntil(Direction.DOWN, Until.findObject(isMatches.toBy())).takeUnless {
 			it.isChecked
 		}?.also {
 			it.click()
-			Assert.assertEquals(true, it.wait(Until.checked(true), TIMEOUT))
+			Assert.assertTrue(it.wait(Until.checked(true), TIMEOUT))
 		}
 		assertBlocked(instrumentation.targetContext)
 	}
