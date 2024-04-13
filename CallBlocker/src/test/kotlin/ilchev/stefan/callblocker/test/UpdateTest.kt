@@ -13,7 +13,6 @@ class UpdateTest {
 
 	@Before
 	fun before() {
-		Assume.assumeFalse(BuildConfig.LATEST_RELEASE_URL.isEmpty())
 		val buildType = if (BuildConfig.DEBUG) "release" else "debug"
 		val task = "assemble${buildType.replaceFirstChar { it.uppercaseChar() }}"
 		val fileName = "${BuildConfig.PROJECT_NAME}-$buildType-$VERSION_NAME.apk"
@@ -32,6 +31,7 @@ class UpdateTest {
 
 	@Test
 	fun test() {
+		Assume.assumeFalse(BuildConfig.LATEST_RELEASE_URL.isEmpty())
 		val start = listOf(
 			"appops set --uid ${BuildConfig.APPLICATION_ID} REQUEST_INSTALL_PACKAGES allow",
 			"am start -W -S ${BuildConfig.APPLICATION_ID}/.MainActivity"
