@@ -35,7 +35,6 @@ class UpdateTest {
 			"appops set --uid ${BuildConfig.APPLICATION_ID} REQUEST_INSTALL_PACKAGES allow",
 			"am start -W -S ${BuildConfig.APPLICATION_ID}/.MainActivity"
 		).joinToString("; ", "shell ")
-		Assume.assumeFalse(BuildConfig.LATEST_RELEASE_URL.isEmpty())
 		Assert.assertTrue(executeAdb(start))
 		assertUpdate()
 	}
@@ -54,6 +53,7 @@ class UpdateTest {
 		private fun assertUpdate() {
 			val check = toCheck(VERSION_NAME)
 			val range = Instant.now().let { it..it + Duration.ofMinutes(10L) }
+			Assume.assumeFalse(BuildConfig.LATEST_RELEASE_URL.isEmpty())
 			while (executeAdb(check)) {
 				Assert.assertTrue(Instant.now() in range)
 				Thread.sleep(1_000L)
