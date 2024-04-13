@@ -3,6 +3,7 @@ package ilchev.stefan.callblocker.test
 import ilchev.stefan.callblocker.BuildConfig
 import org.junit.After
 import org.junit.Assert
+import org.junit.Assume
 import org.junit.Before
 import org.junit.Test
 import java.time.Duration
@@ -12,6 +13,7 @@ class UpdateTest {
 
 	@Before
 	fun before() {
+		Assume.assumeFalse(BuildConfig.LATEST_RELEASE_URL.isEmpty())
 		val buildType = if (BuildConfig.DEBUG) "release" else "debug"
 		val task = "assemble${buildType.replaceFirstChar { it.uppercaseChar() }}"
 		val fileName = "${BuildConfig.PROJECT_NAME}-$buildType-$VERSION_NAME.apk"
