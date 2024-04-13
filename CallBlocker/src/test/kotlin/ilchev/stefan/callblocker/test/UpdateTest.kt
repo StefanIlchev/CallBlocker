@@ -31,11 +31,11 @@ class UpdateTest {
 
 	@Test
 	fun test() {
-		Assume.assumeFalse(BuildConfig.LATEST_RELEASE_URL.isEmpty())
 		val start = listOf(
 			"appops set --uid ${BuildConfig.APPLICATION_ID} REQUEST_INSTALL_PACKAGES allow",
 			"am start -W -S ${BuildConfig.APPLICATION_ID}/.MainActivity"
 		).joinToString("; ", "shell ")
+		Assume.assumeFalse(BuildConfig.LATEST_RELEASE_URL.isEmpty())
 		Assert.assertTrue(executeAdb(start))
 		assertUpdate()
 	}
