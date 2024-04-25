@@ -10,7 +10,7 @@ pluginManagement {
 
 	plugins {
 
-		// https://mvnrepository.com/artifact/com.android.tools.build/gradle?repo=google
+		// https://mvnrepository.com/artifact/com.android.tools.build/gradle
 		id("com.android.application") version "8.3.2"
 
 		// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
@@ -23,6 +23,8 @@ dependencyResolutionManagement {
 	versionCatalogs {
 
 		create("libs") {
+
+			version("versionCode", "26")
 
 			// https://developer.android.com/build/jdks
 			version("jvmToolchain", "21")
