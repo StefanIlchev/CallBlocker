@@ -1,10 +1,12 @@
 import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import org.apache.tools.ant.types.Commandline
+import org.gradle.kotlin.dsl.support.listFilesOrdered
 import java.util.Properties
 
 plugins {
 	id("com.android.application")
 	kotlin("android")
+	id("com.github.breadmoirai.github-release")
 }
 
 val localProperties by extra(Properties().also {
@@ -88,4 +90,19 @@ System.getProperty("adb.args")?.let { adbArgs ->
 		executable = android.adbExecutable.path
 		args(*Commandline.translateCommandline(adbArgs))
 	}
+}
+
+tasks.githubRelease {
+	dependsOn(tasks.named("packageRelease"))
+	owner = localProperties.getProperty("github.owner")
+	repo = localProperties.getProperty("github.repo")
+	authorization = localProperties.getProperty("github.authorization")
+	tagName = "v${android.defaultConfig.versionName}"
+	targetCommitish = localProperties.getProperty("github.targetCommitish")
+	releaseName = android.defaultConfig.versionName
+	body = localProperties.getProperty("github.body")
+	prerelease = true
+	releaseAssets.setFrom(layout.buildDirectory.dir("outputs/apk/release").get().asFile.listFilesOrdered {
+		it.extension == "apk"
+	})
 }
