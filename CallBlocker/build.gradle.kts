@@ -1,6 +1,6 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+import com.android.build.api.variant.impl.VariantOutputImpl
+import com.android.build.gradle.tasks.PackageApplication
 import org.apache.tools.ant.types.Commandline
-import org.gradle.kotlin.dsl.support.listFilesOrdered
 import java.util.Properties
 
 plugins {
@@ -9,9 +9,7 @@ plugins {
 	id("com.github.breadmoirai.github-release")
 }
 
-val localProperties by extra(Properties().also {
-	file("${rootDir.path}/local.properties").takeIf(File::isFile)?.bufferedReader()?.use(it::load)
-})
+val localProperties: Properties by ext
 
 kotlin {
 	jvmToolchain(libs.versions.jvmToolchain.get().toInt())
@@ -46,17 +44,10 @@ android {
 		)
 	}
 
-	applicationVariants.configureEach {
-		outputs.configureEach output@{
-			if (this !is ApkVariantOutputImpl) return@output
-			outputFileName = outputFile.run { "$nameWithoutExtension-$versionName.$extension" }
-		}
-	}
-
 	signingConfigs {
 
 		named("debug") {
-			storeFile = file(localProperties.getProperty("store.file") ?: "${rootDir.path}/debug.keystore")
+			storeFile = rootProject.file(localProperties.getProperty("store.file") ?: "debug.keystore")
 			storePassword = localProperties.getProperty("store.password") ?: "android"
 			keyAlias = localProperties.getProperty("key.alias") ?: "androiddebugkey"
 			keyPassword = localProperties.getProperty("key.password") ?: "android"
@@ -77,6 +68,18 @@ android {
 	}
 }
 
+androidComponents {
+
+	onVariants { variant ->
+		variant.outputs.forEach {
+			if (it !is VariantOutputImpl) return@forEach
+			it.outputFileName = file(it.outputFileName.get()).run {
+				"$nameWithoutExtension-${it.versionName.get()}.$extension"
+			}
+		}
+	}
+}
+
 dependencies {
 	androidTestImplementation(libs.androidTest.runner)
 	androidTestImplementation(libs.androidTest.junit)
@@ -84,16 +87,17 @@ dependencies {
 	testImplementation(libs.test.junit)
 }
 
-System.getProperty("adb.args")?.let { adbArgs ->
+System.getProperty("adb.args")?.let {
 	tasks.register<Exec>("adb") {
 		group = project.name
 		executable = android.adbExecutable.path
-		args(*Commandline.translateCommandline(adbArgs))
+		args(*Commandline.translateCommandline(it))
 	}
 }
 
 tasks.githubRelease {
-	dependsOn(tasks.named("packageRelease"))
+	val packageRelease = tasks.named<PackageApplication>("packageRelease")
+	dependsOn(packageRelease)
 	owner = localProperties.getProperty("github.owner")
 	repo = localProperties.getProperty("github.repo")
 	authorization = localProperties.getProperty("github.authorization")
@@ -102,7 +106,7 @@ tasks.githubRelease {
 	releaseName = android.defaultConfig.versionName
 	body = localProperties.getProperty("github.body")
 	prerelease = true
-	releaseAssets.setFrom(layout.buildDirectory.dir("outputs/apk/release").get().asFile.listFilesOrdered {
-		it.extension == "apk"
+	releaseAssets.from(packageRelease.map { task ->
+		task.outputDirectory.asFileTree.filter { it.extension == "apk" }.sorted()
 	})
 }
