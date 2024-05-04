@@ -9,7 +9,7 @@ plugins {
 	id("com.github.breadmoirai.github-release")
 }
 
-val localProperties: Properties by ext
+val localProperties: Properties by extra
 
 kotlin {
 	jvmToolchain(libs.versions.jvmToolchain.get().toInt())
@@ -61,7 +61,7 @@ android {
 			isMinifyEnabled = isNotTestBuildType
 			isShrinkResources = isNotTestBuildType
 			if (isNotTestBuildType) {
-				proguardFiles += getDefaultProguardFile("proguard-android-optimize.txt")
+				proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
 			}
 			signingConfig = signingConfigs["debug"]
 		}

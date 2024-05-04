@@ -1,8 +1,8 @@
 import java.util.Properties
 
-val localProperties by ext(Properties().also {
+val localProperties = Properties().also {
 	file("local.properties").takeIf(File::isFile)?.bufferedReader()?.use(it::load)
-})
+}
 
 subprojects {
 
@@ -10,10 +10,10 @@ subprojects {
 		google()
 		mavenCentral()
 		mavenLocal()
-		maven { url = uri("https://jitpack.io") }
+		maven("https://jitpack.io")
 	}
 
-	ext["localProperties"] = localProperties
+	extra["localProperties"] = localProperties
 
 	tasks.withType<JavaCompile>().configureEach {
 		options.isDeprecation = true
