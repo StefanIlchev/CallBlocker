@@ -179,13 +179,13 @@ class MainActivity : Activity() {
 				return arrayOf(Manifest.permission.REQUEST_INSTALL_PACKAGES)
 			}
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-				set.remove(UPDATE_PACKAGES_WITHOUT_USER_ACTION)
+				set -= UPDATE_PACKAGES_WITHOUT_USER_ACTION
 			}
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-				set.remove(POST_NOTIFICATIONS)
+				set -= POST_NOTIFICATIONS
 			}
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-				set.remove(FOREGROUND_SERVICE_DATA_SYNC)
+				set -= FOREGROUND_SERVICE_DATA_SYNC
 			}
 			if (set.isNotEmpty()) {
 				val permissions = set.toTypedArray()

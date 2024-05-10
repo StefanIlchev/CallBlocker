@@ -330,7 +330,7 @@ class UpdateService : Service() {
 				val latestVersion = latestRelease.getString(KEY_NAME)
 				val fileName = "${BuildConfig.PROJECT_NAME}-${BuildConfig.BUILD_TYPE}-$latestVersion.apk"
 				val assets = latestRelease.getJSONArray(KEY_ASSETS)
-				for (i in 0 until assets.length()) {
+				for (i in 0..<assets.length()) {
 					val asset = assets.getJSONObject(i)
 					if (asset.getString(KEY_NAME) != fileName) continue
 					val downloadUri = Uri.parse(asset.getString(KEY_DOWNLOAD_URI))
