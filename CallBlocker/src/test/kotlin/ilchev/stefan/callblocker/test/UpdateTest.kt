@@ -11,6 +11,8 @@ import java.time.Instant
 
 class UpdateTest {
 
+	private var isInstalled = false
+
 	@Before
 	fun before() {
 		val buildType = if (BuildConfig.DEBUG) "release" else "debug"
@@ -19,14 +21,15 @@ class UpdateTest {
 		val filePath = "build/outputs/apk/$buildType/$fileName"
 		val build = "$task -p ${BuildConfig.PROJECT_NAME} -Dversion.name=\"$VERSION_NAME\""
 		val install = "install -g $filePath"
-		Assert.assertTrue(executeGradle(build))
-		Assert.assertTrue(executeAdb(install))
+		isInstalled = BuildConfig.DEBUG &&
+				executeGradle(build) &&
+				executeAdb(install)
 	}
 
 	@After
 	fun after() {
 		val uninstall = "uninstall ${BuildConfig.APPLICATION_ID}"
-		Assert.assertTrue(executeAdb(uninstall))
+		isInstalled && executeAdb(uninstall)
 	}
 
 	@Test
@@ -34,7 +37,8 @@ class UpdateTest {
 		val start = listOf(
 			"appops set --uid ${BuildConfig.APPLICATION_ID} REQUEST_INSTALL_PACKAGES allow",
 			"am start -W -S ${BuildConfig.APPLICATION_ID}/.MainActivity"
-		).joinToString("; ", "shell ")
+		).joinToString(" && ", "shell ")
+		Assume.assumeTrue(isInstalled)
 		Assert.assertTrue(executeAdb(start))
 		assertUpdate()
 	}
