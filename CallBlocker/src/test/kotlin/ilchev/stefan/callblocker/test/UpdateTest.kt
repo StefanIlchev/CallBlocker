@@ -28,17 +28,19 @@ class UpdateTest {
 
 	@After
 	fun after() {
-		val uninstall = "uninstall ${BuildConfig.APPLICATION_ID}"
-		isInstalled && executeAdb(uninstall)
+		if (isInstalled) {
+			val uninstall = "uninstall ${BuildConfig.APPLICATION_ID}"
+			executeAdb(uninstall)
+		}
 	}
 
 	@Test
 	fun test() {
+		Assume.assumeTrue(isInstalled)
 		val start = listOf(
 			"appops set --uid ${BuildConfig.APPLICATION_ID} REQUEST_INSTALL_PACKAGES allow",
 			"am start -W -S ${BuildConfig.APPLICATION_ID}/.MainActivity"
 		).joinToString(" && ", "shell ")
-		Assume.assumeTrue(isInstalled)
 		Assert.assertTrue(executeAdb(start))
 		assertUpdate()
 	}
