@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 
 		create("libs") {
 
-			version("versionCode", "28")
+			version("versionCode", "29")
 
 			// https://developer.android.com/build/jdks
 			version("jvmToolchain", "21")
