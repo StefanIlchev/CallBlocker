@@ -13,6 +13,8 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.provider.ContactsContract
 import android.telecom.Call
 import android.telecom.CallScreeningService
@@ -27,9 +29,25 @@ import java.util.concurrent.TimeoutException
 
 private const val TAG = "CallUtilities"
 
+val mainHandler = Handler(Looper.getMainLooper())
+
+private val workExecutor by lazy {
+	val factory = Executors.defaultThreadFactory()
+	Executors.newCachedThreadPool {
+		factory.newThread(it).apply {
+			if (!isDaemon) {
+				isDaemon = true
+			}
+		}
+	}
+}
+
 @Suppress("deprecation")
 val Intent.incomingNumber
 	get() = getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
+
+val Intent.state
+	get() = getStringExtra(TelephonyManager.EXTRA_STATE)
 
 val Call.Details.isContact
 	get() = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) null else contactDisplayName?.run { true }
@@ -46,19 +64,7 @@ private fun ContentResolver.isContact(
 			null
 		)?.use(Cursor::moveToFirst)
 	}
-	val factory = Executors.defaultThreadFactory()
-	val executor = Executors.newSingleThreadExecutor {
-		factory.newThread(it).apply {
-			if (!isDaemon) {
-				isDaemon = true
-			}
-		}
-	}
-	val future = try {
-		executor.submit(task)
-	} finally {
-		executor.shutdown()
-	}
+	val future = workExecutor.submit(task)
 	try {
 		future.get(3_000L, TimeUnit.MILLISECONDS)
 	} catch (e: TimeoutException) {

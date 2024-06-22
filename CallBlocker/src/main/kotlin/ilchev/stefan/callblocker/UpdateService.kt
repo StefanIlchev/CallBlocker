@@ -19,7 +19,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Looper
 import android.os.Parcelable
 import android.util.Log
 import org.json.JSONObject
@@ -381,8 +380,6 @@ class UpdateService : Service() {
 		private const val KEY_ASSETS = "assets"
 
 		private const val KEY_DOWNLOAD_URI = "browser_download_url"
-
-		private val mainHandler = Handler(Looper.getMainLooper())
 
 		@Suppress("deprecation")
 		private fun <T : Parcelable?> getParcelableExtra(

@@ -8,25 +8,38 @@ import android.util.Log
 
 class CallReceiver : BroadcastReceiver() {
 
-	override fun onReceive(context: Context?, intent: Intent?) {
-		context ?: return
-		val phoneNumber = intent?.incomingNumber ?: return
-		if (intent.action != TelephonyManager.ACTION_PHONE_STATE_CHANGED ||
-			intent.getStringExtra(TelephonyManager.EXTRA_STATE) != TelephonyManager.EXTRA_STATE_RINGING
-		) return
+	private fun onRingingNumbersChanged(context: Context) {
+		mainHandler.removeCallbacksAndMessages(ringingNumbers)
+		val phoneNumber = ringingNumbers.lastOrNull() ?: return
 		val sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 		try {
 			val blockPredicate = BlockPredicate(sharedPreferences, context::isContact)
-			if (blockPredicate(phoneNumber) && endCall(context)) {
-				context.notifyBlockedCall(phoneNumber)
+			if (blockPredicate(phoneNumber)) {
+				mainHandler.postDelayed({
+					if (endCall(context)) {
+						context.notifyBlockedCall(phoneNumber)
+					}
+				}, ringingNumbers, 1L)
 			}
 		} catch (t: Throwable) {
 			Log.w(TAG, t)
 		}
 	}
 
+	override fun onReceive(context: Context?, intent: Intent?) {
+		context ?: return
+		if (intent?.action != TelephonyManager.ACTION_PHONE_STATE_CHANGED) return
+		val incomingNumber = intent.incomingNumber ?: return
+		val isRemoved = ringingNumbers.remove(incomingNumber)
+		if (intent.state == TelephonyManager.EXTRA_STATE_RINGING && ringingNumbers.add(incomingNumber) || isRemoved) {
+			onRingingNumbersChanged(context)
+		}
+	}
+
 	companion object {
 
 		private const val TAG = "CallReceiver"
+
+		private val ringingNumbers = mutableSetOf<String>()
 	}
 }
