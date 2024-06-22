@@ -28,8 +28,9 @@ class CallReceiver : BroadcastReceiver() {
 
 	override fun onReceive(context: Context?, intent: Intent?) {
 		context ?: return
-		if (intent?.action != TelephonyManager.ACTION_PHONE_STATE_CHANGED) return
-		val incomingNumber = intent.incomingNumber ?: return
+		val incomingNumber = intent?.takeIf {
+			it.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED
+		}?.incomingNumber ?: return
 		val isRemoved = ringingNumbers.remove(incomingNumber)
 		if (intent.state == TelephonyManager.EXTRA_STATE_RINGING && ringingNumbers.add(incomingNumber) || isRemoved) {
 			onRingingNumbersChanged(context)

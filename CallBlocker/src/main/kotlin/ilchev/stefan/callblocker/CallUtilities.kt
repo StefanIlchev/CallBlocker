@@ -44,7 +44,11 @@ private val workExecutor by lazy {
 
 @Suppress("deprecation")
 val Intent.incomingNumber
-	get() = getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
+	get() = if (hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) {
+		getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER) ?: ""
+	} else {
+		null
+	}
 
 val Intent.state
 	get() = getStringExtra(TelephonyManager.EXTRA_STATE)
