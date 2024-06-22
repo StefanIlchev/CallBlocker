@@ -8,8 +8,9 @@ import android.util.Log
 
 class CallReceiver : BroadcastReceiver() {
 
-	private fun onRingingNumbersChange(context: Context) {
+	private fun onRingingNumbersChange(context: Context?) {
 		mainHandler.removeCallbacksAndMessages(ringingNumbers)
+		context ?: return
 		val phoneNumber = ringingNumbers.lastOrNull() ?: return
 		val sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 		try {
@@ -27,7 +28,6 @@ class CallReceiver : BroadcastReceiver() {
 	}
 
 	override fun onReceive(context: Context?, intent: Intent?) {
-		context ?: return
 		val incomingNumber = intent?.takeIf {
 			it.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED
 		}?.incomingNumber ?: return
