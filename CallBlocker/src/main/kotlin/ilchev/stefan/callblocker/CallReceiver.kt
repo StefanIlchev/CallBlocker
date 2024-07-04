@@ -8,10 +8,14 @@ import android.util.Log
 
 class CallReceiver : BroadcastReceiver() {
 
-	private fun onRingingNumbersChange(context: Context?) {
-		mainHandler.removeCallbacksAndMessages(ringingNumbers)
+	private fun onActiveNumbersChange(context: Context?) {
+		if (BuildConfig.DEBUG) {
+			Log.v(TAG, "$activeNumbers")
+		}
+		mainHandler.removeCallbacksAndMessages(activeNumbers)
 		context ?: return
-		val phoneNumber = ringingNumbers.lastOrNull() ?: return
+		if (!activeNumbers[TelephonyManager.EXTRA_STATE_OFFHOOK].isNullOrEmpty()) return
+		val phoneNumber = activeNumbers.firstNotNullOfOrNull { it.value.lastOrNull() } ?: return
 		val sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 		try {
 			val blockPredicate = BlockPredicate(sharedPreferences, context::isContact)
@@ -20,7 +24,7 @@ class CallReceiver : BroadcastReceiver() {
 					if (endCall(context)) {
 						context.notifyBlockedCall(phoneNumber)
 					}
-				}, ringingNumbers, 1L)
+				}, activeNumbers, 1L)
 			}
 		} catch (t: Throwable) {
 			Log.w(TAG, t)
@@ -31,10 +35,10 @@ class CallReceiver : BroadcastReceiver() {
 		val incomingNumber = intent?.takeIf {
 			it.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED
 		}?.incomingNumber ?: return
-		val isRemove = ringingNumbers.remove(incomingNumber)
-		val isAdd = intent.state == TelephonyManager.EXTRA_STATE_RINGING && ringingNumbers.add(incomingNumber)
+		val isRemove = activeNumbers.filterValues { it.remove(incomingNumber) }.isNotEmpty()
+		val isAdd = activeNumbers[intent.state]?.add(incomingNumber) == true
 		if (isRemove || isAdd) {
-			onRingingNumbersChange(context)
+			onActiveNumbersChange(context)
 		}
 	}
 
@@ -42,6 +46,9 @@ class CallReceiver : BroadcastReceiver() {
 
 		private const val TAG = "CallReceiver"
 
-		private val ringingNumbers = mutableSetOf<String>()
+		private val activeNumbers = mapOf<String, MutableSet<String>>(
+			TelephonyManager.EXTRA_STATE_RINGING to mutableSetOf(),
+			TelephonyManager.EXTRA_STATE_OFFHOOK to mutableSetOf()
+		)
 	}
 }

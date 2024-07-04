@@ -59,6 +59,7 @@ val Call.Details.isContact
 private fun ContentResolver.isContact(
 	phoneNumber: String
 ) = try {
+	phoneNumber.ifEmpty { return null }
 	val task = Callable {
 		query(
 			Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)),
