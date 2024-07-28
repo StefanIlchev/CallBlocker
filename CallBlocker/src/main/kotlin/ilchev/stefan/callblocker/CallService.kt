@@ -13,7 +13,7 @@ class CallService : CallScreeningService() {
 		) return
 		val builder = CallResponse.Builder()
 		try {
-			val phoneNumber = callDetails.handle.schemeSpecificPart
+			val phoneNumber = callDetails.handle?.schemeSpecificPart ?: ""
 			val isContact = callDetails.isContact
 			val sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
 			val blockPredicate = BlockPredicate(sharedPreferences) { isContact ?: isContact(it) }
