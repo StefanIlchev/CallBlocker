@@ -14,7 +14,7 @@ pluginManagement {
 		id("com.android.application") version "8.5.2"
 
 		// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-		kotlin("android") version "2.0.10"
+		kotlin("android") version "2.0.20"
 
 		// https://plugins.gradle.org/plugin/com.github.breadmoirai.github-release
 		id("com.github.breadmoirai.github-release") version "2.5.2"
@@ -40,7 +40,7 @@ dependencyResolutionManagement {
 			version("minSdk", "28")
 
 			// https://mvnrepository.com/artifact/androidx.test/runner
-			library("androidTest.runner", "androidx.test:runner:1.6.1")
+			library("androidTest.runner", "androidx.test:runner:1.6.2")
 
 			// https://mvnrepository.com/artifact/androidx.test.ext/junit-ktx
 			library("androidTest.junit", "androidx.test.ext:junit-ktx:1.2.1")
