@@ -9,7 +9,7 @@ plugins {
 	id("com.github.breadmoirai.github-release")
 }
 
-val localProperties: Properties by extra
+val localProperties: Properties by rootProject.extra
 
 kotlin {
 	jvmToolchain(libs.versions.jvmToolchain.get().toInt())
