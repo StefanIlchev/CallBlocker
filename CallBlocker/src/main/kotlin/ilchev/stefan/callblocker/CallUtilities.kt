@@ -22,25 +22,13 @@ import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.widget.Toast
-import java.util.concurrent.Callable
-import java.util.concurrent.Executors
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 private const val TAG = "CallUtilities"
 
 val mainHandler = Handler(Looper.getMainLooper())
-
-private val workExecutor by lazy {
-	val factory = Executors.defaultThreadFactory()
-	Executors.newCachedThreadPool {
-		factory.newThread(it).apply {
-			if (!isDaemon) {
-				isDaemon = true
-			}
-		}
-	}
-}
 
 @Suppress("deprecation")
 val Intent.incomingNumber
@@ -56,11 +44,9 @@ val Intent.state
 val Call.Details.isContact
 	get() = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) null else contactDisplayName?.run { true }
 
-private fun ContentResolver.isContact(
-	phoneNumber: String
-) = try {
+private fun ContentResolver.isContact(phoneNumber: String): Boolean? {
 	phoneNumber.ifEmpty { return null }
-	val task = Callable {
+	val future = CompletableFuture.supplyAsync {
 		query(
 			Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)),
 			arrayOf(ContactsContract.PhoneLookup._ID),
@@ -69,16 +55,15 @@ private fun ContentResolver.isContact(
 			null
 		)?.use(Cursor::moveToFirst)
 	}
-	val future = workExecutor.submit(task)
 	try {
-		future.get(3_000L, TimeUnit.MILLISECONDS)
+		return future.get(3_000L, TimeUnit.MILLISECONDS)
 	} catch (e: TimeoutException) {
 		future.cancel(true)
-		throw e
+		Log.w(TAG, e)
+	} catch (t: Throwable) {
+		Log.w(TAG, t)
 	}
-} catch (t: Throwable) {
-	Log.w(TAG, t)
-	null
+	return null
 }
 
 fun Context.isContact(

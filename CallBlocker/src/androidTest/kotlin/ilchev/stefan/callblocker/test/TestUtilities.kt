@@ -10,7 +10,7 @@ const val TIMEOUT = 5_000L
 
 private fun Instrumentation.executeAllowCmd(
 	permission: String
-) = uiAutomation.executeShellCommand("appops set --uid ${targetContext.packageName} $permission allow").close()
+) = uiAutomation.executeShellCommand("appops set ${targetContext.packageName} $permission allow").close()
 
 fun Instrumentation.grantRequestedPermissions() {
 	executeAllowCmd("REQUEST_INSTALL_PACKAGES")

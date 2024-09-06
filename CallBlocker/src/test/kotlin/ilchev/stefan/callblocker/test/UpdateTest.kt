@@ -20,7 +20,7 @@ class UpdateTest {
 		val fileName = "${BuildConfig.PROJECT_NAME}-$buildType-$VERSION_NAME.apk"
 		val filePath = "build/outputs/apk/$buildType/$fileName"
 		val build = "$task -p ${BuildConfig.PROJECT_NAME} -Dversion.name=\"$VERSION_NAME\""
-		val install = "install -g $filePath"
+		val install = "install -g -r $filePath"
 		isInstalled = BuildConfig.DEBUG &&
 				executeGradle(build) &&
 				executeAdb(install)
@@ -38,8 +38,9 @@ class UpdateTest {
 	fun test() {
 		Assume.assumeTrue(isInstalled)
 		val start = listOf(
-			"appops set --uid ${BuildConfig.APPLICATION_ID} REQUEST_INSTALL_PACKAGES allow",
-			"am start -W -S ${BuildConfig.APPLICATION_ID}/.MainActivity"
+			"appops set ${BuildConfig.APPLICATION_ID} REQUEST_INSTALL_PACKAGES allow",
+			"am force-stop ${BuildConfig.APPLICATION_ID}",
+			"am start -W ${BuildConfig.APPLICATION_ID}/.MainActivity"
 		).joinToString(" && ", "shell ")
 		Assert.assertTrue(executeAdb(start))
 		assertUpdate()

@@ -8,7 +8,7 @@ import android.util.Log
 class CallService : CallScreeningService() {
 
 	override fun onScreenCall(callDetails: Call.Details) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P &&
 			callDetails.callDirection != Call.Details.DIRECTION_INCOMING
 		) return
 		val builder = CallResponse.Builder()

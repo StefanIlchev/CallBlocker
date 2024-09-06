@@ -14,6 +14,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowInsets
 import android.widget.CompoundButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -47,6 +49,18 @@ class MainActivity : Activity() {
 
 	private val screenerListener = CompoundButton.OnCheckedChangeListener { buttonView, _ ->
 		updateScreener(buttonView)
+	}
+
+	private val applyWindowInsetsListener = View.OnApplyWindowInsetsListener { v, insets ->
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return@OnApplyWindowInsetsListener insets
+		v.layoutParams = (v.layoutParams as? ViewGroup.MarginLayoutParams)?.apply {
+			val systemBars = insets.getInsets(WindowInsets.Type.systemBars())
+			leftMargin = systemBars.left
+			topMargin = systemBars.top
+			rightMargin = systemBars.right
+			bottomMargin = systemBars.bottom
+		} ?: return@OnApplyWindowInsetsListener insets
+		WindowInsets.CONSUMED
 	}
 
 	private val isStopIntent
@@ -102,22 +116,14 @@ class MainActivity : Activity() {
 				consumer(blockPredicate)
 				blockPredicate.put(sharedPreferences.edit()).apply()
 			}
-			findViewById<CompoundButton>(sourceId, R.id.block_non_contacts)?.apply {
-				setChecked(blockPredicate.isBlockNonContacts, blockNonContactsListener)
-			}
-			findViewById<CompoundButton>(sourceId, R.id.exclude_contacts)?.apply {
-				setChecked(blockPredicate.isExcludeContacts, excludeContactsListener)
-			}
-			findViewById<TextView>(sourceId, R.id.regex)?.apply {
-				removeTextChangedListener(regexListener)
-				text = blockPredicate.regex
-				addTextChangedListener(regexListener)
-			}
-			findViewById<RadioGroup>(sourceId, R.id.block)?.apply {
-				setOnCheckedChangeListener(null)
-				check(blockPredicate.isMatches.toBlockId())
-				setOnCheckedChangeListener(blockListener)
-			}
+			findViewById<CompoundButton>(sourceId, R.id.block_non_contacts)
+				?.setChecked(blockPredicate.isBlockNonContacts, blockNonContactsListener)
+			findViewById<CompoundButton>(sourceId, R.id.exclude_contacts)
+				?.setChecked(blockPredicate.isExcludeContacts, excludeContactsListener)
+			findViewById<TextView>(sourceId, R.id.regex)
+				?.setText(blockPredicate.regex, regexListener)
+			findViewById<RadioGroup>(sourceId, R.id.block)
+				?.check(blockPredicate.isMatches.toBlockId(), blockListener)
 		} catch (t: Throwable) {
 			error = t.localizedMessage
 		} finally {
@@ -215,6 +221,7 @@ class MainActivity : Activity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
+		findViewById<View>(R.id.root)?.setOnApplyWindowInsetsListener(applyWindowInsetsListener)
 		updateContent(View.NO_ID, null)
 		if (requestRequestedPermissions() == null) {
 			callUpdateService()
@@ -292,6 +299,18 @@ class MainActivity : Activity() {
 		private fun CompoundButton.setChecked(value: Boolean, listener: CompoundButton.OnCheckedChangeListener) {
 			setOnCheckedChangeListener(null)
 			isChecked = value
+			setOnCheckedChangeListener(listener)
+		}
+
+		private fun TextView.setText(value: String, listener: TextWatcher) {
+			removeTextChangedListener(listener)
+			value.takeUnless { it.contentEquals(text) }?.also { text = it }
+			addTextChangedListener(listener)
+		}
+
+		private fun RadioGroup.check(id: Int, listener: RadioGroup.OnCheckedChangeListener) {
+			setOnCheckedChangeListener(null)
+			check(id)
 			setOnCheckedChangeListener(listener)
 		}
 	}
