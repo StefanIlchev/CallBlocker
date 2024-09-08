@@ -16,9 +16,8 @@ class CallReceiver : BroadcastReceiver() {
 		context ?: return
 		if (!activeNumbers[TelephonyManager.EXTRA_STATE_OFFHOOK].isNullOrEmpty()) return
 		val phoneNumber = activeNumbers.firstNotNullOfOrNull { it.value.lastOrNull() } ?: return
-		val sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 		try {
-			val blockPredicate = BlockPredicate(sharedPreferences, context::isContact)
+			val blockPredicate = BlockPredicate(context.sharedPreferences, context::isContact)
 			if (blockPredicate(phoneNumber)) {
 				mainHandler.postDelayed({
 					if (endCall(context)) {

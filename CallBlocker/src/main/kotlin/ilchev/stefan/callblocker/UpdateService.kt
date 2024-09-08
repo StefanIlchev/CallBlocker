@@ -1,6 +1,5 @@
 package ilchev.stefan.callblocker
 
-import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.app.Notification
 import android.app.NotificationChannel
@@ -19,7 +18,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Parcelable
 import android.util.Log
 import org.json.JSONObject
 import java.io.File
@@ -38,7 +36,7 @@ class UpdateService : Service() {
 
 	private var updateDownloadReceiver: BroadcastReceiver? = null
 
-	private var updateDownloadId = 0L
+	private var updateDownloadId = -1L
 
 	private fun tryStartActivity(intent: Intent, options: Bundle?) {
 		try {
@@ -46,16 +44,6 @@ class UpdateService : Service() {
 		} catch (t: Throwable) {
 			Log.w(TAG, t)
 		}
-	}
-
-	@SuppressLint("UnspecifiedRegisterReceiverFlag")
-	private fun registerExportedReceiver(
-		receiver: BroadcastReceiver,
-		filter: IntentFilter
-	) = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-		registerReceiver(receiver, filter, null, mainHandler)
-	} else {
-		registerReceiver(receiver, filter, null, mainHandler, RECEIVER_EXPORTED)
 	}
 
 	private fun startForeground(stopIntent: PendingIntent) {
@@ -129,7 +117,7 @@ class UpdateService : Service() {
 			updateInstallReceiver = null
 			unregisterReceiver(it)
 		}
-		updateInstallId.takeIf { it != 0 }?.also {
+		updateInstallId.takeIf { it > 0 }?.also {
 			updateInstallId = 0
 			try {
 				packageManager.packageInstaller.abandonSession(it)
@@ -173,20 +161,28 @@ class UpdateService : Service() {
 		val installer = packageManager.packageInstaller
 		val params = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
 		params.setSize(file.length())
-		val intent = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
+		var intent: Intent? = null
+		var flags = 0
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
 			params.setRequireUserAction(PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED)
-			Intent(this, receiver::class.java)
-		} else {
-			Intent(BuildConfig.APPLICATION_ID)
+			flags = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+				intent = Intent(BuildConfig.APPLICATION_ID, null, this, receiver::class.java)
+				PendingIntent.FLAG_MUTABLE
+			} else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+				PendingIntent.FLAG_IMMUTABLE
+			} else {
+				PendingIntent.FLAG_MUTABLE
+			}
 		}
 		val updateInstallId = installer.createSession(params).also { updateInstallId = it }
 		val statusReceiver = PendingIntent.getBroadcast(
 			this,
 			updateInstallId,
-			intent,
-			PendingIntent.FLAG_MUTABLE
+			intent ?: Intent(BuildConfig.APPLICATION_ID),
+			flags or PendingIntent.FLAG_UPDATE_CURRENT
 		).intentSender
 		workHandler.post {
+			if (versionName != updateVersionName) return@post
 			try {
 				installer.openSession(updateInstallId).use { session ->
 					session.openWrite(file.name, 0L, file.length()).use { out ->
@@ -207,10 +203,10 @@ class UpdateService : Service() {
 			updateDownloadReceiver = null
 			unregisterReceiver(it)
 		}
-		return updateDownloadId.takeIf { it != 0L }?.let {
-			updateDownloadId = 0L
+		return updateDownloadId.takeIf { it != -1L }?.let {
+			updateDownloadId = -1L
 			val manager = getSystemService(DownloadManager::class.java)
-			manager?.remove(updateDownloadId)
+			manager?.remove(it)
 		} ?: 0
 	}
 
@@ -224,9 +220,9 @@ class UpdateService : Service() {
 				if (unregisterUpdateReceiver(versionName, this) || intent == null) return
 				when (intent.action) {
 					DownloadManager.ACTION_DOWNLOAD_COMPLETE -> {
-						val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L)
-						if (id != 0L && id == updateDownloadId) {
-							updateDownloadId = 0L
+						val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L)
+						if (id != -1L && id == updateDownloadId) {
+							updateDownloadId = -1L
 							updateDownloadReceiver = null
 							unregisterReceiver(this)
 							try {
@@ -241,7 +237,7 @@ class UpdateService : Service() {
 					DownloadManager.ACTION_NOTIFICATION_CLICKED -> {
 						val id = updateDownloadId
 						val ids = intent.getLongArrayExtra(DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS)
-						if (id != 0L && ids?.contains(id) == true) {
+						if (id != -1L && ids?.contains(id) == true) {
 							stopForeground()
 						}
 					}
@@ -377,16 +373,5 @@ class UpdateService : Service() {
 		private const val KEY_ASSETS = "assets"
 
 		private const val KEY_DOWNLOAD_URI = "browser_download_url"
-
-		@Suppress("deprecation")
-		private fun <T : Parcelable?> getParcelableExtra(
-			intent: Intent,
-			name: String,
-			clazz: Class<T>
-		) = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-			intent.getParcelableExtra(name)
-		} else {
-			intent.getParcelableExtra(name, clazz)
-		}
 	}
 }

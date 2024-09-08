@@ -1,14 +1,12 @@
 package ilchev.stefan.callblocker.test
 
-import android.content.Context
 import androidx.test.ext.junit.rules.activityScenarioRule
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.Direction
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import ilchev.stefan.callblocker.BlockPredicate
-import ilchev.stefan.callblocker.BuildConfig
 import ilchev.stefan.callblocker.MainActivity
+import ilchev.stefan.callblocker.sharedPreferences
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -29,13 +27,12 @@ class CallTest(
 
 	@Rule
 	fun rule(): TestRule {
-		InstrumentationRegistry.getInstrumentation().grantRequestedPermissions()
+		instrumentation.grantRequestedPermissions()
 		return activityScenarioRule<MainActivity>()
 	}
 
-	private fun assertBlocked(context: Context) {
-		val sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
-		val blockPredicate = BlockPredicate(sharedPreferences) { isContact }
+	private fun assertBlocked() {
+		val blockPredicate = BlockPredicate(targetContext.sharedPreferences) { isContact }
 		Assert.assertEquals(isBlockNonContacts, blockPredicate.isBlockNonContacts)
 		Assert.assertEquals(isExcludeContacts, blockPredicate.isExcludeContacts)
 		Assert.assertEquals(regex, blockPredicate.regex)
@@ -45,7 +42,6 @@ class CallTest(
 
 	@Test
 	fun test() {
-		val instrumentation = InstrumentationRegistry.getInstrumentation()
 		val device = UiDevice.getInstance(instrumentation)
 		val block = device.wait(Until.findObject("block".toBy()), TIMEOUT)
 		block.scrollUntil(Direction.DOWN, Until.findObject("block_non_contacts".toBy())).takeUnless {
@@ -72,7 +68,7 @@ class CallTest(
 			it.click()
 			Assert.assertTrue(it.wait(Until.checked(true), TIMEOUT))
 		}
-		assertBlocked(instrumentation.targetContext)
+		assertBlocked()
 	}
 
 	companion object {

@@ -1,13 +1,18 @@
 package ilchev.stefan.callblocker
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.Service.RECEIVER_EXPORTED
+import android.content.BroadcastReceiver
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -15,6 +20,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.Parcelable
 import android.provider.ContactsContract
 import android.telecom.Call
 import android.telecom.CallScreeningService
@@ -29,6 +35,9 @@ import java.util.concurrent.TimeoutException
 private const val TAG = "CallUtilities"
 
 val mainHandler = Handler(Looper.getMainLooper())
+
+val Context.sharedPreferences: SharedPreferences
+	get() = getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 
 @Suppress("deprecation")
 val Intent.incomingNumber
@@ -132,4 +141,25 @@ fun Context.getPackageInfo(
 	packageManager.getPackageInfo(packageName, flags)
 } else {
 	packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
+}
+
+@Suppress("deprecation")
+fun <T : Parcelable> getParcelableExtra(
+	intent: Intent,
+	name: String,
+	clazz: Class<T>
+) = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+	intent.getParcelableExtra(name)
+} else {
+	intent.getParcelableExtra(name, clazz)
+}
+
+@SuppressLint("UnspecifiedRegisterReceiverFlag")
+fun Context.registerExportedReceiver(
+	receiver: BroadcastReceiver,
+	filter: IntentFilter
+) = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+	registerReceiver(receiver, filter, null, mainHandler)
+} else {
+	registerReceiver(receiver, filter, null, mainHandler, RECEIVER_EXPORTED)
 }

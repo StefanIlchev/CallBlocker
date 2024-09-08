@@ -68,12 +68,8 @@ class MainActivity : Activity() {
 
 	private var isInstallPackagesRequester
 		get() = packageManager.canRequestPackageInstalls() ||
-				getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
-					.getBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, false)
-		set(value) = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
-			.edit()
-			.putBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, value)
-			.apply()
+				sharedPreferences.getBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, false)
+		set(value) = sharedPreferences.edit().putBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, value).apply()
 
 	private fun isActivityFound(
 		intent: Intent
@@ -108,7 +104,6 @@ class MainActivity : Activity() {
 	) = if (sourceId != id) findViewById<T>(id) else null
 
 	private fun updateContent(sourceId: Int, consumer: ((BlockPredicate) -> Unit)?) {
-		val sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
 		var error: String? = null
 		try {
 			val blockPredicate = BlockPredicate(sharedPreferences)
@@ -173,6 +168,7 @@ class MainActivity : Activity() {
 	}
 
 	private fun requestRequestedPermissions(): Array<String>? {
+		if (isStopIntent) return null
 		try {
 			val packageInfo = getPackageInfo(PackageManager.GET_PERMISSIONS)
 			val set = mutableSetOf(*packageInfo.requestedPermissions ?: emptyArray())
@@ -223,9 +219,7 @@ class MainActivity : Activity() {
 		setContentView(R.layout.activity_main)
 		findViewById<View>(R.id.root)?.setOnApplyWindowInsetsListener(applyWindowInsetsListener)
 		updateContent(View.NO_ID, null)
-		if (requestRequestedPermissions() == null) {
-			callUpdateService()
-		}
+		requestRequestedPermissions() ?: callUpdateService()
 		notifyBlockedCall(null)
 	}
 
@@ -253,9 +247,7 @@ class MainActivity : Activity() {
 	) = when (requestCode) {
 		RequestCode.REQUEST_INSTALL_PACKAGES.ordinal -> {
 			isInstallPackagesRequester = !isInstallPackagesRequester
-			if (requestRequestedPermissions() == null) {
-				callUpdateService()
-			}
+			requestRequestedPermissions() ?: callUpdateService()
 			Unit
 		}
 

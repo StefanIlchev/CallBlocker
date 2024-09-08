@@ -1,12 +1,19 @@
 package ilchev.stefan.callblocker.test
 
 import android.app.Instrumentation
+import android.content.Context
 import android.content.pm.PackageManager
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import ilchev.stefan.callblocker.getPackageInfo
 
 const val TIMEOUT = 5_000L
+
+val instrumentation: Instrumentation
+	get() = InstrumentationRegistry.getInstrumentation()
+
+val targetContext: Context
+	get() = instrumentation.targetContext
 
 private fun Instrumentation.executeAllowCmd(
 	permission: String
@@ -22,4 +29,4 @@ fun Instrumentation.grantRequestedPermissions() {
 	}
 }
 
-fun String.toBy() = By.res(InstrumentationRegistry.getInstrumentation().targetContext.packageName, this)
+fun String.toBy() = By.res(targetContext.packageName, this)
