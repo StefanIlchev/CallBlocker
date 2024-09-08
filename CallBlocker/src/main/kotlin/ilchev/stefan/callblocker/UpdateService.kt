@@ -14,7 +14,6 @@ import android.content.pm.PackageInstaller
 import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.HandlerThread
@@ -37,14 +36,6 @@ class UpdateService : Service() {
 	private var updateDownloadReceiver: BroadcastReceiver? = null
 
 	private var updateDownloadId = -1L
-
-	private fun tryStartActivity(intent: Intent, options: Bundle?) {
-		try {
-			startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), options)
-		} catch (t: Throwable) {
-			Log.w(TAG, t)
-		}
-	}
 
 	private fun startForeground(stopIntent: PendingIntent) {
 		val applicationInfo = applicationInfo
@@ -127,16 +118,15 @@ class UpdateService : Service() {
 	}
 
 	private fun startUpdateInstall(file: File, versionName: String, workHandler: Handler) {
-		if (!file.isFile) {
-			stopForeground()
-			return
-		}
+		if (!file.isFile) return stopForeground()
 		val receiver = object : BroadcastReceiver() {
 
 			override fun onReceive(context: Context?, intent: Intent?) {
-				if (unregisterUpdateReceiver(versionName, this) || intent == null) return
-				val id = intent.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, 0)
-				if (id != 0 && id != updateInstallId || intent.action != BuildConfig.APPLICATION_ID) return
+				if (unregisterUpdateReceiver(versionName, this)) return
+				val id = intent?.takeIf {
+					it.action == BuildConfig.APPLICATION_ID
+				}?.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, 0) ?: return
+				if (id == 0 || id != updateInstallId) return
 				updateInstallId = 0
 				updateInstallReceiver = null
 				unregisterReceiver(this)
@@ -148,7 +138,7 @@ class UpdateService : Service() {
 				}
 				if (activity != null) {
 					updateVersionName = null
-					tryStartActivity(activity, null)
+					tryStartActivity(activity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 				} else if (status == PackageInstaller.STATUS_SUCCESS) {
 					updateVersionName = null
 				}
@@ -161,26 +151,17 @@ class UpdateService : Service() {
 		val installer = packageManager.packageInstaller
 		val params = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
 		params.setSize(file.length())
-		var intent: Intent? = null
-		var flags = 0
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
 			params.setRequireUserAction(PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED)
-			flags = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-				intent = Intent(BuildConfig.APPLICATION_ID, null, this, receiver::class.java)
-				PendingIntent.FLAG_MUTABLE
-			} else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-				PendingIntent.FLAG_IMMUTABLE
-			} else {
-				PendingIntent.FLAG_MUTABLE
-			}
 		}
 		val updateInstallId = installer.createSession(params).also { updateInstallId = it }
-		val statusReceiver = PendingIntent.getBroadcast(
-			this,
-			updateInstallId,
-			intent ?: Intent(BuildConfig.APPLICATION_ID),
-			flags or PendingIntent.FLAG_UPDATE_CURRENT
-		).intentSender
+		val intent = Intent(BuildConfig.APPLICATION_ID).setPackage(packageName)
+		val flags = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+			PendingIntent.FLAG_UPDATE_CURRENT
+		} else {
+			PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+		}
+		val statusReceiver = PendingIntent.getBroadcast(this, updateInstallId, intent, flags).intentSender
 		workHandler.post {
 			if (versionName != updateVersionName) return@post
 			try {
@@ -217,8 +198,8 @@ class UpdateService : Service() {
 		val receiver = object : BroadcastReceiver() {
 
 			override fun onReceive(context: Context?, intent: Intent?) {
-				if (unregisterUpdateReceiver(versionName, this) || intent == null) return
-				when (intent.action) {
+				if (unregisterUpdateReceiver(versionName, this)) return
+				when (intent?.action) {
 					DownloadManager.ACTION_DOWNLOAD_COMPLETE -> {
 						val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L)
 						if (id != -1L && id == updateDownloadId) {
@@ -329,7 +310,7 @@ class UpdateService : Service() {
 					mainHandler.post main@{
 						val workHandler = workHandler ?: return@main
 						try {
-							val versionName = latestVersion.takeIf { getPackageInfo(0).versionName != it }
+							val versionName = latestVersion.takeIf { getPackageInfo().versionName != it }
 							if (versionName == null) {
 								stopForeground()
 							} else if (versionName != updateVersionName) {

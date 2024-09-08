@@ -71,31 +71,12 @@ class MainActivity : Activity() {
 				sharedPreferences.getBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, false)
 		set(value) = sharedPreferences.edit().putBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, value).apply()
 
-	private fun isActivityFound(
-		intent: Intent
-	) = try {
-		val activityInfo = intent.resolveActivityInfo(packageManager, 0)
-		activityInfo?.isEnabled == true && activityInfo.exported
-	} catch (t: Throwable) {
-		Log.w(TAG, t)
-		false
-	}
-
-	private fun tryStartActivityForResult(intent: Intent, requestCode: Int, options: Bundle?) {
+	private fun tryStartActivityForResult(intent: Intent, requestCode: Int = -1, options: Bundle? = null) {
 		try {
 			startActivityForResult(intent, requestCode, options)
 		} catch (t: Throwable) {
 			Log.w(TAG, t)
 		}
-	}
-
-	private fun tryStopService(
-		intent: Intent
-	) = try {
-		stopService(intent)
-	} catch (t: Throwable) {
-		Log.w(TAG, t)
-		false
 	}
 
 	private fun <T : View> findViewById(
@@ -152,7 +133,7 @@ class MainActivity : Activity() {
 			roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING)
 		}
 		if (isActivityFound(intent)) {
-			tryStartActivityForResult(intent, 0, null)
+			tryStartActivityForResult(intent)
 		}
 	}
 
@@ -161,7 +142,7 @@ class MainActivity : Activity() {
 		if (isActivityFound(intent) ||
 			isActivityFound(intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS))
 		) {
-			tryStartActivityForResult(intent, requestCode.ordinal, null)
+			tryStartActivityForResult(intent, requestCode.ordinal)
 			return true
 		}
 		return false
