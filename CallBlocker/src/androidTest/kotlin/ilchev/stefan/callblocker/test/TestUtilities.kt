@@ -3,9 +3,15 @@ package ilchev.stefan.callblocker.test
 import android.app.Instrumentation
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
+import android.os.ParcelFileDescriptor
+import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import ilchev.stefan.callblocker.getPackageInfo
+import java.util.Scanner
+
+private const val TAG = "TestUtilities"
 
 const val TIMEOUT = 5_000L
 
@@ -15,17 +21,34 @@ val instrumentation: Instrumentation
 val targetContext: Context
 	get() = instrumentation.targetContext
 
+private fun Instrumentation.executeShell(
+	command: String
+) = Scanner(ParcelFileDescriptor.AutoCloseInputStream(uiAutomation.executeShellCommand(command))).use {
+	while (it.hasNextLine()) {
+		val line = it.nextLine()
+		Log.v(TAG, line)
+	}
+}
+
 private fun Instrumentation.executeAllowCmd(
 	permission: String
-) = uiAutomation.executeShellCommand("appops set ${targetContext.packageName} $permission allow").close()
+) = executeShell("appops set ${targetContext.packageName} $permission allow")
+
+private fun Instrumentation.tryGrantRuntimePermission(
+	permission: String
+) = try {
+	uiAutomation.grantRuntimePermission(targetContext.packageName, permission)
+} catch (ignored: Throwable) {
+}
 
 fun Instrumentation.grantRequestedPermissions() {
+	val packageInfo = targetContext.getPackageInfo(PackageManager.GET_PERMISSIONS)
+	val requestedPermissions = packageInfo.requestedPermissions ?: return
 	executeAllowCmd("REQUEST_INSTALL_PACKAGES")
-	targetContext.getPackageInfo(PackageManager.GET_PERMISSIONS).requestedPermissions?.forEach {
-		try {
-			uiAutomation.grantRuntimePermission(targetContext.packageName, it)
-		} catch (ignored: Throwable) {
-		}
+	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+		requestedPermissions.forEach { executeShell("pm grant ${targetContext.packageName} $it") }
+	} else {
+		requestedPermissions.forEach(::tryGrantRuntimePermission)
 	}
 }
 
