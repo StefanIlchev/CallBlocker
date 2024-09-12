@@ -3,7 +3,6 @@ package ilchev.stefan.callblocker.test
 import android.app.Instrumentation
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
@@ -30,10 +29,6 @@ private fun Instrumentation.executeShell(
 	}
 }
 
-private fun Instrumentation.executeAllowCmd(
-	permission: String
-) = executeShell("appops set ${targetContext.packageName} $permission allow")
-
 private fun Instrumentation.tryGrantRuntimePermission(
 	permission: String
 ) = try {
@@ -43,13 +38,8 @@ private fun Instrumentation.tryGrantRuntimePermission(
 
 fun Instrumentation.grantRequestedPermissions() {
 	val packageInfo = targetContext.getPackageInfo(PackageManager.GET_PERMISSIONS)
-	val requestedPermissions = packageInfo.requestedPermissions ?: return
-	executeAllowCmd("REQUEST_INSTALL_PACKAGES")
-	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-		requestedPermissions.forEach { executeShell("pm grant ${targetContext.packageName} $it") }
-	} else {
-		requestedPermissions.forEach(::tryGrantRuntimePermission)
-	}
+	packageInfo.requestedPermissions?.forEach(::tryGrantRuntimePermission)
+	executeShell("appops set ${targetContext.packageName} REQUEST_INSTALL_PACKAGES allow")
 }
 
 fun String.toBy() = By.res(targetContext.packageName, this)
