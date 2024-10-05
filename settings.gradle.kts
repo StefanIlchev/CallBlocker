@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 
 		create("libs") {
 
-			version("versionCode", "31")
+			version("versionCode", "32")
 
 			// https://developer.android.com/build/jdks
 			version("jvmToolchain", "21")
@@ -36,7 +36,7 @@ dependencyResolutionManagement {
 			version("buildToolsVersion", "35.0.0")
 
 			// https://developer.android.com/tools/releases/platforms
-			version("compileSdk", "34")
+			version("compileSdk", "35")
 			version("minSdk", "28")
 
 			// https://mvnrepository.com/artifact/androidx.test/runner
