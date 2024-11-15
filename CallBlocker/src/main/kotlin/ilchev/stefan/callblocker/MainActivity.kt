@@ -133,7 +133,7 @@ class MainActivity : Activity() {
 			roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING)
 		}
 		if (isActivityFound(intent)) {
-			tryStartActivityForResult(intent)
+			tryStartActivityForResult(intent, RequestCode.ROLE_CALL_SCREENING.ordinal)
 		}
 	}
 
@@ -241,6 +241,7 @@ class MainActivity : Activity() {
 
 	private enum class RequestCode {
 		REQUESTED_PERMISSIONS,
+		ROLE_CALL_SCREENING,
 		REQUEST_INSTALL_PACKAGES
 	}
 
