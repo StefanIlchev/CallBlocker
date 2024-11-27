@@ -81,7 +81,7 @@ class CallTest(
 
 		@Parameterized.Parameters
 		@JvmStatic
-		fun data() = arrayOf(
+		fun data() = arrayOf<Array<Any?>>(
 			arrayOf(false, false, "a", null, "a", null, false),
 			arrayOf(false, false, "a", null, "a", true, false),
 			arrayOf(false, false, "a", null, "a", false, false),
