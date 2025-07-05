@@ -108,7 +108,8 @@ class MainActivity : Activity() {
 	}
 
 	private fun updateScreener(buttonView: CompoundButton?, screenerVisibility: Int, isScreener: Boolean) {
-		(buttonView ?: findViewById(R.id.screener))?.apply {
+		val screener: CompoundButton? = buttonView ?: findViewById(R.id.screener)
+		screener?.apply {
 			visibility = screenerVisibility
 			setChecked(isScreener, screenerListener)
 		}

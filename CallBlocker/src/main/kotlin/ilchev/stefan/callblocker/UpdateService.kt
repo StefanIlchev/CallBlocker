@@ -112,7 +112,7 @@ class UpdateService : Service() {
 			updateInstallId = 0
 			try {
 				packageManager.packageInstaller.abandonSession(it)
-			} catch (ignored: Throwable) {
+			} catch (_: Throwable) {
 			}
 		}
 	}
