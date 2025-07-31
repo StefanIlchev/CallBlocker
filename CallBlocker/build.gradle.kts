@@ -94,7 +94,7 @@ System.getProperty("adb.args")?.let {
 		args(*Commandline.translateCommandline(it))
 
 		doFirst {
-			println("adb ${args?.joinToString(" ")}")
+			println("adb ${args.joinToString(" ")}")
 		}
 	}
 }
