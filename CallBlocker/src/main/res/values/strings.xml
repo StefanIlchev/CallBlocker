@@ -10,4 +10,8 @@
 	<string name="block_others" translatable="false">Block Others</string>
 	<string name="blocked_phone_number" translatable="false">Blocked %1$s</string>
 	<string name="stop_update" translatable="false">Stop Update</string>
+	<string name="about" translatable="false">About</string>
+	<string name="git_hub" translatable="false">GitHub</string>
+	<string name="sponsor" translatable="false">Sponsor</string>
+	<string name="update" translatable="false">Update</string>
 </resources>

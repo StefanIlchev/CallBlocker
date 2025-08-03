@@ -13,9 +13,9 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.view.WindowInsets
 import android.widget.CompoundButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -51,18 +51,6 @@ class MainActivity : Activity() {
 		updateScreener(buttonView)
 	}
 
-	private val applyWindowInsetsListener = View.OnApplyWindowInsetsListener { v, insets ->
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return@OnApplyWindowInsetsListener insets
-		v.layoutParams = (v.layoutParams as? ViewGroup.MarginLayoutParams)?.apply {
-			val systemBars = insets.getInsets(WindowInsets.Type.systemBars())
-			leftMargin = systemBars.left
-			topMargin = systemBars.top
-			rightMargin = systemBars.right
-			bottomMargin = systemBars.bottom
-		} ?: return@OnApplyWindowInsetsListener insets
-		WindowInsets.CONSUMED
-	}
-
 	private val isStopIntent
 		get() = intent?.action == null
 
@@ -70,14 +58,6 @@ class MainActivity : Activity() {
 		get() = packageManager.canRequestPackageInstalls() ||
 				sharedPreferences.getBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, false)
 		set(value) = sharedPreferences.edit().putBoolean(Manifest.permission.REQUEST_INSTALL_PACKAGES, value).apply()
-
-	private fun tryStartActivityForResult(intent: Intent, requestCode: Int = -1, options: Bundle? = null) {
-		try {
-			startActivityForResult(intent, requestCode, options)
-		} catch (t: Throwable) {
-			Log.w(TAG, t)
-		}
-	}
 
 	private fun <T : View> findViewById(
 		sourceId: Int,
@@ -183,16 +163,12 @@ class MainActivity : Activity() {
 	}
 
 	private fun callUpdateService() {
-		try {
-			val service = (intent?.let(::Intent) ?: Intent()).setClass(this, UpdateService::class.java)
-			if (isStopIntent) {
-				tryStopService(service)
-				finish()
-			} else if (BuildConfig.LATEST_RELEASE_URL.isNotEmpty() && packageManager.canRequestPackageInstalls()) {
-				startForegroundService(service)
-			}
-		} catch (t: Throwable) {
-			Log.w(TAG, t)
+		val service = (intent?.let(::Intent) ?: Intent()).setClass(this, UpdateService::class.java)
+		if (isStopIntent) {
+			tryStopService(service)
+			finish()
+		} else if (BuildConfig.LATEST_RELEASE_URL.isNotEmpty() && packageManager.canRequestPackageInstalls()) {
+			tryStartForegroundService(service)
 		}
 	}
 
@@ -211,6 +187,23 @@ class MainActivity : Activity() {
 		if (isStopIntent) {
 			callUpdateService()
 		}
+	}
+
+	override fun onCreateOptionsMenu(
+		menu: Menu
+	) = super.onCreateOptionsMenu(menu).also {
+		menuInflater.inflate(R.menu.activity_main, menu)
+	}
+
+	override fun onOptionsItemSelected(
+		item: MenuItem
+	) = when (item.itemId) {
+		R.id.about -> {
+			tryStartAboutActivity()
+			true
+		}
+
+		else -> super.onOptionsItemSelected(item)
 	}
 
 	override fun onRequestPermissionsResult(

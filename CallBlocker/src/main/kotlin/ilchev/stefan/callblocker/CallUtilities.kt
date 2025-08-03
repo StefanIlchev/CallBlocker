@@ -2,6 +2,7 @@ package ilchev.stefan.callblocker
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -27,6 +28,9 @@ import android.telecom.CallScreeningService
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowInsets
 import android.widget.Toast
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
@@ -152,6 +156,22 @@ fun Context.tryStartActivity(intent: Intent, options: Bundle? = null) {
 	}
 }
 
+fun Activity.tryStartActivityForResult(intent: Intent, requestCode: Int = -1, options: Bundle? = null) {
+	try {
+		startActivityForResult(intent, requestCode, options)
+	} catch (t: Throwable) {
+		Log.w(TAG, t)
+	}
+}
+
+fun Context.tryStartForegroundService(intent: Intent) {
+	try {
+		startForegroundService(intent)
+	} catch (t: Throwable) {
+		Log.w(TAG, t)
+	}
+}
+
 fun Context.tryStopService(
 	intent: Intent
 ) = try {
@@ -189,4 +209,16 @@ fun Context.registerExportedReceiver(
 	registerReceiver(receiver, filter, null, mainHandler)
 } else {
 	registerReceiver(receiver, filter, null, mainHandler, Context.RECEIVER_EXPORTED)
+}
+
+val applyWindowInsetsListener = View.OnApplyWindowInsetsListener { v, insets ->
+	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return@OnApplyWindowInsetsListener insets
+	v.layoutParams = (v.layoutParams as? ViewGroup.MarginLayoutParams)?.apply {
+		val systemBars = insets.getInsets(WindowInsets.Type.systemBars())
+		leftMargin = systemBars.left
+		topMargin = systemBars.top
+		rightMargin = systemBars.right
+		bottomMargin = systemBars.bottom
+	} ?: return@OnApplyWindowInsetsListener insets
+	WindowInsets.CONSUMED
 }

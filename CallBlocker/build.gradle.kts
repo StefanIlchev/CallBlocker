@@ -6,6 +6,7 @@ import java.util.Properties
 plugins {
 	id("com.android.application")
 	kotlin("android")
+	id("com.mikepenz.aboutlibraries.plugin")
 	id("com.github.breadmoirai.github-release")
 }
 
@@ -32,6 +33,12 @@ android {
 		versionCode = (System.getProperty("version.code") ?: libs.versions.versionCode.get()).toInt()
 		versionName = System.getProperty("version.name") ?: "$versionCode"
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+		val gitHubUrl = localProperties.getProperty("github.owner")?.let { owner ->
+			localProperties.getProperty("github.repo")?.let { repo ->
+				"https://github.com/$owner/$repo"
+			}
+		} ?: ""
+		buildConfigField("String", "GIT_HUB_URL", "\"$gitHubUrl\"")
 		buildConfigField(
 			"String",
 			"LATEST_RELEASE_URL",
@@ -41,6 +48,11 @@ android {
 			"String",
 			"PROJECT_NAME",
 			"\"${project.name}\""
+		)
+		buildConfigField(
+			"String",
+			"SPONSOR_URL",
+			"\"${localProperties.getProperty("sponsor.url") ?: ""}\""
 		)
 	}
 
@@ -81,6 +93,7 @@ androidComponents {
 }
 
 dependencies {
+	implementation(libs.aboutlibraries)
 	androidTestImplementation(libs.androidTest.runner)
 	androidTestImplementation(libs.androidTest.junit)
 	androidTestImplementation(libs.androidTest.uiautomator)

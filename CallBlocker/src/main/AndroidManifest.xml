@@ -90,5 +90,11 @@
 				<action android:name="android.telecom.CallScreeningService" />
 			</intent-filter>
 		</service>
+
+		<!--suppress DeprecatedClassUsageInspection -->
+		<activity
+			android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
+			android:exported="false"
+			android:theme="@style/AppCompatTheme" />
 	</application>
 </manifest>
