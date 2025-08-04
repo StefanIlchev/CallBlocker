@@ -15,14 +15,14 @@ import com.mikepenz.aboutlibraries.util.SpecialButton
 private const val TAG = "AboutUtilities"
 
 private val gitHubUri = try {
-	BuildConfig.GIT_HUB_URL.takeUnless(CharSequence::isEmpty)?.let(Uri::parse)
+	BuildConfig.GIT_HUB_URL.ifEmpty { null }?.let(Uri::parse)
 } catch (t: Throwable) {
 	Log.w(TAG, t)
 	null
 }
 
 private val sponsorUri = try {
-	BuildConfig.SPONSOR_URL.takeUnless(CharSequence::isEmpty)?.let(Uri::parse)
+	BuildConfig.SPONSOR_URL.ifEmpty { null }?.let(Uri::parse)
 } catch (t: Throwable) {
 	Log.w(TAG, t)
 	null
@@ -31,11 +31,11 @@ private val sponsorUri = try {
 private fun Context.onExtraClicked(
 	specialButton: SpecialButton
 ) = when (specialButton) {
-	SpecialButton.SPECIAL1 -> gitHubUri?.also {
+	SpecialButton.SPECIAL1 -> gitHubUri?.let {
 		tryStartActivity(Intent(Intent.ACTION_VIEW, it))
 	} != null
 
-	SpecialButton.SPECIAL2 -> sponsorUri?.also {
+	SpecialButton.SPECIAL2 -> sponsorUri?.let {
 		tryStartActivity(Intent(Intent.ACTION_VIEW, it))
 	} != null
 
@@ -79,8 +79,8 @@ fun Context.tryStartAboutActivity() {
 			aboutShowVersion = true
 			aboutShowVersionName = true
 			aboutShowVersionCode = true
-			gitHubUri?.also { aboutAppSpecial1 = getString(R.string.git_hub) }
-			sponsorUri?.also { aboutAppSpecial2 = getString(R.string.sponsor) }
+			gitHubUri?.let { aboutAppSpecial1 = getString(R.string.git_hub) }
+			sponsorUri?.let { aboutAppSpecial2 = getString(R.string.sponsor) }
 			if (BuildConfig.LATEST_RELEASE_URL.isNotEmpty() && packageManager.canRequestPackageInstalls()) {
 				aboutAppSpecial3 = getString(R.string.update)
 			}
