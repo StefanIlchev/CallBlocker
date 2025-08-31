@@ -1,47 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="18 18 72 72">
+
 	<defs>
-		<linearGradient id="shadow" x1="42.9492" x2="85.84757" y1="49.59793" y2="92.4963">
-			<stop offset="0.0" style="stop-color:black;stop-opacity:0.265625" />
-			<stop offset="1.0" style="stop-color:black;stop-opacity:0" />
+
+		<clipPath id="clip-path">
+			<circle cx="54" cy="54" r="36" />
+		</clipPath>
+
+		<linearGradient id="background">
+			<stop stop-color="#008577" />
+		</linearGradient>
+
+		<linearGradient id="background-grid">
+			<stop stop-color="white" stop-opacity="0.2" />
 		</linearGradient>
 	</defs>
-	<path d="M0,0h108v108h-108z" fill="#3DDC84" />
-	<path d="M9,0L9,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M19,0L19,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M29,0L29,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M39,0L39,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M49,0L49,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M59,0L59,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M69,0L69,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M79,0L79,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M89,0L89,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M99,0L99,108" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,9L108,9" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,19L108,19" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,29L108,29" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,39L108,39" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,49L108,49" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,59L108,59" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,69L108,69" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,79L108,79" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,89L108,89" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M0,99L108,99" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M19,29L89,29" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M19,39L89,39" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M19,49L89,49" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M19,59L89,59" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M19,69L89,69" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M19,79L89,79" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M29,19L29,89" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M39,19L39,89" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M49,19L49,89" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M59,19L59,89" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M69,19L69,89" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M79,19L79,89" fill="transparent" stroke="#33FFFFFF" stroke-width="0.8" />
-	<path d="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z"
-		fill="url(#shadow)" />
-	<path
-		d="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
-		fill="white" fill-rule="nonzero" stroke="transparent" />
+
+	<circle fill="url(#background)" cx="54" cy="54" r="36" />
+
+	<path clip-path="url(#clip-path)" stroke="url(#background-grid)" stroke-width="0.8" d="
+		M 0 9
+		H 108
+
+		M 0 19
+		H 108
+
+		M 0 29
+		H 108
+
+		M 0 39
+		H 108
+
+		M 0 49
+		H 108
+
+		M 0 59
+		H 108
+
+		M 0 69
+		H 108
+
+		M 0 79
+		H 108
+
+		M 0 89
+		H 108
+
+		M 0 99
+		H 108
+
+		M 9 0
+		V 108
+
+		M 19 0
+		V 108
+
+		M 29 0
+		V 108
+
+		M 39 0
+		V 108
+
+		M 49 0
+		V 108
+
+		M 59 0
+		V 108
+
+		M 69 0
+		V 108
+
+		M 79 0
+		V 108
+
+		M 89 0
+		V 108
+
+		M 99 0
+		V 108" />
+
+	<path clip-path="url(#clip-path)" stroke="url(#background-grid)" stroke-width="0.8" d="
+		M 19 29
+		H 89
+
+		M 19 39
+		H 89
+
+		M 19 49
+		H 89
+
+		M 19 59
+		H 89
+
+		M 19 69
+		H 89
+
+		M 19 79
+		H 89
+
+		M 29 19
+		V 89
+
+		M 39 19
+		V 89
+
+		M 49 19
+		V 89
+
+		M 59 19
+		V 89
+
+		M 69 19
+		V 89
+
+		M 79 19
+		V 89" />
+
+	<path fill="transparent" stroke="white" stroke-width="3.2" d="
+		M 58 36
+		l 14 14
+		a 7 7, 0, 0, 0, -14 -14
+		a 7 7, 0, 0, 0, 14 14" />
+
+	<path fill="white" fill-rule="nonzero" d="
+		M 71.966599 73.453461
+		l -3.784209 2.497949
+		c -2.436058 1.677643, -12.817205 3.563534, -26.940458 -13.545942
+		C 27.626484 45.933159, 31.519764 36.798447, 33.346046 34.691879
+		L 36.488518 31.425625
+		c 0.740913 -0.631843, 1.858750 -0.557523, 2.495666 0.205710
+		l 8.264689 9.776445
+		c 0.604702 0.716309, 0.584918 1.831356, -0.210530 2.503022
+		l -3.662711 2.641768
+		c -1.449865 1.437436, -0.185926 3.699998, 1.296153 5.885703
+		l 7.047929 8.321760
+		c 3.278684 3.164796, 5.075290 4.626836, 6.644117 3.581036
+		l 3.045834 -3.397647
+		c 0.745986 -0.627024, 1.858750 -0.550168, 2.495666, 0.208247
+		l 8.269762 9.776445
+		C 72.781830 71.664207, 72.759506 72.776978, 71.966599 73.453461
+		Z" />
 </svg>
