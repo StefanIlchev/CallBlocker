@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Call Blocker"</string>
+	<string name="call_screener">"Tumawag sa Screener"</string>
+	<string name="block_non_contacts">"I-block ang Mga Hindi contact"</string>
+	<string name="exclude_contacts">"Ibukod ang Mga Contact"</string>
+	<string name="regex">"Regex"</string>
+	<string name="block_none">"I-block ang Wala"</string>
+	<string name="block_matches">"Block Matches"</string>
+	<string name="block_others">"I-block ang Iba"</string>
+	<string name="blocked_phone_number">"Na-block si %1$s"</string>
+</resources>

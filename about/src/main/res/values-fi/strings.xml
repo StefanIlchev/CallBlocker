@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">"Tietoja"</string>
+	<string name="sponsor">"Sponsoroi"</string>
+	<string name="update">"Päivitys"</string>
+</resources>

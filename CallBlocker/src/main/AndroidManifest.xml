@@ -1,35 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<!-- receive phone state broadcasts -->
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 	<!-- receive a second phone state broadcast with the incoming number -->
-	<uses-permission android:name="android.permission.READ_CALL_LOG" />
+	<uses-permission
+		android:name="android.permission.READ_CALL_LOG"
+		tools:ignore="SmsAndCallLogPolicy" />
 
 	<!-- end phone calls -->
 	<uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
 
-	<!-- notify blocked calls -->
-	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
-	<!-- needed for contact checks -->
+	<!-- access contacts -->
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
-
-	<!-- check for app updates -->
-	<uses-permission android:name="android.permission.INTERNET" />
-
-	<!-- download app updates -->
-	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-	<!-- download app updates -->
-	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
-
-	<!-- install app updates -->
-	<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
-	<!-- install app updates -->
-	<uses-permission android:name="android.permission.UPDATE_PACKAGES_WITHOUT_USER_ACTION" />
 
 	<uses-feature
 		android:name="android.hardware.telephony"
@@ -67,11 +52,6 @@
 			</intent-filter>
 		</activity>
 
-		<service
-			android:name=".UpdateService"
-			android:exported="false"
-			android:foregroundServiceType="dataSync" />
-
 		<receiver
 			android:name=".CallReceiver"
 			android:exported="true">
@@ -90,11 +70,5 @@
 				<action android:name="android.telecom.CallScreeningService" />
 			</intent-filter>
 		</service>
-
-		<!--suppress DeprecatedClassUsageInspection -->
-		<activity
-			android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
-			android:exported="false"
-			android:theme="@style/AppCompatTheme" />
 	</application>
 </manifest>

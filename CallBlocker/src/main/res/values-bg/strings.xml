@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Блокатор на обаждания"</string>
+	<string name="call_screener">"Идентификатор на обаждания"</string>
+	<string name="block_non_contacts">"Блокирай непознати"</string>
+	<string name="exclude_contacts">"Пропускай контакти"</string>
+	<string name="regex">"Регулярен израз"</string>
+	<string name="block_none">"Блокирай никой"</string>
+	<string name="block_matches">"Блокирай съвпадения"</string>
+	<string name="block_others">"Блокирай други"</string>
+	<string name="blocked_phone_number">"Блокиран %1$s"</string>
+</resources>

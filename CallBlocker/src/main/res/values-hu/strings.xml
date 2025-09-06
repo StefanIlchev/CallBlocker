@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Hívásblokkoló"</string>
+	<string name="call_screener">"Hívásszűrő"</string>
+	<string name="block_non_contacts">"Nem kontaktok blokkolása"</string>
+	<string name="exclude_contacts">"Kontaktok kizárása"</string>
+	<string name="regex">"Reguláris kifejezés"</string>
+	<string name="block_none">"Egyik sem blokkolása"</string>
+	<string name="block_matches">"Egyezések blokkolása"</string>
+	<string name="block_others">"Egyéb blokkolása"</string>
+	<string name="blocked_phone_number">"Blokkolva: %1$s"</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Símtalsblokkari"</string>
+	<string name="call_screener">"Símtalsskimun"</string>
+	<string name="block_non_contacts">"Loka fyrir tengiliði sem ekki eru í boði"</string>
+	<string name="exclude_contacts">"Útiloka tengiliði"</string>
+	<string name="regex">"Regegex (regluleg setning)"</string>
+	<string name="block_none">"Loka engum"</string>
+	<string name="block_matches">"Loka fyrir samsvörun"</string>
+	<string name="block_others">"Loka fyrir aðra"</string>
+	<string name="blocked_phone_number">"Loka %1$s"</string>
+</resources>

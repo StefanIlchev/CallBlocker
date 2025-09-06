@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"ตัวบล็อกการโทร"</string>
+	<string name="call_screener">"ตัวคัดกรองการโทร"</string>
+	<string name="block_non_contacts">"บล็อกผู้ติดต่อที่ไม่ใช่ผู้ติดต่อ"</string>
+	<string name="exclude_contacts">"ยกเว้นผู้ติดต่อ"</string>
+	<string name="regex">"นิพจน์ทั่วไป (Regex)"</string>
+	<string name="block_none">"บล็อกไม่บล็อก"</string>
+	<string name="block_matches">"บล็อกผู้ติดต่อที่ตรงกัน"</string>
+	<string name="block_others">"บล็อกผู้ติดต่ออื่น"</string>
+	<string name="blocked_phone_number">"บล็อก %1$s"</string>
+</resources>

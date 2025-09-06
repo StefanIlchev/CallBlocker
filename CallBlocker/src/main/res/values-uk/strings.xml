@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Блокування викликів"</string>
+	<string name="call_screener">"Фільтрування викликів"</string>
+	<string name="block_non_contacts">"Блокувати не контакти"</string>
+	<string name="exclude_contacts">"Виключити контакти"</string>
+	<string name="regex">"Регулярний вираз"</string>
+	<string name="block_none">"Не блокувати"</string>
+	<string name="block_matches">"Блокувати збіги"</string>
+	<string name="block_others">"Блокувати інші"</string>
+	<string name="blocked_phone_number">"Заблоковано %1$s"</string>
+</resources>

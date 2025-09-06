@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<!-- check for app updates -->
+	<uses-permission android:name="android.permission.INTERNET" />
+
+	<!-- download app updates -->
+	<uses-permission
+		android:name="android.permission.FOREGROUND_SERVICE"
+		tools:ignore="ForegroundServicesPolicy" />
+
+	<!-- download app updates -->
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+	<!-- install app updates -->
+	<uses-permission
+		android:name="android.permission.REQUEST_INSTALL_PACKAGES"
+		tools:ignore="RequestInstallPackagesPolicy" />
+
+	<!-- install app updates -->
+	<uses-permission android:name="android.permission.UPDATE_PACKAGES_WITHOUT_USER_ACTION" />
+
+	<application>
+
+		<service
+			android:name=".UpdateService"
+			android:exported="false"
+			android:foregroundServiceType="dataSync" />
+	</application>
+</manifest>

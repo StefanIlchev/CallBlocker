@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"通話ブロック"</string>
+	<string name="call_screener">"通話スクリーナー"</string>
+	<string name="block_non_contacts">"連絡先以外をブロック"</string>
+	<string name="exclude_contacts">"連絡先を除外"</string>
+	<string name="regex">"正規表現"</string>
+	<string name="block_none">"すべてブロック"</string>
+	<string name="block_matches">"一致するものをブロック"</string>
+	<string name="block_others">"その他をブロック"</string>
+	<string name="blocked_phone_number">"%1$s をブロックしました"</string>
+</resources>

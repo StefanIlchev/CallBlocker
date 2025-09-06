@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Αποκλεισμός κλήσεων"</string>
+	<string name="call_screener">"Ελέγχοντας κλήσεις"</string>
+	<string name="block_non_contacts">"Αποκλεισμός μη επαφών"</string>
+	<string name="exclude_contacts">"Εξαίρεση επαφών"</string>
+	<string name="regex">"Κανονική έκφραση"</string>
+	<string name="block_none">"Αποκλεισμός κανενός"</string>
+	<string name="block_matches">"Αποκλεισμός αντιστοιχίσεων"</string>
+	<string name="block_others">"Αποκλεισμός άλλων"</string>
+	<string name="blocked_phone_number">"Αποκλεισμένοι %1$s"</string>
+</resources>

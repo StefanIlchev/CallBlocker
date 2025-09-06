@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">"について"</string>
+	<string name="sponsor">"スポンサー"</string>
+	<string name="update">"アップデート"</string>
+</resources>

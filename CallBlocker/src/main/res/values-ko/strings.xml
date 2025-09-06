@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"통화 차단"</string>
+	<string name="call_screener">"통화 차단"</string>
+	<string name="block_non_contacts">"연락처가 아닌 사람 차단"</string>
+	<string name="exclude_contacts">"연락처 제외"</string>
+	<string name="regex">"정규식"</string>
+	<string name="block_none">"차단 안 함"</string>
+	<string name="block_matches">"일치하는 항목 차단"</string>
+	<string name="block_others">"기타 항목 차단"</string>
+	<string name="blocked_phone_number">"%1$s 차단됨"</string>
+</resources>

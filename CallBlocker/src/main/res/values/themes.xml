@@ -4,6 +4,4 @@
 	<style name="BaseAppTheme" parent="android:Theme.DeviceDefault" />
 
 	<style name="AppTheme" parent="BaseAppTheme" />
-
-	<style name="AppCompatTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
 </resources>

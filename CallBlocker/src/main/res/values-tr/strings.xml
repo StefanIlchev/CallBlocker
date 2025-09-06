@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Çağrı Engelleyici"</string>
+	<string name="call_screener">"Çağrı Filtreleyici"</string>
+	<string name="block_non_contacts">"İletişim Dışı Kişileri Engelle"</string>
+	<string name="exclude_contacts">"Kişileri Hariç Tut"</string>
+	<string name="regex">"Regex"</string>
+	<string name="block_none">"Hiçbirini Engelleme"</string>
+	<string name="block_matches">"Eşleşenleri Engelle"</string>
+	<string name="block_others">"Diğerlerini Engelle"</string>
+	<string name="blocked_phone_number">"%1$s kişi engellendi"</string>
+</resources>

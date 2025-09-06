@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">About</string>
+	<string name="git_hub" translatable="false">GitHub</string>
+	<string name="sponsor">Sponsor</string>
+	<string name="update">Update</string>
+</resources>

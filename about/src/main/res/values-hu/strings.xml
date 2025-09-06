@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">"Rólunk"</string>
+	<string name="sponsor">"Szponzor"</string>
+	<string name="update">"Frissítés"</string>
+</resources>

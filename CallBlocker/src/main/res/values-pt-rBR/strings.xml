@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Bloqueador de Chamadas"</string>
+	<string name="call_screener">"Filtragem de Chamadas"</string>
+	<string name="block_non_contacts">"Bloquear Não Contatos"</string>
+	<string name="exclude_contacts">"Excluir Contatos"</string>
+	<string name="regex">"Regex"</string>
+	<string name="block_none">"Bloquear Nenhum"</string>
+	<string name="block_matches">"Bloquear Correspondências"</string>
+	<string name="block_others">"Bloquear Outros"</string>
+	<string name="blocked_phone_number">"%1$s Bloqueados"</string>
+</resources>

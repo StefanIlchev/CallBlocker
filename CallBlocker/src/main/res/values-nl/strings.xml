@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Oproepblokkering"</string>
+	<string name="call_screener">"Oproepfilter"</string>
+	<string name="block_non_contacts">"Niet-contacten blokkeren"</string>
+	<string name="exclude_contacts">"Contacten uitsluiten"</string>
+	<string name="regex">"Regex"</string>
+	<string name="block_none">"Geen blokkeren"</string>
+	<string name="block_matches">"Overeenkomsten blokkeren"</string>
+	<string name="block_others">"Overige blokkeren"</string>
+	<string name="blocked_phone_number">"%1$s geblokkeerd"</string>
+</resources>

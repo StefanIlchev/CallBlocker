@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"חוסם שיחות"</string>
+	<string name="call_screener">"מסנן שיחות"</string>
+	<string name="block_non_contacts">"חסימת אנשי קשר שאינם אנשי קשר"</string>
+	<string name="exclude_contacts">"אי הכללת אנשי קשר"</string>
+	<string name="regex">"ביטוי רגולרי"</string>
+	<string name="block_none">"חסימת אף אחד"</string>
+	<string name="block_matches">"חסימת התאמות"</string>
+	<string name="block_others">"חסימת אחרים"</string>
+	<string name="blocked_phone_number">"%1$s חסומים"</string>
+</resources>

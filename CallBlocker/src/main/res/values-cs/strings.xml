@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Blokování hovorů"</string>
+	<string name="call_screener">"Filmování hovorů"</string>
+	<string name="block_non_contacts">"Blokovat nekontaktní položky"</string>
+	<string name="exclude_contacts">"Vyloučit kontakty"</string>
+	<string name="regex">"Regulární výraz"</string>
+	<string name="block_none">"Neblokovat žádné"</string>
+	<string name="block_matches">"Blokovat shody"</string>
+	<string name="block_others">"Blokovat ostatní"</string>
+	<string name="blocked_phone_number">"Blokováno %1$s"</string>
+</resources>

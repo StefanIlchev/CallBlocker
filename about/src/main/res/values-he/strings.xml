@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">"אודות"</string>
+	<string name="sponsor">"נותן חסות"</string>
+	<string name="update">"עדכון"</string>
+</resources>

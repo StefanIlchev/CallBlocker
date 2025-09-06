@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"来电拦截器"</string>
+	<string name="call_screener">"来电筛选器"</string>
+	<string name="block_non_contacts">"拦截非联系人"</string>
+	<string name="exclude_contacts">"排除联系人"</string>
+	<string name="regex">"正则表达式"</string>
+	<string name="block_none">"不拦截任何联系人"</string>
+	<string name="block_matches">"拦截匹配项"</string>
+	<string name="block_others">"拦截其他联系人"</string>
+	<string name="blocked_phone_number">"已拦截 %1$s"</string>
+</resources>

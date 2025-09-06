@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Pemblokir Panggilan"</string>
+	<string name="call_screener">"Pemeriksa Panggilan"</string>
+	<string name="block_non_contacts">"Blokir Non-kontak"</string>
+	<string name="exclude_contacts">"Kecualikan Kontak"</string>
+	<string name="regex">"Ekspresi Reguler"</string>
+	<string name="block_none">"Blokir Tidak Ada"</string>
+	<string name="block_matches">"Blokir Kecocokan"</string>
+	<string name="block_others">"Blokir Lainnya"</string>
+	<string name="blocked_phone_number">"Diblokir %1$s"</string>
+</resources>

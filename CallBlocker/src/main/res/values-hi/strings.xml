@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"कॉल ब्लॉकर"</string>
+	<string name="call_screener">"कॉल स्क्रीनर"</string>
+	<string name="block_non_contacts">"गैर-संपर्कों को ब्लॉक करें"</string>
+	<string name="exclude_contacts">"संपर्कों को बाहर करें"</string>
+	<string name="regex">"रेगुलर एक्सप्रेशन (Regex)"</string>
+	<string name="block_none">"कोई भी ब्लॉक न करें"</string>
+	<string name="block_matches">"मिलान ब्लॉक करें"</string>
+	<string name="block_others">"अन्य ब्लॉक करें"</string>
+	<string name="blocked_phone_number">"%1$s को ब्लॉक किया गया"</string>
+</resources>

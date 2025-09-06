@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Blocator de apeluri"</string>
+	<string name="call_screener">"Filtru de apeluri"</string>
+	<string name="block_non_contacts">"Blocare persoane fără contact"</string>
+	<string name="exclude_contacts">"Excludere contacte"</string>
+	<string name="regex">"Expresie regulată"</string>
+	<string name="block_none">"Blocare persoane necontactate"</string>
+	<string name="block_matches">"Blocare potriviri"</string>
+	<string name="block_others">"Blocare alte persoane"</string>
+	<string name="blocked_phone_number">"Blocat %1$s"</string>
+</resources>

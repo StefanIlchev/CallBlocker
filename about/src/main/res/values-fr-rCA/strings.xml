@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">"À propos"</string>
+	<string name="sponsor">"Commanditaire"</string>
+	<string name="update">"Mise à jour"</string>
+</resources>

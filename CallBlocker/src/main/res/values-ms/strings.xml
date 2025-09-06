@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Penyekat Panggilan"</string>
+	<string name="call_screener">"Penyaring Panggilan"</string>
+	<string name="block_non_contacts">"Sekat Bukan kenalan"</string>
+	<string name="exclude_contacts">"Kecualikan Kenalan"</string>
+	<string name="regex">"Regex"</string>
+	<string name="block_none">"Sekat Tiada"</string>
+	<string name="block_matches">"Blok Perlawanan"</string>
+	<string name="block_others">"Sekat Orang Lain"</string>
+	<string name="blocked_phone_number">"Disekat %1$s"</string>
+</resources>

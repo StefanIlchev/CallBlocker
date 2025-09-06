@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Zvanu bloķētājs"</string>
+	<string name="call_screener">"Zvanu filtrs"</string>
+	<string name="block_non_contacts">"Bloķēt nekontaktpersonas"</string>
+	<string name="exclude_contacts">"Izslēgt kontaktpersonas"</string>
+	<string name="regex">"Regulārā izteiksme"</string>
+	<string name="block_none">"Nebloķēt nevienu"</string>
+	<string name="block_matches">"Bloķēt atbilstības"</string>
+	<string name="block_others">"Bloķēt citus"</string>
+	<string name="blocked_phone_number">"Bloķēti %1$s"</string>
+</resources>

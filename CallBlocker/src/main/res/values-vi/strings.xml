@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Chặn cuộc gọi"</string>
+	<string name="call_screener">"Sàng lọc cuộc gọi"</string>
+	<string name="block_non_contacts">"Chặn người không có trong danh bạ"</string>
+	<string name="exclude_contacts">"Loại trừ danh bạ"</string>
+	<string name="regex">"Regex"</string>
+	<string name="block_none">"Không chặn"</string>
+	<string name="block_matches">"Chặn kết quả trùng khớp"</string>
+	<string name="block_others">"Chặn người khác"</string>
+	<string name="blocked_phone_number">"Đã chặn %1$s"</string>
+</resources>

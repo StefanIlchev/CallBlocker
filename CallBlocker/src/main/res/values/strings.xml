@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name" translatable="false">Call Blocker</string>
-	<string name="call_screener" translatable="false">Call Screener</string>
-	<string name="block_non_contacts" translatable="false">Block Non-contacts</string>
-	<string name="exclude_contacts" translatable="false">Exclude Contacts</string>
-	<string name="regex" translatable="false">Regex</string>
-	<string name="block_none" translatable="false">Block None</string>
-	<string name="block_matches" translatable="false">Block Matches</string>
-	<string name="block_others" translatable="false">Block Others</string>
-	<string name="blocked_phone_number" translatable="false">Blocked %1$s</string>
-	<string name="stop_update" translatable="false">Stop Update</string>
-	<string name="about" translatable="false">About</string>
-	<string name="git_hub" translatable="false">GitHub</string>
-	<string name="sponsor" translatable="false">Sponsor</string>
-	<string name="update" translatable="false">Update</string>
+	<string name="app_name">Call Blocker</string>
+	<string name="call_screener">Call Screener</string>
+	<string name="block_non_contacts">Block Non-contacts</string>
+	<string name="exclude_contacts">Exclude Contacts</string>
+	<string name="regex">Regex</string>
+	<string name="block_none">Block None</string>
+	<string name="block_matches">Block Matches</string>
+	<string name="block_others">Block Others</string>
+	<string name="blocked_phone_number">Blocked %1$s</string>
 </resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Bloquejador de trucades"</string>
+	<string name="call_screener">"Filtrador de trucades"</string>
+	<string name="block_non_contacts">"Bloqueja contactes no habituals"</string>
+	<string name="exclude_contacts">"Exclou contactes"</string>
+	<string name="regex">"Expressió regular"</string>
+	<string name="block_none">"Bloqueja cap"</string>
+	<string name="block_matches">"Bloqueja coincidències"</string>
+	<string name="block_others">"Bloqueja altres persones"</string>
+	<string name="blocked_phone_number">"Bloquejat %1$s"</string>
+</resources>

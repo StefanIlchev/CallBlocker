@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Блокатор позива"</string>
+	<string name="call_screener">"Провера позива"</string>
+	<string name="block_non_contacts">"Блокирај контакте који нису контакти"</string>
+	<string name="exclude_contacts">"Искључи контакте"</string>
+	<string name="regex">"Регекс"</string>
+	<string name="block_none">"Блокирај ниједног"</string>
+	<string name="block_matches">"Блокирај подударања"</string>
+	<string name="block_others">"Блокирај остале"</string>
+	<string name="blocked_phone_number">"Блокирано %1$s"</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Puhelunesto"</string>
+	<string name="call_screener">"Puhelujen seulonta"</string>
+	<string name="block_non_contacts">"Estä muut kuin yhteystiedot"</string>
+	<string name="exclude_contacts">"Sulje pois yhteystiedot"</string>
+	<string name="regex">"Säännöllinen lauseke"</string>
+	<string name="block_none">"Estä ei mitään"</string>
+	<string name="block_matches">"Estä osumat"</string>
+	<string name="block_others">"Estä muut"</string>
+	<string name="blocked_phone_number">"Estetty %1$s"</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Samtalsblockerare"</string>
+	<string name="call_screener">"Samtalsfilter"</string>
+	<string name="block_non_contacts">"Blockera icke-kontakter"</string>
+	<string name="exclude_contacts">"Uteslut kontakter"</string>
+	<string name="regex">"Regex"</string>
+	<string name="block_none">"Blockera inga"</string>
+	<string name="block_matches">"Blockera matchningar"</string>
+	<string name="block_others">"Blockera andra"</string>
+	<string name="blocked_phone_number">"Blockerade %1$s"</string>
+</resources>

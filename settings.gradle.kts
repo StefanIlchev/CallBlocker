@@ -3,15 +3,15 @@ pluginManagement {
 	repositories {
 		google()
 		mavenCentral()
-		mavenLocal()
-		maven("https://jitpack.io")
 		gradlePluginPortal()
+		mavenLocal()
 	}
 
 	plugins {
 
 		// https://mvnrepository.com/artifact/com.android.tools.build/gradle
 		id("com.android.application") version "8.12.2"
+		id("com.android.library") version "8.12.2"
 
 		// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
 		kotlin("android") version "2.2.10"
@@ -60,4 +60,9 @@ dependencyResolutionManagement {
 	}
 }
 
-include(":CallBlocker")
+include(
+	":about",
+	":base",
+	":CallBlocker",
+	":update"
+)

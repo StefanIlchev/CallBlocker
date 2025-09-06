@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">"Относно"</string>
+	<string name="sponsor">"Спонсорирай"</string>
+	<string name="update">"Актуализирай"</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">"소개"</string>
+	<string name="sponsor">"스폰서"</string>
+	<string name="update">"업데이트"</string>
+</resources>

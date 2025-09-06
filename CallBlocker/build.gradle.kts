@@ -1,7 +1,7 @@
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.gradle.tasks.PackageApplication
 import org.apache.tools.ant.types.Commandline
-import java.util.Properties
+import stef40.buildsrc.getPropertyValue
 
 plugins {
 	id("com.android.application")
@@ -10,8 +10,6 @@ plugins {
 	id("com.github.breadmoirai.github-release")
 }
 
-val localProperties: Properties by rootProject.extra
-
 kotlin {
 	jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
@@ -19,9 +17,9 @@ kotlin {
 android {
 	buildToolsVersion = libs.versions.buildToolsVersion.get()
 	compileSdk = libs.versions.compileSdk.get().toInt()
-	namespace = "ilchev.stefan.callblocker"
+	namespace = "stef40.${name.lowercase()}"
 	testNamespace = "$namespace.test"
-	testBuildType = System.getProperty("test.build.type") ?: "debug"
+	testBuildType = getPropertyValue("test.build.type") ?: "debug"
 
 	buildFeatures {
 		buildConfig = true
@@ -30,39 +28,28 @@ android {
 	defaultConfig {
 		minSdk = libs.versions.minSdk.get().toInt()
 		targetSdk = compileSdk
-		versionCode = (System.getProperty("version.code") ?: libs.versions.versionCode.get()).toInt()
-		versionName = System.getProperty("version.name") ?: "$versionCode"
+		versionCode = (getPropertyValue("version.code") ?: libs.versions.versionCode.get()).toInt()
+		versionName = getPropertyValue("version.name") ?: "$versionCode"
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-		val gitHubUrl = localProperties.getProperty("github.owner")?.let { owner ->
-			localProperties.getProperty("github.repo")?.let { repo ->
-				"https://github.com/$owner/$repo"
-			}
-		} ?: ""
-		buildConfigField("String", "GIT_HUB_URL", "\"$gitHubUrl\"")
 		buildConfigField(
 			"String",
 			"LATEST_RELEASE_URL",
-			"\"${localProperties.getProperty("latest.release.url") ?: ""}\""
+			"\"${getPropertyValue("latest.release.url") ?: ""}\""
 		)
 		buildConfigField(
 			"String",
 			"PROJECT_NAME",
-			"\"${project.name}\""
-		)
-		buildConfigField(
-			"String",
-			"SPONSOR_URL",
-			"\"${localProperties.getProperty("sponsor.url") ?: ""}\""
+			"\"${rootProject.name}\""
 		)
 	}
 
 	signingConfigs {
 
 		named("debug") {
-			storeFile = rootProject.file(localProperties.getProperty("store.file") ?: "debug.keystore")
-			storePassword = localProperties.getProperty("store.password") ?: "android"
-			keyAlias = localProperties.getProperty("key.alias") ?: "androiddebugkey"
-			keyPassword = localProperties.getProperty("key.password") ?: "android"
+			storeFile = rootProject.file(getPropertyValue("store.file") ?: return@named)
+			storePassword = getPropertyValue("store.password") ?: return@named
+			keyAlias = getPropertyValue("key.alias") ?: return@named
+			keyPassword = getPropertyValue("key.password") ?: return@named
 		}
 	}
 
@@ -93,16 +80,18 @@ androidComponents {
 }
 
 dependencies {
-	implementation(libs.aboutlibraries)
+	implementation(project(":about"))
+	implementation(project(":base"))
+	getPropertyValue("latest.release.url")?.let { implementation(project(":update")) }
 	androidTestImplementation(libs.androidTest.runner)
 	androidTestImplementation(libs.androidTest.junit)
 	androidTestImplementation(libs.androidTest.uiautomator)
 	testImplementation(libs.test.junit)
 }
 
-System.getProperty("adb.args")?.let {
+getPropertyValue("adb.args")?.let {
 	tasks.register<Exec>("adb") {
-		group = project.name
+		group = rootProject.name
 		executable = android.adbExecutable.path
 		args(*Commandline.translateCommandline(it))
 
@@ -115,13 +104,13 @@ System.getProperty("adb.args")?.let {
 tasks.githubRelease {
 	val packageRelease = tasks.named<PackageApplication>("packageRelease")
 	dependsOn(packageRelease)
-	owner = localProperties.getProperty("github.owner")
-	repo = localProperties.getProperty("github.repo")
-	authorization = localProperties.getProperty("github.authorization")
+	owner = getPropertyValue("github.owner")
+	repo = getPropertyValue("github.repo")
+	authorization = getPropertyValue("github.authorization")
 	tagName = "v${android.defaultConfig.versionName}"
-	targetCommitish = localProperties.getProperty("github.targetCommitish")
+	targetCommitish = getPropertyValue("github.targetCommitish")
 	releaseName = android.defaultConfig.versionName
-	body = localProperties.getProperty("github.body")
+	body = getPropertyValue("github.body")
 	prerelease = true
 	releaseAssets.from(packageRelease.map { task ->
 		task.outputDirectory.asFileTree.filter { it.extension == "apk" }.sorted()

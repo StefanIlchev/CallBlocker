@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Shayela i-Blocker"</string>
+	<string name="call_screener">"I-Call Screener"</string>
+	<string name="block_non_contacts">"Vimba Abangathintana nabo"</string>
+	<string name="exclude_contacts">"Ungafaki Oxhumana Nabo"</string>
+	<string name="regex">"I-Regex"</string>
+	<string name="block_none">"Vimba Lutho"</string>
+	<string name="block_matches">"Vimba Okufanayo"</string>
+	<string name="block_others">"Vimbela Abanye"</string>
+	<string name="blocked_phone_number">"Kuvinjwe %1$s"</string>
+</resources>

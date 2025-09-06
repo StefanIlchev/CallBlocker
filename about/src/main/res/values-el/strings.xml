@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">"Σχετικά με"</string>
+	<string name="sponsor">"Χορηγός"</string>
+	<string name="update">"Ενημέρωση"</string>
+</resources>

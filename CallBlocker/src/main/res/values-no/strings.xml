@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Anropsblokkering"</string>
+	<string name="call_screener">"Anropsscreening"</string>
+	<string name="block_non_contacts">"Blokker ikke-kontakter"</string>
+	<string name="exclude_contacts">"Ekskluder kontakter"</string>
+	<string name="regex">"Regex"</string>
+	<string name="block_none">"Blokker ingen"</string>
+	<string name="block_matches">"Blokker treff"</string>
+	<string name="block_others">"Blokker andre"</string>
+	<string name="blocked_phone_number">"Blokkert %1$s"</string>
+</resources>

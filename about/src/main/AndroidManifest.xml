@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<application>
+
+		<!--suppress DeprecatedClassUsageInspection -->
+		<activity
+			android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
+			android:exported="false"
+			android:theme="@style/AppCompatTheme" />
+	</application>
+</manifest>

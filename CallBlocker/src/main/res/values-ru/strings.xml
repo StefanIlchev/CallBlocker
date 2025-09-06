@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Блокировщик вызовов"</string>
+	<string name="call_screener">"Скринер вызовов"</string>
+	<string name="block_non_contacts">"Блокировать неконтакты"</string>
+	<string name="exclude_contacts">"Исключить контакты"</string>
+	<string name="regex">"Регулярное выражение"</string>
+	<string name="block_none">"Блокировать ничего"</string>
+	<string name="block_matches">"Блокировать совпадения"</string>
+	<string name="block_others">"Блокировать другие"</string>
+	<string name="blocked_phone_number">"Заблокировано %1$s"</string>
+</resources>

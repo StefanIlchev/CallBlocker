@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Piga Kizuia"</string>
+	<string name="call_screener">"Kichunguzi cha Simu"</string>
+	<string name="block_non_contacts">"Zuia Wasiowasiliana nao"</string>
+	<string name="exclude_contacts">"Ondoa Anwani"</string>
+	<string name="regex">"Regex"</string>
+	<string name="block_none">"Zuia Hakuna"</string>
+	<string name="block_matches">"Zuia Mechi"</string>
+	<string name="block_others">"Zuia Wengine"</string>
+	<string name="blocked_phone_number">"Imezuiwa %1$s"</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about">"Giới thiệu"</string>
+	<string name="sponsor">"Nhà tài trợ"</string>
+	<string name="update">"Cập nhật"</string>
+</resources>

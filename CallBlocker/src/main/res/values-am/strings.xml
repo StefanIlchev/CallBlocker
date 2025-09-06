@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"ደውል ማገጃ"</string>
+	<string name="call_screener">"የጥሪ ማጣሪያ"</string>
+	<string name="block_non_contacts">"ዕውቂያ ያልሆኑትን አግድ"</string>
+	<string name="exclude_contacts">"እውቂያዎችን አግልል"</string>
+	<string name="regex">"ሬጌክስ"</string>
+	<string name="block_none">"ምንም አግድ"</string>
+	<string name="block_matches">"ግጥሚያዎችን አግድ"</string>
+	<string name="block_others">"ሌሎችን አግድ"</string>
+	<string name="blocked_phone_number">"%1$s ታግዷል"</string>
+</resources>

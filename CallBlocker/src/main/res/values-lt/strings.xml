@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Skambučių blokavimas"</string>
+	<string name="call_screener">"Skambučių tikrinimas"</string>
+	<string name="block_non_contacts">"Blokuoti nekontaktinius asmenis"</string>
+	<string name="exclude_contacts">"Išskirti kontaktus"</string>
+	<string name="regex">"Reguliarioji išraiška"</string>
+	<string name="block_none">"Neblokuoti nieko"</string>
+	<string name="block_matches">"Blokuoti atitikmenis"</string>
+	<string name="block_others">"Blokuoti kitus"</string>
+	<string name="blocked_phone_number">"Užblokuota %1$s"</string>
+</resources>

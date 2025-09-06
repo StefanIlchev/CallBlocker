@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">"Kõneblokeerija"</string>
+	<string name="call_screener">"Kõnede filtreerimine"</string>
+	<string name="block_non_contacts">"Blokeeri mittekontaktid"</string>
+	<string name="exclude_contacts">"Välista kontaktid"</string>
+	<string name="regex">"Regulaaravaldis"</string>
+	<string name="block_none">"Ära blokeeri ühtegi"</string>
+	<string name="block_matches">"Blokeeri vasted"</string>
+	<string name="block_others">"Blokeeri teised"</string>
+	<string name="blocked_phone_number">"Blokeeritud %1$s"</string>
+</resources>
