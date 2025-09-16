@@ -3,118 +3,12 @@
 
 	<defs>
 
-		<clipPath id="clip-path">
-			<circle cx="54" cy="54" r="36" />
-		</clipPath>
-
 		<linearGradient id="background">
-			<stop stop-color="#008577" />
-		</linearGradient>
-
-		<linearGradient id="background-grid">
-			<stop stop-color="white" stop-opacity="0.2" />
+			<stop stop-color="#00966E" />
 		</linearGradient>
 	</defs>
 
 	<circle fill="url(#background)" cx="54" cy="54" r="36" />
-
-	<path clip-path="url(#clip-path)" stroke="url(#background-grid)" stroke-width="0.8" d="
-		M 0 9
-		H 108
-
-		M 0 19
-		H 108
-
-		M 0 29
-		H 108
-
-		M 0 39
-		H 108
-
-		M 0 49
-		H 108
-
-		M 0 59
-		H 108
-
-		M 0 69
-		H 108
-
-		M 0 79
-		H 108
-
-		M 0 89
-		H 108
-
-		M 0 99
-		H 108
-
-		M 9 0
-		V 108
-
-		M 19 0
-		V 108
-
-		M 29 0
-		V 108
-
-		M 39 0
-		V 108
-
-		M 49 0
-		V 108
-
-		M 59 0
-		V 108
-
-		M 69 0
-		V 108
-
-		M 79 0
-		V 108
-
-		M 89 0
-		V 108
-
-		M 99 0
-		V 108" />
-
-	<path clip-path="url(#clip-path)" stroke="url(#background-grid)" stroke-width="0.8" d="
-		M 19 29
-		H 89
-
-		M 19 39
-		H 89
-
-		M 19 49
-		H 89
-
-		M 19 59
-		H 89
-
-		M 19 69
-		H 89
-
-		M 19 79
-		H 89
-
-		M 29 19
-		V 89
-
-		M 39 19
-		V 89
-
-		M 49 19
-		V 89
-
-		M 59 19
-		V 89
-
-		M 69 19
-		V 89
-
-		M 79 19
-		V 89" />
 
 	<path fill="transparent" stroke="white" stroke-width="3.2" d="
 		M 58 36
