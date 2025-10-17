@@ -17,7 +17,7 @@ pluginManagement {
 		kotlin("android") version "2.2.20"
 
 		// https://mvnrepository.com/artifact/com.mikepenz.aboutlibraries.plugin/com.mikepenz.aboutlibraries.plugin.gradle.plugin
-		id("com.mikepenz.aboutlibraries.plugin") version "12.2.4"
+		id("com.mikepenz.aboutlibraries.plugin") version "13.1.0"
 
 		// https://mvnrepository.com/artifact/com.github.breadmoirai.github-release/com.github.breadmoirai.github-release.gradle.plugin
 		id("com.github.breadmoirai.github-release") version "2.5.2"
@@ -43,7 +43,7 @@ dependencyResolutionManagement {
 			version("minSdk", "28")
 
 			// https://mvnrepository.com/artifact/com.mikepenz/aboutlibraries
-			library("aboutlibraries", "com.mikepenz:aboutlibraries:12.2.4")
+			library("aboutlibraries", "com.mikepenz:aboutlibraries:13.1.0")
 
 			// https://mvnrepository.com/artifact/androidx.test/runner
 			library("androidTest.runner", "androidx.test:runner:1.7.0")
