@@ -17,7 +17,7 @@ pluginManagement {
 		kotlin("android") version "2.2.20"
 
 		// https://mvnrepository.com/artifact/com.mikepenz.aboutlibraries.plugin/com.mikepenz.aboutlibraries.plugin.gradle.plugin
-		id("com.mikepenz.aboutlibraries.plugin") version "13.1.0"
+		id("com.mikepenz.aboutlibraries.plugin.android") version "13.1.0"
 
 		// https://mvnrepository.com/artifact/com.github.breadmoirai.github-release/com.github.breadmoirai.github-release.gradle.plugin
 		id("com.github.breadmoirai.github-release") version "2.5.2"

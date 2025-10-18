@@ -6,7 +6,7 @@ import stef40.buildsrc.getPropertyValue
 plugins {
 	id("com.android.application")
 	kotlin("android")
-	id("com.mikepenz.aboutlibraries.plugin")
+	id("com.mikepenz.aboutlibraries.plugin.android")
 	id("com.github.breadmoirai.github-release")
 }
 
