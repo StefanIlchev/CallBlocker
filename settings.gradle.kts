@@ -14,7 +14,7 @@ pluginManagement {
 		id("com.android.library") version "8.13.0"
 
 		// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-		kotlin("android") version "2.2.20"
+		kotlin("android") version "2.2.21"
 
 		// https://mvnrepository.com/artifact/com.mikepenz.aboutlibraries.plugin/com.mikepenz.aboutlibraries.plugin.gradle.plugin
 		id("com.mikepenz.aboutlibraries.plugin.android") version "13.1.0"
