@@ -10,11 +10,11 @@ pluginManagement {
 	plugins {
 
 		// https://mvnrepository.com/artifact/com.android.tools.build/gradle
-		id("com.android.application") version "8.13.1"
-		id("com.android.library") version "8.13.1"
+		id("com.android.application") version "8.13.2"
+		id("com.android.library") version "8.13.2"
 
 		// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-		kotlin("android") version "2.2.21"
+		kotlin("android") version "2.3.0"
 
 		// https://mvnrepository.com/artifact/com.mikepenz.aboutlibraries.plugin.android/com.mikepenz.aboutlibraries.plugin.android.gradle.plugin
 		id("com.mikepenz.aboutlibraries.plugin.android") version "13.1.0"
