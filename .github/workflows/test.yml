@@ -44,7 +44,7 @@ jobs:
         if: always()
         with:
           name: reports
-          path: build/reports/
+          path: '**/build/reports/**'
 
       - name: Delete old workflow runs
         uses: Mattraks/delete-workflow-runs@v2
