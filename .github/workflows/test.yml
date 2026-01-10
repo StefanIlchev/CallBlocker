@@ -47,5 +47,5 @@ jobs:
           path: build/reports/
 
       - name: Delete old workflow runs
-        uses: Mattraiano/delete-workflow-runs@v2
+        uses: Mattraks/delete-workflow-runs@v2
         if: always()
