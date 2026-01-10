@@ -41,11 +41,11 @@ jobs:
 
       - name: Upload Reports
         uses: actions/upload-artifact@v6
-        if: always()
+        if: ${{ !cancelled() }}
         with:
           name: reports
           path: '**/build/reports/**'
 
       - name: Delete old workflow runs
         uses: Mattraks/delete-workflow-runs@v2
-        if: always()
+        if: ${{ !cancelled() }}
