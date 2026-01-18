@@ -1,21 +1,15 @@
 import stef40.buildsrc.getPropertyValue
 
 plugins {
-	id("com.android.library")
-	kotlin("android")
-}
-
-kotlin {
-	jvmToolchain(libs.versions.jvmToolchain.get().toInt())
+	alias(libs.plugins.android.library)
 }
 
 android {
-	buildToolsVersion = libs.versions.buildToolsVersion.get()
-	compileSdk = libs.versions.compileSdk.get().toInt()
 	namespace = "stef40.${name.lowercase()}"
+	buildToolsVersion = libs.versions.buildToolsVersion.get()
 
-	buildFeatures {
-		buildConfig = true
+	compileSdk {
+		version = release(libs.versions.compileSdk.get().toInt())
 	}
 
 	defaultConfig {
@@ -30,6 +24,10 @@ android {
 			"PROJECT_NAME",
 			"\"${rootProject.name}\""
 		)
+	}
+
+	buildFeatures {
+		buildConfig = true
 	}
 }
 

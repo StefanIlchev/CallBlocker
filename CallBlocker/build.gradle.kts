@@ -1,28 +1,25 @@
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.gradle.tasks.PackageApplication
+import com.mikepenz.aboutlibraries.plugin.AboutLibrariesTask
+import org.ajoberstar.grgit.Grgit
 import org.apache.tools.ant.types.Commandline
 import stef40.buildsrc.getPropertyValue
 
 plugins {
-	id("com.android.application")
-	kotlin("android")
-	id("com.mikepenz.aboutlibraries.plugin.android")
-	id("com.github.breadmoirai.github-release")
-}
-
-kotlin {
-	jvmToolchain(libs.versions.jvmToolchain.get().toInt())
+	alias(libs.plugins.android.application)
+	alias(libs.plugins.aboutlibraries)
+	alias(libs.plugins.grgit)
+	alias(libs.plugins.github.release)
 }
 
 android {
-	buildToolsVersion = libs.versions.buildToolsVersion.get()
-	compileSdk = libs.versions.compileSdk.get().toInt()
 	namespace = "stef40.${name.lowercase()}"
 	testNamespace = "$namespace.test"
 	testBuildType = getPropertyValue("test.build.type") ?: "debug"
+	buildToolsVersion = libs.versions.buildToolsVersion.get()
 
-	buildFeatures {
-		buildConfig = true
+	compileSdk {
+		version = release(libs.versions.compileSdk.get().toInt())
 	}
 
 	defaultConfig {
@@ -55,7 +52,7 @@ android {
 
 	buildTypes {
 
-		named("release") {
+		release {
 			val isNotTestBuildType = testBuildType != name
 			isMinifyEnabled = isNotTestBuildType
 			isShrinkResources = isNotTestBuildType
@@ -64,6 +61,10 @@ android {
 			}
 			signingConfig = signingConfigs["debug"]
 		}
+	}
+
+	buildFeatures {
+		buildConfig = true
 	}
 }
 
@@ -76,6 +77,28 @@ androidComponents {
 				"$nameWithoutExtension-${it.versionName.get()}.$extension"
 			}
 		}
+
+		abstract class AboutLibrariesResTask : AboutLibrariesTask() {
+
+			@get:Optional
+			@get:OutputDirectory
+			abstract val outputDirectory: DirectoryProperty
+		}
+
+		val variantName = variant.name.replaceFirstChar { it.uppercase() }
+		val resultsResDirectory = project.layout.buildDirectory.dir("generated/aboutLibraries/${variant.name}/res")
+		val resultsDirectory = resultsResDirectory.map { it.dir("raw") }
+		val task = project.tasks.register<AboutLibrariesResTask>("prepareLibraryDefinitions$variantName") {
+			group = rootProject.name
+			this.variant.set(variant.name)
+			outputDirectory.set(resultsResDirectory)
+			configureOutputFile(resultsDirectory.map { dir ->
+				@Suppress("DEPRECATION")
+				dir.file(aboutLibraries.export.outputFileName.get())
+			})
+			configure()
+		}
+		variant.sources.res?.addGeneratedSourceDirectory(task) { it.outputDirectory }
 	}
 }
 
@@ -92,10 +115,10 @@ dependencies {
 getPropertyValue("adb.args")?.let {
 	tasks.register<Exec>("adb") {
 		group = rootProject.name
-		executable = android.adbExecutable.path
-		args(*Commandline.translateCommandline(it))
 
 		doFirst {
+			executable(androidComponents.sdkComponents.adb.get())
+			args(*Commandline.translateCommandline(it))
 			println("adb ${args.joinToString(" ")}")
 		}
 	}
@@ -108,7 +131,7 @@ tasks.githubRelease {
 	repo = getPropertyValue("github.repo")
 	authorization = getPropertyValue("github.authorization")
 	tagName = "v${android.defaultConfig.versionName}"
-	targetCommitish = getPropertyValue("github.targetCommitish")
+	targetCommitish = Grgit.open(mapOf("dir" to rootDir.path)).branch.current().name
 	releaseName = android.defaultConfig.versionName
 	body = getPropertyValue("github.body")
 	prerelease = true
