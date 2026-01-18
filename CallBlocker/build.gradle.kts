@@ -68,6 +68,13 @@ android {
 	}
 }
 
+abstract class AboutLibrariesResTask : AboutLibrariesTask() {
+
+	@get:Optional
+	@get:OutputDirectory
+	abstract val outputDirectory: DirectoryProperty
+}
+
 androidComponents {
 
 	onVariants { variant ->
@@ -77,24 +84,14 @@ androidComponents {
 				"$nameWithoutExtension-${it.versionName.get()}.$extension"
 			}
 		}
-
-		abstract class AboutLibrariesResTask : AboutLibrariesTask() {
-
-			@get:Optional
-			@get:OutputDirectory
-			abstract val outputDirectory: DirectoryProperty
-		}
-
-		val variantName = variant.name.replaceFirstChar { it.uppercase() }
-		val resultsResDirectory = project.layout.buildDirectory.dir("generated/aboutLibraries/${variant.name}/res")
-		val resultsDirectory = resultsResDirectory.map { it.dir("raw") }
-		val task = project.tasks.register<AboutLibrariesResTask>("prepareLibraryDefinitions$variantName") {
+		val variantName = variant.name.replaceFirstChar { it.uppercaseChar() }
+		val task = tasks.register<AboutLibrariesResTask>("prepareLibraryDefinitions$variantName") {
 			group = rootProject.name
-			this.variant.set(variant.name)
-			outputDirectory.set(resultsResDirectory)
-			configureOutputFile(resultsDirectory.map { dir ->
-				@Suppress("DEPRECATION")
-				dir.file(aboutLibraries.export.outputFileName.get())
+			this.variant = variant.name
+			val outputDirectory = layout.buildDirectory.dir("generated/aboutLibraries/${variant.name}/res")
+			this.outputDirectory = outputDirectory
+			configureOutputFile(outputDirectory.map {
+				@Suppress("DEPRECATION") it.file("raw/${aboutLibraries.export.outputFileName.get()}")
 			})
 			configure()
 		}
