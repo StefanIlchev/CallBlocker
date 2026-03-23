@@ -4,9 +4,9 @@ A call blocker for [Android](https://www.android.com/) that rejects calls from n
 
 ## Install
 
-### Sideload
+### File
 
-Download and install the `.apk` file of the [latest release](https://github.com/StefanIlchev/CallBlocker/releases/latest).
+Download the `.apk` file of the [latest release](https://github.com/StefanIlchev/CallBlocker/releases/latest).
 
 ### Google Play (Early Access)
 
