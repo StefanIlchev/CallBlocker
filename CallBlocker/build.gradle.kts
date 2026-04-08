@@ -1,9 +1,7 @@
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.gradle.tasks.PackageApplication
-import com.mikepenz.aboutlibraries.plugin.AboutLibrariesTask
 import org.ajoberstar.grgit.Grgit
 import org.apache.tools.ant.types.Commandline
-import stef40.buildsrc.getPropertyValue
 
 plugins {
 	alias(libs.plugins.android.application)
@@ -11,6 +9,8 @@ plugins {
 	alias(libs.plugins.grgit)
 	alias(libs.plugins.github.release)
 }
+
+val getPropertyValue: (String) -> String? by rootProject.extra
 
 android {
 	namespace = "stef40.${name.lowercase()}"
@@ -68,13 +68,6 @@ android {
 	}
 }
 
-abstract class AboutLibrariesResTask : AboutLibrariesTask() {
-
-	@get:Optional
-	@get:OutputDirectory
-	abstract val outputDirectory: DirectoryProperty
-}
-
 androidComponents {
 
 	onVariants { variant ->
@@ -84,18 +77,6 @@ androidComponents {
 				"$nameWithoutExtension-${it.versionName.get()}.$extension"
 			}
 		}
-		val variantName = variant.name.replaceFirstChar { it.uppercaseChar() }
-		val task = tasks.register<AboutLibrariesResTask>("prepareLibraryDefinitions$variantName") {
-			group = rootProject.name
-			this.variant = variant.name
-			val outputDirectory = layout.buildDirectory.dir("generated/aboutLibraries/${variant.name}/res")
-			this.outputDirectory = outputDirectory
-			configureOutputFile(outputDirectory.map {
-				@Suppress("DEPRECATION") it.file("raw/${aboutLibraries.export.outputFileName.get()}")
-			})
-			configure()
-		}
-		variant.sources.res?.addGeneratedSourceDirectory(task) { it.outputDirectory }
 	}
 }
 

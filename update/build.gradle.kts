@@ -1,8 +1,8 @@
-import stef40.buildsrc.getPropertyValue
-
 plugins {
 	alias(libs.plugins.android.library)
 }
+
+val getPropertyValue: (String) -> String? by rootProject.extra
 
 android {
 	namespace = "stef40.${name.lowercase()}"
