@@ -16,7 +16,7 @@ minSdk = "28"
 [libraries]
 
 # https://mvnrepository.com/artifact/com.mikepenz/aboutlibraries
-aboutlibraries = { module = "com.mikepenz:aboutlibraries", version = "14.0.1" }
+aboutlibraries = { module = "com.mikepenz:aboutlibraries", version = "14.1.0" }
 
 # https://mvnrepository.com/artifact/androidx.test/runner
 androidTest-runner = { module = "androidx.test:runner", version = "1.7.0" }
@@ -37,7 +37,7 @@ android-application = { id = "com.android.application", version = "9.2.0" }
 android-library = { id = "com.android.library", version = "9.2.0" }
 
 # https://mvnrepository.com/artifact/com.mikepenz.aboutlibraries.plugin.android/com.mikepenz.aboutlibraries.plugin.android.gradle.plugin
-aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version = "14.0.1" }
+aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version = "14.1.0" }
 
 # https://mvnrepository.com/artifact/org.ajoberstar.grgit/org.ajoberstar.grgit.gradle.plugin
 grgit = { id = "org.ajoberstar.grgit", version = "5.3.3" }
