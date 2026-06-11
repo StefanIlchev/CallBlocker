@@ -109,7 +109,7 @@ tasks.githubRelease {
 	repo = getPropertyValue("github.repo")
 	authorization = getPropertyValue("github.authorization")
 	tagName = "v${android.defaultConfig.versionName}"
-	targetCommitish = Grgit.open(mapOf("dir" to rootDir.path)).branch.current().name
+	targetCommitish = Grgit.open { dir = rootDir }.use { it.branch.current().name }
 	releaseName = android.defaultConfig.versionName
 	body = getPropertyValue("github.body")
 	prerelease = true
