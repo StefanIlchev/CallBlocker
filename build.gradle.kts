@@ -5,13 +5,13 @@ plugins {
 	alias(libs.plugins.android.library) apply false
 }
 
-val localProperties by extra {
-	Properties().also { file("local.properties").takeIf(File::isFile)?.bufferedReader()?.use(it::load) }
+val localProperties = Properties().also {
+	file("local.properties").takeIf(File::isFile)?.bufferedReader()?.use(it::load)
 }
 
-val getPropertyValue by extra { key: String ->
+val getPropertyValue = { key: String ->
 	(System.getProperty(key) ?: localProperties.getProperty(key))?.ifEmpty { null }
-}
+}.also { extra["getPropertyValue"] = it }
 
 subprojects {
 

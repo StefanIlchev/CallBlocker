@@ -10,7 +10,8 @@ plugins {
 	alias(libs.plugins.github.release)
 }
 
-val getPropertyValue: (String) -> String? by rootProject.extra
+@Suppress("UNCHECKED_CAST")
+val getPropertyValue = rootProject.extra["getPropertyValue"] as (String) -> String?
 
 android {
 	namespace = "stef40.${name.lowercase()}"
