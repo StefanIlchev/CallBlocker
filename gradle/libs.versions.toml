@@ -1,7 +1,7 @@
 [versions]
 
 #noinspection UnusedVersionCatalogEntry
-versionCode = "41"
+versionCode = "42"
 
 # https://developer.android.com/tools/releases/build-tools
 #noinspection UnusedVersionCatalogEntry
