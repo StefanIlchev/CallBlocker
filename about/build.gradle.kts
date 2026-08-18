@@ -1,5 +1,7 @@
 plugins {
 	alias(libs.plugins.android.library)
+	alias(libs.plugins.kotlin.compose)
+	alias(libs.plugins.aboutlibraries)
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -30,10 +32,17 @@ android {
 
 	buildFeatures {
 		buildConfig = true
+		compose = true
 	}
 }
 
 dependencies {
 	implementation(project(":base"))
+	implementation(libs.google.android.material)
+	implementation(libs.androidx.activity.compose)
+	implementation(libs.androidx.compose.material3)
+	implementation(libs.androidx.compose.material.icons)
+	implementation(libs.androidx.compose.ui)
 	implementation(libs.aboutlibraries)
+	debugImplementation(libs.androidx.compose.ui.tooling.preview)
 }

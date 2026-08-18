@@ -37,7 +37,6 @@ val Context.usableUpdateServiceType
 val Context.sharedPreferences: SharedPreferences
 	get() = getSharedPreferences(packageName, Context.MODE_PRIVATE)
 
-@Suppress("deprecation", "KotlinRedundantDiagnosticSuppress")
 fun Context.getPackageInfo(
 	flags: Int = 0
 ): PackageInfo = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -92,7 +91,7 @@ fun Context.tryStopService(
 	false
 }
 
-@Suppress("deprecation")
+@Suppress("deprecation", "RedundantSuppression")
 fun <T : Parcelable> getParcelableExtra(
 	intent: Intent,
 	name: String,

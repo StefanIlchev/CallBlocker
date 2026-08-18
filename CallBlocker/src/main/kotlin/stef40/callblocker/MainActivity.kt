@@ -29,6 +29,7 @@ import stef40.base.tryStopService
 import stef40.base.updateServiceType
 import stef40.base.usableUpdateServiceType
 
+@SuppressLint("UseKtx")
 class MainActivity : Activity() {
 
 	private val blockNonContactsListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
