@@ -3,4 +3,5 @@
 	<string name="about">"Σχετικά με"</string>
 	<string name="sponsor">"Χορηγός"</string>
 	<string name="update">"Ενημέρωση"</string>
+	<string name="version">"Ενημέρωση %1$s (%2$d)"</string>
 </resources>

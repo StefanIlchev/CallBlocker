@@ -3,4 +3,5 @@
 	<string name="about">"Kuhusu"</string>
 	<string name="sponsor">"Mfadhili"</string>
 	<string name="update">"Sasisha"</string>
+	<string name="version">"Toleo %1$s (%2$d)"</string>
 </resources>

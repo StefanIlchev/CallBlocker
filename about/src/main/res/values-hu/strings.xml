@@ -3,4 +3,5 @@
 	<string name="about">"Rólunk"</string>
 	<string name="sponsor">"Szponzor"</string>
 	<string name="update">"Frissítés"</string>
+	<string name="version">"Verzió %1$s (%2$d)"</string>
 </resources>

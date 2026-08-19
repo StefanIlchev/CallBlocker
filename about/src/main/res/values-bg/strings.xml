@@ -3,4 +3,5 @@
 	<string name="about">"Относно"</string>
 	<string name="sponsor">"Спонсорирай"</string>
 	<string name="update">"Актуализирай"</string>
+	<string name="version">"Версия %1$s (%2$d)"</string>
 </resources>

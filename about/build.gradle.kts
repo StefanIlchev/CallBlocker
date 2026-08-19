@@ -38,7 +38,6 @@ android {
 
 dependencies {
 	implementation(project(":base"))
-	implementation(libs.google.android.material)
 	implementation(libs.androidx.activity.compose)
 	implementation(libs.androidx.compose.material3)
 	implementation(libs.androidx.compose.material.icons)

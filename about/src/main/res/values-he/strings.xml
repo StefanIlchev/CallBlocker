@@ -3,4 +3,5 @@
 	<string name="about">"אודות"</string>
 	<string name="sponsor">"נותן חסות"</string>
 	<string name="update">"עדכון"</string>
+	<string name="version">"גרסה %1$s (%2$d)"</string>
 </resources>

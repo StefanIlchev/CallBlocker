@@ -3,4 +3,5 @@
 	<string name="about">"O nama"</string>
 	<string name="sponsor">"Sponzor"</string>
 	<string name="update">"Ažuriranje"</string>
+	<string name="version">"Verzija %1$s (%2$d)"</string>
 </resources>

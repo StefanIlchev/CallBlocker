@@ -3,4 +3,5 @@
 	<string name="about">"Um"</string>
 	<string name="sponsor">"Styrktaraðili"</string>
 	<string name="update">"Uppfærsla"</string>
+	<string name="version">"Útgáfa %1$s (%2$d)"</string>
 </resources>

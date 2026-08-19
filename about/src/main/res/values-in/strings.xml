@@ -3,4 +3,5 @@
 	<string name="about">"Tentang"</string>
 	<string name="sponsor">"Sponsor"</string>
 	<string name="update">"Pembaruan"</string>
+	<string name="version">"Versi %1$s (%2$d)"</string>
 </resources>

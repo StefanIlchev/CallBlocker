@@ -3,4 +3,5 @@
 	<string name="about">"Hakkında"</string>
 	<string name="sponsor">"Sponsor"</string>
 	<string name="update">"Güncelleme"</string>
+	<string name="version">"Sürüm %1$s (%2$d)"</string>
 </resources>
