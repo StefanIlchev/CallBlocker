@@ -46,7 +46,7 @@ fun AboutScreen(appName: String, onBack: () -> Unit) {
 			)
 		}
 	) { contentPadding ->
-		val libs by produceLibraries(R.raw.aboutlibraries)
+		val libraries by produceLibraries(R.raw.aboutlibraries)
 		val context = LocalContext.current
 		val appIconBitmap = remember {
 			context.packageManager.getApplicationIcon(context.packageName).toBitmap().asImageBitmap()
@@ -54,7 +54,7 @@ fun AboutScreen(appName: String, onBack: () -> Unit) {
 		val packageInfo = remember { context.getPackageInfo() }
 		val appVersion = stringResource(R.string.version, packageInfo.versionName ?: "", packageInfo.longVersionCode)
 		LibrariesContainer(
-			libraries = libs,
+			libraries = libraries,
 			modifier = Modifier.fillMaxSize(),
 			contentPadding = contentPadding,
 			header = {
