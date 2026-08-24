@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,9 +28,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import com.mikepenz.aboutlibraries.Libs
+import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
-import com.mikepenz.aboutlibraries.util.withJson
 import stef40.base.getPackageInfo
 import stef40.base.tryStartActivity
 import stef40.base.tryStartForegroundService
@@ -47,7 +47,7 @@ fun AboutScreen(appName: String, onBack: () -> Unit) {
 		}
 	) { contentPadding ->
 		val context = LocalContext.current
-		val libs = remember { Libs.Builder().withJson(context, R.raw.aboutlibraries).build() }
+		val libs by produceLibraries(R.raw.aboutlibraries)
 		val appIconBitmap = remember {
 			context.packageManager.getApplicationIcon(context.packageName).toBitmap().asImageBitmap()
 		}
