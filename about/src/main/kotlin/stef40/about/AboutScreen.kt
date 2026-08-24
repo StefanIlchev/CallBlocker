@@ -46,8 +46,8 @@ fun AboutScreen(appName: String, onBack: () -> Unit) {
 			)
 		}
 	) { contentPadding ->
-		val context = LocalContext.current
 		val libs by produceLibraries(R.raw.aboutlibraries)
+		val context = LocalContext.current
 		val appIconBitmap = remember {
 			context.packageManager.getApplicationIcon(context.packageName).toBitmap().asImageBitmap()
 		}
