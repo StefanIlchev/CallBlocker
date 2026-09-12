@@ -25,8 +25,8 @@ androidx-compose-material3 = { module = "androidx.compose.material3:material3", 
 androidx-compose-material-icons = { module = "androidx.compose.material:material-icons-core", version = "1.7.8" }
 
 # https://mvnrepository.com/artifact/androidx.compose.ui/ui
-androidx-compose-ui = { module = "androidx.compose.ui:ui", version = "1.12.0" }
-androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version = "1.12.0" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version = "1.12.1" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version = "1.12.1" }
 
 # https://mvnrepository.com/artifact/com.mikepenz/aboutlibraries-compose-m3
 aboutlibraries = { module = "com.mikepenz:aboutlibraries-compose-m3", version = "15.2.0" }
@@ -50,7 +50,7 @@ android-application = { id = "com.android.application", version = "9.4.0" }
 android-library = { id = "com.android.library", version = "9.4.0" }
 
 # https://mvnrepository.com/artifact/org.jetbrains.kotlin.plugin.compose/org.jetbrains.kotlin.plugin.compose.gradle.plugin
-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version = "2.4.10" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version = "2.4.20" }
 
 # https://mvnrepository.com/artifact/com.mikepenz.aboutlibraries.plugin.android/com.mikepenz.aboutlibraries.plugin.android.gradle.plugin
 aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version = "15.2.0" }

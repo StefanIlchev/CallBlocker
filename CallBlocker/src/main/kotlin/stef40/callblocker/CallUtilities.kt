@@ -26,7 +26,7 @@ import java.util.concurrent.TimeoutException
 
 private const val TAG = "CallUtilities"
 
-@Suppress("deprecation")
+@Suppress("deprecation", "RedundantSuppression")
 val Intent.incomingNumber
 	get() = if (hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) {
 		getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER) ?: ""
@@ -71,7 +71,7 @@ fun Context.isContact(
 	null
 }
 
-@Suppress("deprecation")
+@Suppress("deprecation", "RedundantSuppression")
 fun endCall(
 	context: Context
 ) = if (context.checkSelfPermission(Manifest.permission.ANSWER_PHONE_CALLS) == PackageManager.PERMISSION_GRANTED) {
